@@ -1,0 +1,211 @@
+  /* Important Code */
+  :root {
+      --primary-color: #34495e;
+      --secondary-color: #fff;
+      --secondary-light-color: #efeeee;
+      --third-color: #f39c12;
+  }
+
+  .flex {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+  }
+
+  a {
+      text-decoration: none;
+      outline: none;
+  }
+
+  ul li {
+      list-style: none;
+  }
+
+  /* Scroll bar design */
+
+  .scroll-bar::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+  }
+
+  .scroll-bar::-webkit-scrollbar-thumb {
+      background-color: rgb(148, 143, 143);
+      border-radius: 10px;
+      height: 50px;
+  }
+
+  .scroll-bar::-webkit-scrollbar-thumb:hover {
+      background-color: #6c757d;
+  }
+
+  .scroll-bar::-webkit-scrollbar-track {
+      box-shadow: inset 0 0 5px grey;
+      border-radius: 4px;
+  }
+
+  /* Side Menu */
+  .side-menu {
+      height: 100vh;
+      position: fixed;
+      top: 0;
+      background-color: var(--primary-color);
+      padding: 30px 20px;
+  }
+
+  .nav-header h4 {
+      color: var(--secondary-color);
+      text-align: center;
+      font-size: 18px;
+      border: 1px solid var(--secondary-color);
+      padding: 10px;
+      color: var(--secondary-color);
+      border-radius: 5px;
+      font-weight: bold;
+  }
+
+  .nav-body p {
+      color: #BDC7EB;
+      font-size: 12px;
+      margin: 30px 0px;
+  }
+
+  .nav-body a {
+      color: var(--secondary-color);
+      padding: 10px;
+      margin: 5px 0px;
+      border-radius: 5px;
+      transition: 0.2s;
+  }
+
+  .nav-body a:focus {
+      background-color: var(--secondary-color);
+      color: var(--primary-color);
+  }
+
+  /* Main Body */
+  .main {
+      min-height: 100vh;
+      background-color: var(--secondary-light-color);
+
+  }
+
+  .main .expand-button {
+      border: none;
+      outline: none;
+      background-color: transparent;
+      padding: 10px;
+      cursor: pointer;
+      font-size: 30px;
+  }
+
+  .main .expand-button:hover {
+      color: var(--primary-color);
+  }
+
+  .main-header {
+      justify-content: space-between;
+      background-color: var(--secondary-color);
+      padding: 10px 15px;
+  }
+
+  .main-header h1 {
+      font-size: 25px;
+      font-weight: bold;
+      color: var(--primary-color);
+  }
+
+  .main-body .create-div {
+      width: 100%;
+      padding: 15px 20px;
+  }
+
+  .main-body .create-div div {
+      font-size: 18px;
+      background-color: var(--primary-color);
+      width: 180px;
+      padding: 10px;
+      color: var(--secondary-color);
+      border-radius: 5px;
+  }
+
+  .main-body .card {
+      margin: 5px 15px;
+  }
+
+  .main-body .table-card {
+      max-width: 1500px;
+      overflow: scroll hidden;
+      padding: 10px;
+  }
+
+  .main-body .table-card table {
+      border-collapse: collapse;
+      border-radius: 15px;
+  }
+
+  table thead {
+      background-color: var(--primary-color);
+      color: var(--secondary-color);
+      height: 40px;
+  }
+
+  table thead tr th {
+      padding: 5px 35px;
+      text-align: center;
+  }
+
+  table tbody tr td {
+      padding: 5px;
+      text-align: center;
+  }
+
+  table tbody tr:nth-child(even) {
+      background-color: var(--secondary-light-color);
+  }
+
+  .table-card .btn-view {
+      border: none;
+      outline: none;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background-color: var(--third-color);
+      color: var(--secondary-color);
+      cursor: pointer;
+      transition: 0.2s;
+  }
+
+  .table-card .btn-view:hover {
+      transform: scale(1.2);
+  }
+
+  /* Pagination Styles */
+  .pagination {
+      gap: 10px;
+      justify-content: end;
+      padding: 0px 30px;
+  }
+
+  .pagination button {
+      width: 30px;
+      height: 30px;
+      border: none;
+      outline: none;
+      background-color: transparent;
+      border-radius: 50%;
+      cursor: pointer;
+  }
+
+  .page-number {
+      background-color: #dfdfda !important;
+  }
+
+  .active-page {
+      background-color: var(--primary-color) !important;
+      color: var(--secondary-color);
+  }
+
+  /* Vue Display None */
+  [v-cloak] {
+      display: none;
+  }
