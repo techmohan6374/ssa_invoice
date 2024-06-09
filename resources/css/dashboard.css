@@ -86,7 +86,7 @@
   .main {
       min-height: 100vh;
       background-color: var(--secondary-light-color);
-
+      padding: 0px 0px 50px 0px;
   }
 
   .main .expand-button {
@@ -143,23 +143,29 @@
       border-radius: 15px;
   }
 
-  table thead {
+  .main-body .filter-div {
+      width: 100%;
+      padding: 15px 20px;
+  }
+
+  /* Table Styles */
+  .main-body table thead {
       background-color: var(--primary-color);
       color: var(--secondary-color);
       height: 40px;
   }
 
-  table thead tr th {
-      padding: 5px 35px;
+  .main-body table thead tr th {
+      padding: 10px 35px;
       text-align: center;
   }
 
-  table tbody tr td {
-      padding: 5px;
+  .main-body table tbody tr td {
+      padding: 10px;
       text-align: center;
   }
 
-  table tbody tr:nth-child(even) {
+  .main-body table tbody tr:nth-child(even) {
       background-color: var(--secondary-light-color);
   }
 
@@ -186,7 +192,7 @@
       padding: 0px 30px;
   }
 
-  .pagination button {
+  .pagination>button {
       width: 30px;
       height: 30px;
       border: none;
