@@ -3,6 +3,9 @@ var vm = new Vue({
     data: {
         currentPage: 1,
         rowsPerPage: 10,
+        selectedDate: '',
+        selectedStartDate: moment().format('MMMM D, YYYY'), // Default start date to today
+        selectedEndDate: moment().format('MMMM D, YYYY'), // Default end date to today
         tableData: [
             {
                 sNo: 1,
@@ -48,205 +51,8 @@ var vm = new Vue({
                 gst: '540.00',
                 netAmount: '5940.00'
             },
-            {
-                sNo: 3,
-                date: '2024-06-09',
-                headName: 'John Doe',
-                address: '123 Main St, Anytown',
-                pinCode: '123456',
-                gstIn: '27AAAPL1234C1Z1',
-                placeOfSupply: 'Maharashtra',
-                roNo: 'RO001',
-                roDate: '2024-06-01',
-                productName: 'Advertisement',
-                keyNo: '1001',
-                captionName: 'Summer Sale',
-                size: '40x50',
-                areaName: 'Front Page',
-                pagePosition: 'AW5',
-                ratePerSqcm: '10.00',
-                totalAmount: '6000.00',
-                discount: '10%',
-                gst: '540.00',
-                netAmount: '5940.00'
-            },
-            {
-                sNo: 4,
-                date: '2024-06-09',
-                headName: 'John Doe',
-                address: '123 Main St, Anytown',
-                pinCode: '123456',
-                gstIn: '27AAAPL1234C1Z1',
-                placeOfSupply: 'Maharashtra',
-                roNo: 'RO001',
-                roDate: '2024-06-01',
-                productName: 'Advertisement',
-                keyNo: '1001',
-                captionName: 'Summer Sale',
-                size: '40x50',
-                areaName: 'Front Page',
-                pagePosition: 'AW5',
-                ratePerSqcm: '10.00',
-                totalAmount: '6000.00',
-                discount: '10%',
-                gst: '540.00',
-                netAmount: '5940.00'
-            },
-            {
-                sNo: 5,
-                date: '2024-06-09',
-                headName: 'John Doe',
-                address: '123 Main St, Anytown',
-                pinCode: '123456',
-                gstIn: '27AAAPL1234C1Z1',
-                placeOfSupply: 'Maharashtra',
-                roNo: 'RO001',
-                roDate: '2024-06-01',
-                productName: 'Advertisement',
-                keyNo: '1001',
-                captionName: 'Summer Sale',
-                size: '40x50',
-                areaName: 'Front Page',
-                pagePosition: 'AW5',
-                ratePerSqcm: '10.00',
-                totalAmount: '6000.00',
-                discount: '10%',
-                gst: '540.00',
-                netAmount: '5940.00'
-            },
-            {
-                sNo: 6,
-                date: '2024-06-09',
-                headName: 'John Doe',
-                address: '123 Main St, Anytown',
-                pinCode: '123456',
-                gstIn: '27AAAPL1234C1Z1',
-                placeOfSupply: 'Maharashtra',
-                roNo: 'RO001',
-                roDate: '2024-06-01',
-                productName: 'Advertisement',
-                keyNo: '1001',
-                captionName: 'Summer Sale',
-                size: '40x50',
-                areaName: 'Front Page',
-                pagePosition: 'AW5',
-                ratePerSqcm: '10.00',
-                totalAmount: '6000.00',
-                discount: '10%',
-                gst: '540.00',
-                netAmount: '5940.00'
-            },
-            {
-                sNo: 7,
-                date: '2024-06-09',
-                headName: 'John Doe',
-                address: '123 Main St, Anytown',
-                pinCode: '123456',
-                gstIn: '27AAAPL1234C1Z1',
-                placeOfSupply: 'Maharashtra',
-                roNo: 'RO001',
-                roDate: '2024-06-01',
-                productName: 'Advertisement',
-                keyNo: '1001',
-                captionName: 'Summer Sale',
-                size: '40x50',
-                areaName: 'Front Page',
-                pagePosition: 'AW5',
-                ratePerSqcm: '10.00',
-                totalAmount: '6000.00',
-                discount: '10%',
-                gst: '540.00',
-                netAmount: '5940.00'
-            },
-            {
-                sNo: 8,
-                date: '2024-06-09',
-                headName: 'John Doe',
-                address: '123 Main St, Anytown',
-                pinCode: '123456',
-                gstIn: '27AAAPL1234C1Z1',
-                placeOfSupply: 'Maharashtra',
-                roNo: 'RO001',
-                roDate: '2024-06-01',
-                productName: 'Advertisement',
-                keyNo: '1001',
-                captionName: 'Summer Sale',
-                size: '40x50',
-                areaName: 'Front Page',
-                pagePosition: 'AW5',
-                ratePerSqcm: '10.00',
-                totalAmount: '6000.00',
-                discount: '10%',
-                gst: '540.00',
-                netAmount: '5940.00'
-            },
-            {
-                sNo: 9,
-                date: '2024-06-09',
-                headName: 'John Doe',
-                address: '123 Main St, Anytown',
-                pinCode: '123456',
-                gstIn: '27AAAPL1234C1Z1',
-                placeOfSupply: 'Maharashtra',
-                roNo: 'RO001',
-                roDate: '2024-06-01',
-                productName: 'Advertisement',
-                keyNo: '1001',
-                captionName: 'Summer Sale',
-                size: '40x50',
-                areaName: 'Front Page',
-                pagePosition: 'AW5',
-                ratePerSqcm: '10.00',
-                totalAmount: '6000.00',
-                discount: '10%',
-                gst: '540.00',
-                netAmount: '5940.00'
-            },
-            {
-                sNo: 10,
-                date: '2024-06-09',
-                headName: 'John Doe',
-                address: '123 Main St, Anytown',
-                pinCode: '123456',
-                gstIn: '27AAAPL1234C1Z1',
-                placeOfSupply: 'Maharashtra',
-                roNo: 'RO001',
-                roDate: '2024-06-01',
-                productName: 'Advertisement',
-                keyNo: '1001',
-                captionName: 'Summer Sale',
-                size: '40x50',
-                areaName: 'Front Page',
-                pagePosition: 'AW5',
-                ratePerSqcm: '10.00',
-                totalAmount: '6000.00',
-                discount: '10%',
-                gst: '540.00',
-                netAmount: '5940.00'
-            },
-            {
-                sNo: 11,
-                date: '2024-06-09',
-                headName: 'John Doe',
-                address: '123 Main St, Anytown',
-                pinCode: '123456',
-                gstIn: '27AAAPL1234C1Z1',
-                placeOfSupply: 'Maharashtra',
-                roNo: 'RO001',
-                roDate: '2024-06-01',
-                productName: 'Advertisement',
-                keyNo: '1001',
-                captionName: 'Summer Sale',
-                size: '40x50',
-                areaName: 'Front Page',
-                pagePosition: 'AW5',
-                ratePerSqcm: '10.00',
-                totalAmount: '6000.00',
-                discount: '10%',
-                gst: '540.00',
-                netAmount: '5940.00'
-            },
-        ]
+        ],
+        currentTab: 'Tab 1'
     },
     computed: {
         totalPages() {
@@ -273,6 +79,13 @@ var vm = new Vue({
         }
     },
     methods: {
+        switchTab(tab) {
+            this.currentTab = tab;
+            this.$nextTick(() => {
+                this.initializeDatePicker();
+                this.initializeSelect2();
+            });
+        },
         goToPage(page) {
             if (page >= 1 && page <= this.totalPages) {
                 this.currentPage = page;
@@ -289,43 +102,43 @@ var vm = new Vue({
             }
         },
         cb(start, end) {
-            $('#dateRangePicker').val(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-            console.log("Selected date range:", start.format('MMMM D, YYYY'), ' - ', end.format('MMMM D, YYYY'));
+            this.selectedStartDate = start.format('MMMM D, YYYY');
+            this.selectedEndDate = end.format('MMMM D, YYYY');
+            this.selectedDate = this.selectedStartDate + ' - ' + this.selectedEndDate;
+            $('#dateRangePicker').val(this.selectedDate);
+            console.log("Selected date range:", this.selectedDate);
         },
+        initializeDatePicker() {
+            var start = moment(this.selectedStartDate, 'MMMM D, YYYY');
+            var end = moment(this.selectedEndDate, 'MMMM D, YYYY');
+            $('#dateRangePicker').daterangepicker({
+                startDate: start,
+                endDate: end,
+                ranges: {
+                    'Today': [moment(), moment()],
+                    'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                    'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                    'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                    'This Month': [moment().startOf('month'), moment().endOf('month')],
+                    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                }
+            }, this.cb);
+            this.cb(start, end);
+        },
+        initializeSelect2() {
+            $('#single').select2({
+                placeholder: 'Select a template',
+                allowClear: false
+            }).on('change', function (e) {
+                console.log($(this).val());
+            });
+        }
     },
     mounted() {
-        var start = moment().subtract(29, 'days');
-        var end = moment();
-        $('#dateRangePicker').daterangepicker({
-            startDate: start,
-            endDate: end,
-            ranges: {
-                'Today': [moment(), moment()],
-                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-                'This Month': [moment().startOf('month'), moment().endOf('month')],
-                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-            }
-        }, this.cb);
-        this.cb(start, end);
-
-           // Initialize Select2 for single select
-           $('#single').select2({
-            placeholder: 'Select a programming language',
-            allowClear: true
-        }).on('change', function (e) {
-            console.log($(this).val());
-        });
-
-        // Initialize Select2 for multiple select
-        $('#multiple').select2({
-            placeholder: 'Select a programming language',
-            allowClear: true
-        }).on('change', function (e) {
-            console.log($(this).val());
-        });
+        this.initializeDatePicker();
+        this.initializeSelect2();
     }
 });
 
-
+Vue.config.productionTip = false;
+Vue.config.devtools = true;

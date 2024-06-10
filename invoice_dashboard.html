@@ -20,9 +20,9 @@
 
 </head>
 
-<body>
+<body class="scroll-bar">
 
-    <div id="app" class="container-fluid p-0 m-0">
+    <div id="app" class="container-fluid p-0 m-0" v-cloak>
         <div class="side-menu" style="width: 80px;">
             <div class="nav-header mb-4">
                 <a href="#">
@@ -36,48 +36,55 @@
                 <p class="navigation-text" style="display: none;">NAVIGATION</p>
                 <ul class="p-0 my-4">
                     <li style="padding-left: 2px;" title="Dashboard">
-                        <a href="#" class="flex gap-2 justify-content-start">
+                        <a href="#" class="tab flex gap-2 justify-content-start"
+                            :class="{ active: currentTab === 'Tab 1' }" v-on:click="switchTab('Tab 1')">
                             <iconify-icon icon="material-symbols:dashboard-outline"
                                 style="font-size: 20px; margin-left: -2px;">
                             </iconify-icon>
                         </a>
                     </li>
                     <li title="Create Invoice">
-                        <a href="#" class="flex gap-2 justify-content-start">
+                        <a href="#" class="tab flex gap-2 justify-content-start"
+                            :class="{ active: currentTab === 'Tab 2' }" v-on:click="switchTab('Tab 2')">
                             <iconify-icon icon="carbon:document" style="font-size: 20px;"></iconify-icon>
                         </a>
                     </li>
                 </ul>
             </div>
         </div>
-        <div class="main" style="margin-left: 80px;">
-            <div class="main-header flex">
-                <button class="expand-button" style="display: none;" v-on:click="expandMenu()">
-                    <iconify-icon icon="charm:menu-hamburger"></iconify-icon>
-                </button>
-                <h1>Sai Soundar Agency</h1>
-                <div class="profile-logout">
-
+        <div class="main" style="margin-left: 80px;" v-if="currentTab === 'Tab 1'">
+            <div class="main-header">
+                <div class="row" style="width: 100%;">
+                    <div class="col-12">
+                        <div class="dashboard-show flex gap-2">
+                            <iconify-icon icon="material-symbols:dashboard-outline" style="font-size: 20px;">
+                            </iconify-icon>Invoice Dashboard
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="main-body">
-                <div class="create-div">
-                    <div class="flex gap-2 justify-content-start">
-                        <iconify-icon icon="material-symbols:dashboard-outline" style="font-size: 20px;">
-                        </iconify-icon>
-                        <span class="fs-6">Invoice Dashboard</span>
-                    </div>
-                </div>
                 <div class="filter-div">
-                    <input type="text" name="daterange" id="dateRangePicker" />
-                    <select id="single" class="js-states form-control" style="width: 200px;">
-                        <option>a</option>
-                        <option>b</option>
-                        <option>c</option>
-                        <option>d</option>
-                    </select>
-                    <input type="text">
-                    <button>PDF</button>
+                    <div class="row">
+                        <div class="col-12 col-md-3 mb-3" style="position: relative;">
+                            <label for="dateRangePicker" class="d-block fw-bold mb-2"
+                                style="color:var(--primary-color)">Select Date Range</label>
+                            <input type="text" name="daterange" id="dateRangePicker" style="width: 100%;"
+                                v-model="selectedDate" />
+                            <iconify-icon icon="ic:round-date-range"
+                                style="position: absolute;right:22px;top:40px;font-size: 25px;color:var(--primary-color);"></iconify-icon>
+                        </div>
+                        <div class="col-12 col-md-3 mb-3">
+                            <label for="dateRangePicker" class="d-block fw-bold mb-2"
+                                style="color:var(--primary-color)">Select Template</label>
+                            <select id="single" class="js-states" style="width: 100%;">
+                                <option>a</option>
+                                <option>b</option>
+                                <option>c</option>
+                                <option>d</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
                 <div class="card position-relative border-0 rounded-0">
                     <div class="table-card scroll-bar">
@@ -133,7 +140,7 @@
                                     <td>{{ row.gst }}</td>
                                     <td>{{ row.netAmount }}</td>
                                     <td class="flex position-sticky bg-white"
-                                        style="width:100px;height:62px;right:-10px;">
+                                        style="width:100px;height:62px;right:-10px;border: 1px solid rgb(185, 185, 185);">
                                         <button class="btn-view flex" title="Add">
                                             <iconify-icon icon="fluent:add-12-filled"></iconify-icon>
                                         </button>
@@ -165,6 +172,17 @@
                         :disabled="currentPage === totalPages">
                         <iconify-icon icon="material-symbols:last-page"></iconify-icon>
                     </button>
+                </div>
+            </div>
+        </div>
+        <div class="main" style="margin-left: 80px;" v-if="currentTab === 'Tab 2'">
+            <div class="main-header">
+                <div class="row" style="width: 100%;">
+                    <div class="col-12 col-md-3">
+                        <div class="dashboard-show flex gap-2">
+                            <iconify-icon icon="carbon:document" style="font-size: 20px;"></iconify-icon>Create Invoice
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
