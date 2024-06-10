@@ -20,8 +20,7 @@
 
 </head>
 
-<body class="scroll-bar">
-
+<body style="overflow: hidden auto;">
     <div id="app" class="container-fluid p-0 m-0" v-cloak>
         <div class="side-menu" style="width: 80px;">
             <div class="nav-header mb-4">
@@ -65,7 +64,7 @@
             </div>
             <div class="main-body">
                 <div class="filter-div">
-                    <div class="row">
+                    <div class="row bg-white mb-2" style="border-radius: 5px;padding: 10px;margin:0px -5px;">
                         <div class="col-12 col-md-3 mb-3" style="position: relative;">
                             <label for="dateRangePicker" class="d-block fw-bold mb-2"
                                 style="color:var(--primary-color)">Select Date Range</label>
@@ -83,6 +82,18 @@
                                 <option>c</option>
                                 <option>d</option>
                             </select>
+                        </div>
+                        <div class="col-12 col-md-3 mb-3 search-field" style="margin-top: 30px;position: relative;">
+                            <input id="searchText" type="text" style="width: 100%;" required>
+                            <label for="searchText">Search</label>
+                            <iconify-icon icon="ri:search-line"
+                                style="position: absolute;top:15px;right:25px;"></iconify-icon>
+                        </div>
+                        <div class="col-12 col-md-2 mb-3" style="margin-top: 30px;">
+                            <button class="flex" style="width: 100%;" title="Download PDF">
+                                <iconify-icon icon="ic:baseline-download" style="font-size: 25px;"></iconify-icon>
+                                Download PDF
+                            </button>
                         </div>
                     </div>
                 </div>
