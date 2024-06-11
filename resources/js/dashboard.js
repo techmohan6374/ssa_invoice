@@ -242,5 +242,5 @@ var vm = new Vue({
 });
 
 // For Development & Production Code
-Vue.config.productionTip = false;
-Vue.config.devtools = true;
+// Vue.config.productionTip = false;
+// Vue.config.devtools = true;
