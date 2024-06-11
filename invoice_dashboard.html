@@ -15,6 +15,9 @@
     <!-- Select2 CSS CDN -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
 
+    <!-- Notyf CSS CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
+
     <!-- Dashboard CSS CDN -->
     <link rel="stylesheet" href="resources/css/dashboard.css">
 
@@ -25,14 +28,11 @@
         <div class="side-menu" style="width: 80px;">
             <div class="nav-header mb-4">
                 <a href="#">
-                    <img src="resources/images/TH logo@2x.png" alt="Taskhops Full Logo" class="taskhops-full-logo"
-                        style="width: 100%; display: none;">
                     <img src="resources/images/Logo.png" alt="Taskhops Logo" class="taskhops-small-logo"
                         style="width: 100%; display: block;">
                 </a>
             </div>
             <div class="nav-body">
-                <p class="navigation-text" style="display: none;">NAVIGATION</p>
                 <ul class="p-0 my-4">
                     <li style="padding-left: 2px;" title="Dashboard">
                         <a href="#" class="tab flex gap-2 justify-content-start"
@@ -62,39 +62,37 @@
                     </div>
                 </div>
             </div>
-            <div class="main-body">
-                <div class="filter-div">
-                    <div class="row bg-white mb-2" style="border-radius: 5px;padding: 10px;margin:0px -5px;">
-                        <div class="col-12 col-md-3 mb-3" style="position: relative;">
-                            <label for="dateRangePicker" class="d-block fw-bold mb-2"
-                                style="color:var(--primary-color)">Select Date Range</label>
-                            <input type="text" name="daterange" id="dateRangePicker" style="width: 100%;"
-                                v-model="selectedDate" />
-                            <iconify-icon icon="ic:round-date-range"
-                                style="position: absolute;right:22px;top:40px;font-size: 25px;color:var(--primary-color);"></iconify-icon>
-                        </div>
-                        <div class="col-12 col-md-3 mb-3">
-                            <label for="dateRangePicker" class="d-block fw-bold mb-2"
-                                style="color:var(--primary-color)">Select Template</label>
-                            <select id="single" class="js-states" style="width: 100%;">
-                                <option>a</option>
-                                <option>b</option>
-                                <option>c</option>
-                                <option>d</option>
-                            </select>
-                        </div>
-                        <div class="col-12 col-md-3 mb-3 search-field" style="margin-top: 30px;position: relative;">
-                            <input id="searchText" type="text" style="width: 100%;" required>
-                            <label for="searchText">Search</label>
-                            <iconify-icon icon="ri:search-line"
-                                style="position: absolute;top:15px;right:25px;"></iconify-icon>
-                        </div>
-                        <div class="col-12 col-md-2 mb-3" style="margin-top: 30px;">
-                            <button class="flex" style="width: 100%;" title="Download PDF">
-                                <iconify-icon icon="ic:baseline-download" style="font-size: 25px;"></iconify-icon>
-                                Download PDF
-                            </button>
-                        </div>
+            <div class="main-body p-3">
+                <div class="row bg-white mb-2 filter-div" style="border-radius: 5px;padding: 10px;margin:0px;">
+                    <div class="col-12 col-xl-3 mb-3" style="position: relative;">
+                        <label for="dateRangePicker" class="d-block fw-bold mb-2"
+                            style="color:var(--primary-color)">Select Date Range</label>
+                        <input type="text" name="daterange" id="dateRangePicker" style="width: 100%;"
+                            v-model="selectedDate" />
+                        <iconify-icon icon="ic:round-date-range"
+                            style="position: absolute;right:22px;top:40px;font-size: 25px;color:var(--primary-color);"></iconify-icon>
+                    </div>
+                    <div class="col-12 col-md-3 mb-3">
+                        <label for="single" class="d-block fw-bold mb-2" style="color:var(--primary-color)">Select
+                            Template</label>
+                        <select id="single" class="js-states" style="width: 100%;">
+                            <option>a</option>
+                            <option>b</option>
+                            <option>c</option>
+                            <option>d</option>
+                        </select>
+                    </div>
+                    <div class="col-12 col-md-3 mb-3 search-field" style="margin-top: 30px;position: relative;">
+                        <input id="searchText" type="text" style="width: 100%;" required>
+                        <label for="searchText">Search</label>
+                        <iconify-icon icon="ri:search-line"
+                            style="position: absolute;top:15px;right:25px;"></iconify-icon>
+                    </div>
+                    <div class="col-12 col-md-2 mb-3" style="margin-top: 30px;">
+                        <button class="flex" style="width: 100%;" title="Download PDF">
+                            <iconify-icon icon="ic:baseline-download" style="font-size: 25px;"></iconify-icon>
+                            Download PDF
+                        </button>
                     </div>
                 </div>
                 <div class="card position-relative border-0 rounded-0">
@@ -156,6 +154,12 @@
                                             <iconify-icon icon="fluent:add-12-filled"></iconify-icon>
                                         </button>
                                     </td>
+                                    <td class="flex position-sticky bg-white"
+                                        style="width:100px;height:62px;right:-10px;border: 1px solid rgb(185, 185, 185);">
+                                        <button class="btn-view flex" title="Add">
+                                            <iconify-icon icon="fluent:add-12-filled"></iconify-icon>
+                                        </button>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -196,32 +200,200 @@
                     </div>
                 </div>
             </div>
+            <div class="main-body p-3">
+                <div class="row bg-white mb-2 p-3" style="border-radius: 5px;margin:0px;">
+                    <div class="col-12 col-md-3 mb-2">
+                        <h4 class="mt-2">Dynamic Invoice Report</h4>
+                    </div>
+                    <div class="col-12 col-xl-3 mb-2" style="position: relative;">
+                       <input class="mt-2" type="search" style="width: 100%;"/>
+                    </div>
+                    <div class="col-12 col-xl-2 mb-2 ms-auto flex">
+                        <button class="add-invoice-btn flex gap-2" title="Add Invoice" v-on:click="openModal()">
+                            <iconify-icon icon="icon-park-outline:add-one" style="font-size: 25px;"></iconify-icon>
+                            Add Invoice
+                        </button>
+                    </div>
+                    <div class="col-12 col-xl-2 mb-2 ms-auto flex">
+                        <button class="save-invoice-btn flex gap-2" title="Save All">
+                            <iconify-icon icon="material-symbols:save" style="font-size: 25px;"></iconify-icon>
+                            Save All
+                        </button>
+                    </div>
+                </div>
+                <div class="card position-relative border-0 rounded-0">
+                    <div class="table-card scroll-bar">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>S.No</th>
+                                    <th>Date</th>
+                                    <th>Head Name</th>
+                                    <th>Address</th>
+                                    <th>PinCode</th>
+                                    <th>GSTIN</th>
+                                    <th>Place Of Supply</th>
+                                    <th>R.O.No</th>
+                                    <th>R.O.Date</th>
+                                    <th>Product</th>
+                                    <th>Key No</th>
+                                    <th>Caption</th>
+                                    <th>Size</th>
+                                    <th>Area</th>
+                                    <th>Page Position</th>
+                                    <th>Rate Per Sqcm</th>
+                                    <th>Total Amount</th>
+                                    <th>Discount</th>
+                                    <th>CGST</th>
+                                    <th>Net Amount</th>
+                                    <th class="flex position-sticky"
+                                        style="width:100px;height:73px;right:-10px;background-color: var(--primary-color);">
+                                        Status
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="(row, index) in paginatedData" :key="index">
+                                    <td>{{ row.sNo }}</td>
+                                    <td>{{ row.date }}</td>
+                                    <td>{{ row.headName }}</td>
+                                    <td>{{ row.address }}</td>
+                                    <td>{{ row.pinCode }}</td>
+                                    <td>{{ row.gstIn }}</td>
+                                    <td>{{ row.placeOfSupply }}</td>
+                                    <td>{{ row.roNo }}</td>
+                                    <td>{{ row.roDate }}</td>
+                                    <td>{{ row.productName }}</td>
+                                    <td>{{ row.keyNo }}</td>
+                                    <td>{{ row.captionName }}</td>
+                                    <td>{{ row.size }}</td>
+                                    <td>{{ row.areaName }}</td>
+                                    <td>{{ row.pagePosition }}</td>
+                                    <td>{{ row.ratePerSqcm }}</td>
+                                    <td>{{ row.totalAmount }}</td>
+                                    <td>{{ row.discount }}</td>
+                                    <td>{{ row.gst }}</td>
+                                    <td>{{ row.netAmount }}</td>
+                                    <td class="flex position-sticky bg-white gap-2"
+                                        style="width:150px;height:62px;right:-10px;border: 1px solid rgb(185, 185, 185);">
+                                        <button class="btn-view flex" title="Edit">
+                                            <iconify-icon icon="fluent:edit-arrow-back-20-filled"></iconify-icon>
+                                        </button>
+                                        <button class="btn-view flex" title="Delete"
+                                            style="background-color: var(--fourth-color);">
+                                            <iconify-icon icon="material-symbols:delete"></iconify-icon>
+                                        </button>
+                                        <button class="btn-view flex" title="View"
+                                            style="background-color: var(--fifth-color)">
+                                            <iconify-icon icon="ic:baseline-remove-red-eye"></iconify-icon>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="pagination flex mt-4">
+                    <button title="First Page" class="first-page flex" v-on:click="goToPage(1)"
+                        :disabled="currentPage === 1">
+                        <iconify-icon icon="material-symbols:first-page"></iconify-icon>
+                    </button>
+                    <button title="Previous Page" class="previous-page flex" v-on:click="prevPage"
+                        :disabled="currentPage === 1">
+                        <iconify-icon icon="fe:arrow-left"></iconify-icon>
+                    </button>
+                    <button :title="page" class="page-number flex" v-for="page in visiblePages"
+                        v-on:click="goToPage(page)" :disabled="page === currentPage"
+                        :class="{ 'active-page': page === currentPage }">
+                        {{page}}
+                    </button>
+                    <button title="Next Page" class="next-page flex" v-on:click="nextPage"
+                        :disabled="currentPage === totalPages">
+                        <iconify-icon icon="fe:arrow-right"></iconify-icon>
+                    </button>
+                    <button title="Last Page" class="last-page flex" v-on:click="goToPage(totalPages)"
+                        :disabled="currentPage === totalPages">
+                        <iconify-icon icon="material-symbols:last-page"></iconify-icon>
+                    </button>
+                </div>
+            </div>
         </div>
-    </div>
+        <!-- Div Modal -->
+        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Add Invoice</h5>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <input type="text" placeholder="Enter Invoice Number" v-model="invoice.No">
+                                <input type="date" v-model="invoice.Date">
+                                <input type="text" placeholder="Enter A/C Head Name" v-model="invoice.HeadName">
+                                <input type="text" placeholder="Enter Address" v-model="invoice.Address">
+                                <input type="text" placeholder="Enter Pincode" v-model="invoice.PinCode">
+                                <input type="text" placeholder="Enter GSTIN" v-model="invoice.GSTIN">
+                                <input type="text" placeholder="Enter Place Of Supply" v-model="invoice.PlaceOfSupply">
+                                <input type="text" placeholder="Enter R.O Number" v-model="invoice.RONo">
+                                <input type="date" v-model="invoice.RODate">
+                                <input type="text" placeholder="Enter Product Name" v-model="invoice.ProductName">
+                                <input type="text" placeholder="Enter Key Number" v-model="invoice.KeyNo">
+                                <input type="text" placeholder="Enter Caption" v-model="invoice.Caption">
 
-    <!-- Jquery JS CDN -->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+                                <input type="number" placeholder="Enter Size-1" v-model="invoice.SizeWidth">
+                                <input type="number" placeholder="Enter Size-2" v-model="invoice.SizeHeight">
 
-    <!-- Iconify Icon JS CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.8/dist/iconify-icon.min.js"></script>
+                                <input type="text" placeholder="Enter Area Of Edition" v-model="invoice.AreaOfEdition">
+                                <input type="text" placeholder="Enter Page Position" v-model="invoice.PagePosition">
+                                <input type="text" placeholder="Enter Rate" v-model="invoice.Rate">
+                                <input type="number" placeholder="Enter GST" v-model="invoice.GST">
+                                <input type="number" placeholder="Enter Discount" v-model="invoice.Discount">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" v-on:click="closeModal()">Close</button>
+                        <button type="button" class="btn btn-primary" v-on:click="addInvoiceData()">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    <!-- Bootstrap JS CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Firebase App JS CDN -->
+        <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 
-    <!-- Select 2 JS CDN -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+        <!-- Firebase Database JS CDN -->
+        <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
-    <!-- Vue JS CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+        <!-- Jquery JS CDN -->
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
-    <!-- Moment JS CDN -->
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+        <!-- Notyf JS CDN -->
+        <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
 
-    <!-- Date Range Picker JS CDN -->
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+        <!-- Iconify Icon JS CDN -->
+        <script src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.8/dist/iconify-icon.min.js"></script>
 
-    <!-- Dashboard JS CDN -->
-    <script src="resources/js/dashboard.js"></script>
+        <!-- Bootstrap JS CDN -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+
+        <!-- Select 2 JS CDN -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+
+        <!-- Vue JS CDN -->
+        <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+
+        <!-- Moment JS CDN -->
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+
+        <!-- Date Range Picker JS CDN -->
+        <script type="text/javascript"
+            src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+
+        <!-- Dashboard JS CDN -->
+        <script src="resources/js/dashboard.js"></script>
 
 </body>
 

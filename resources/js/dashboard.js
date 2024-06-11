@@ -1,11 +1,53 @@
+var firebaseConfig = {
+    apiKey: "AIzaSyBVp7fPtdxfkmbpDMaQ9h1LMjRLz_Dua94",
+    authDomain: "voting-database-79b70.firebaseapp.com",
+    projectId: "voting-database-79b70",
+    storageBucket: "voting-database-79b70.appspot.com",
+    messagingSenderId: "617270993047",
+    appId: "1:617270993047:web:a20e9de811a7a3734e89d2",
+    measurementId: "G-97YTPFC176"
+};
+firebase.initializeApp(firebaseConfig);
+
+var database = firebase.database();
+
 var vm = new Vue({
     el: '#app',
     data: {
+        invoiceData: [],
+        invoice: {
+            No: null,
+            Date: '',
+            HeadName: '',
+            Address: '',
+            PinCode: '',
+            PlaceOfSupply: '',
+            RONo: '',
+            RODate: '',
+            ProductName: '',
+            KeyNo: '',
+            Caption: '',
+            GSTIN: '',
+            SizeWidth: null,
+            SizeHeight: null,
+            AreaOfEdition: '',
+            PagePosition: '',
+            Rate: null,
+            InitialTotal: null,
+            Discount: null,
+            DiscountTotal: null,
+            interMediateTotal: null,
+            GST: null,
+            NetTotal: null
+        },
+
         currentPage: 1,
         rowsPerPage: 10,
+
         selectedDate: '',
         selectedStartDate: moment().format('MMMM D, YYYY'), // Default start date to today
         selectedEndDate: moment().format('MMMM D, YYYY'), // Default end date to today
+
         tableData: [
             {
                 sNo: 1,
@@ -79,6 +121,65 @@ var vm = new Vue({
         }
     },
     methods: {
+        calculateInvoiceData() {
+            this.invoice.interMediateTotal = this.invoice.SizeWidth * this.invoice.SizeHeight * this.invoice.Rate;
+            this.invoice.DiscountTotal = this.invoice.interMediateTotal * (this.invoice.Discount / 100);
+            this.invoice.initialTotal = this.invoice.interMediateTotal - this.invoice.DiscountTotal;
+            this.invoice.NetTotal = parseInt(this.invoice.initialTotal) + parseInt(this.invoice.GST);
+        },
+        addInvoiceData() {
+            this.calculateInvoiceData();
+            this.invoiceData.push({ ...this.invoice });
+            this.clearAddFormData();
+            this.closeModal();
+        },
+        saveInvoiceData() {
+            var notyf = new Notyf();
+            let promises = [];
+
+            this.invoiceData.forEach((invoice, index) => {
+                invoice.No = index + 1;
+                promises.push(database.ref('invoiceData/' + invoice.No).set(invoice));
+            });
+
+            Promise.all(promises).then(() => {
+                notyf.success('All invoices added successfully');
+                this.clearAddFormData();
+            }).catch((error) => {
+                notyf.error('Failed to add invoices');
+                console.error(error);
+            });
+        },
+        clearAddFormData() {
+            this.invoice.No = null;
+            this.invoice.Date = '';
+            this.invoice.HeadName = '';
+            this.invoice.Address = '';
+            this.invoice.PinCode = '';
+            this.invoice.PlaceOfSupply = '';
+            this.invoice.RONo = '';
+            this.invoice.RODate = '';
+            this.invoice.KeyNo = '';
+            this.invoice.ProductName = '';
+            this.invoice.Caption = '';
+            this.invoice.SizeWidth = null;
+            this.invoice.SizeHeight = null;
+            this.invoice.AreaOfEdition = '';
+            this.invoice.PagePosition = '';
+            this.invoice.Rate = null;
+            this.invoice.InitialTotal = null;
+            this.invoice.Discount = null;
+            this.invoice.DiscountTotal = null;
+            this.invoice.interMediateTotal = null;
+            this.invoice.GST = null;
+            this.invoice.NetTotal = null;
+        },
+        openModal() {
+            $('#exampleModalCenter').modal('show');
+        },
+        closeModal() {
+            $('#exampleModalCenter').modal('hide');
+        },
         switchTab(tab) {
             this.currentTab = tab;
             this.$nextTick(() => {
@@ -140,5 +241,6 @@ var vm = new Vue({
     }
 });
 
-// Vue.config.productionTip = false;
-// Vue.config.devtools = true;
+// For Development & Production Code
+Vue.config.productionTip = false;
+Vue.config.devtools = true;

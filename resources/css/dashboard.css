@@ -6,6 +6,8 @@
       --secondary-light-color: #efeeee;
       --third-color: #f39c12;
       --fourth-color: #e74c3c;
+      --fifth-color: #9b59b6;
+      ;
   }
 
   .flex {
@@ -129,10 +131,6 @@
       font-size: 25px;
   }
 
-  .main-body .card {
-      margin: 5px 15px;
-  }
-
   .main-body .table-card {
       max-width: 1500px;
       overflow: scroll hidden;
@@ -142,11 +140,6 @@
   .main-body .table-card table {
       border-collapse: collapse;
       border-radius: 15px;
-  }
-
-  .main-body .filter-div {
-      width: 100%;
-      padding: 15px 20px;
   }
 
   /* Table Styles */
@@ -278,8 +271,33 @@
       transition: 0.2s;
   }
 
-  .filter-div button:hover {
+  .add-invoice-btn {
+      border: none;
+      outline: none;
+      background-color: var(--fourth-color);
+      padding: 10px;
+      border-radius: 5px;
+      color: var(--secondary-color);
+      width: 100%;
+  }
+
+  .save-invoice-btn {
+      border: none;
+      outline: none;
+      background-color: var(--fifth-color);
+      padding: 10px;
+      border-radius: 5px;
+      color: var(--secondary-color);
+      width: 100%;
+  }
+
+  .filter-div button:hover,
+  .add-invoice-btn:hover {
       background-color: #c0392b;
+  }
+
+  .save-invoice-btn:hover {
+      background-color: #8e44ad;
   }
 
   /* Pagination Styles */
