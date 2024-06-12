@@ -1,3 +1,4 @@
+// Firebase Configuration
 var firebaseConfig = {
     apiKey: "AIzaSyBVp7fPtdxfkmbpDMaQ9h1LMjRLz_Dua94",
     authDomain: "voting-database-79b70.firebaseapp.com",
@@ -7,10 +8,11 @@ var firebaseConfig = {
     appId: "1:617270993047:web:a20e9de811a7a3734e89d2",
     measurementId: "G-97YTPFC176"
 };
-firebase.initializeApp(firebaseConfig);
 
+firebase.initializeApp(firebaseConfig);
 var database = firebase.database();
 
+// Vue Object Initialization
 var vm = new Vue({
     el: '#app',
     data: {
@@ -20,6 +22,7 @@ var vm = new Vue({
             Date: '',
             HeadName: '',
             Address: '',
+            District: '',
             PinCode: '',
             PlaceOfSupply: '',
             RONo: '',
@@ -48,52 +51,7 @@ var vm = new Vue({
         selectedStartDate: moment().format('MMMM D, YYYY'), // Default start date to today
         selectedEndDate: moment().format('MMMM D, YYYY'), // Default end date to today
 
-        tableData: [
-            {
-                sNo: 1,
-                date: '2024-06-09',
-                headName: 'John Doe',
-                address: '123 Main St, Anytown',
-                pinCode: '123456',
-                gstIn: '27AAAPL1234C1Z1',
-                placeOfSupply: 'Maharashtra',
-                roNo: 'RO001',
-                roDate: '2024-06-01',
-                productName: 'Advertisement',
-                keyNo: '1001',
-                captionName: 'Summer Sale',
-                size: '40x50',
-                areaName: 'Front Page',
-                pagePosition: 'AW5',
-                ratePerSqcm: '10.00',
-                totalAmount: '6000.00',
-                discount: '10%',
-                gst: '540.00',
-                netAmount: '5940.00'
-            },
-            {
-                sNo: 2,
-                date: '2024-06-09',
-                headName: 'John Doe',
-                address: '123 Main St, Anytown',
-                pinCode: '123456',
-                gstIn: '27AAAPL1234C1Z1',
-                placeOfSupply: 'Maharashtra',
-                roNo: 'RO001',
-                roDate: '2024-06-01',
-                productName: 'Advertisement',
-                keyNo: '1001',
-                captionName: 'Summer Sale',
-                size: '40x50',
-                areaName: 'Front Page',
-                pagePosition: 'AW5',
-                ratePerSqcm: '10.00',
-                totalAmount: '6000.00',
-                discount: '10%',
-                gst: '540.00',
-                netAmount: '5940.00'
-            },
-        ],
+        tableData: [],
         currentTab: 'Tab 1'
     },
     computed: {
@@ -121,10 +79,26 @@ var vm = new Vue({
         }
     },
     methods: {
+        readInvoiceData() {
+            var notyf = new Notyf();
+
+            database.ref('invoiceData').once('value').then((snapshot) => {
+                if (snapshot.exists()) {
+                    let invoices = snapshot.val();
+                    this.tableData = Object.keys(invoices).map(key => invoices[key]);
+                }
+            }).catch((error) => {
+                notyf.error('Failed to retrieve invoices');
+                console.error(error);
+            });
+        },
         calculateInvoiceData() {
             this.invoice.interMediateTotal = this.invoice.SizeWidth * this.invoice.SizeHeight * this.invoice.Rate;
             this.invoice.DiscountTotal = this.invoice.interMediateTotal * (this.invoice.Discount / 100);
             this.invoice.initialTotal = this.invoice.interMediateTotal - this.invoice.DiscountTotal;
+
+            this.invoice.GST = this.invoice.initialTotal * (this.invoice.GST / 100);
+
             this.invoice.NetTotal = parseInt(this.invoice.initialTotal) + parseInt(this.invoice.GST);
         },
         addInvoiceData() {
@@ -135,26 +109,31 @@ var vm = new Vue({
         },
         saveInvoiceData() {
             var notyf = new Notyf();
-            let promises = [];
+            var updates = {};
+            var primaryKey = this.tableData.length;  // Initialize primary key for auto-increment
 
             this.invoiceData.forEach((invoice, index) => {
-                invoice.No = index + 1;
-                promises.push(database.ref('invoiceData/' + invoice.No).set(invoice));
+                var newInvoiceKey = primaryKey++;
+                invoice.id = newInvoiceKey;
+                updates['/invoiceData/' + newInvoiceKey] = invoice;
             });
 
-            Promise.all(promises).then(() => {
-                notyf.success('All invoices added successfully');
-                this.clearAddFormData();
-            }).catch((error) => {
-                notyf.error('Failed to add invoices');
-                console.error(error);
-            });
+            database.ref().update(updates)
+                .then(() => {
+                    notyf.success('All invoices have been saved successfully');
+                })
+                .catch((error) => {
+                    notyf.error('Failed to save invoices');
+                    console.error(error);
+                });
         },
+
         clearAddFormData() {
             this.invoice.No = null;
             this.invoice.Date = '';
             this.invoice.HeadName = '';
             this.invoice.Address = '';
+            this.invoice.District = '';
             this.invoice.PinCode = '';
             this.invoice.PlaceOfSupply = '';
             this.invoice.RONo = '';
@@ -238,9 +217,10 @@ var vm = new Vue({
     mounted() {
         this.initializeDatePicker();
         this.initializeSelect2();
+        this.readInvoiceData();
     }
 });
 
 // For Development & Production Code
-// Vue.config.productionTip = false;
-// Vue.config.devtools = true;
+Vue.config.productionTip = false;
+Vue.config.devtools = true;

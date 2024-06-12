@@ -104,6 +104,7 @@
                                     <th>Date</th>
                                     <th>Head Name</th>
                                     <th>Address</th>
+                                    <th>District</th>
                                     <th>PinCode</th>
                                     <th>GSTIN</th>
                                     <th>Place Of Supply</th>
@@ -122,41 +123,40 @@
                                     <th>Net Amount</th>
                                     <th class="flex position-sticky"
                                         style="width:100px;height:73px;right:-10px;background-color: var(--primary-color);">
-                                        Add
+                                        Status
                                     </th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr v-for="(row, index) in paginatedData" :key="index">
-                                    <td>{{ row.sNo }}</td>
-                                    <td>{{ row.date }}</td>
-                                    <td>{{ row.headName }}</td>
-                                    <td>{{ row.address }}</td>
-                                    <td>{{ row.pinCode }}</td>
-                                    <td>{{ row.gstIn }}</td>
-                                    <td>{{ row.placeOfSupply }}</td>
-                                    <td>{{ row.roNo }}</td>
-                                    <td>{{ row.roDate }}</td>
-                                    <td>{{ row.productName }}</td>
-                                    <td>{{ row.keyNo }}</td>
-                                    <td>{{ row.captionName }}</td>
-                                    <td>{{ row.size }}</td>
-                                    <td>{{ row.areaName }}</td>
-                                    <td>{{ row.pagePosition }}</td>
-                                    <td>{{ row.ratePerSqcm }}</td>
-                                    <td>{{ row.totalAmount }}</td>
-                                    <td>{{ row.discount }}</td>
-                                    <td>{{ row.gst }}</td>
-                                    <td>{{ row.netAmount }}</td>
-                                    <td class="flex position-sticky bg-white"
+                                    <td>{{ row.No }}</td>
+                                    <td>{{ row.Date }}</td>
+                                    <td>{{ row.HeadName }}</td>
+                                    <td>{{ row.Address }}</td>
+                                    <td>{{ row.District }}</td>
+                                    <td>{{ row.PinCode }}</td>
+                                    <td>{{ row.GSTIN }}</td>
+                                    <td>{{ row.PlaceOfSupply }}</td>
+                                    <td>{{ row.RONo }}</td>
+                                    <td>{{ row.RODate }}</td>
+                                    <td>{{ row.ProductName }}</td>
+                                    <td>{{ row.KeyNo }}</td>
+                                    <td>{{ row.Caption }}</td>
+                                    <td>{{ row.SizeWidth }} X {{row.SizeHeight}}</td>
+                                    <td>{{ row.AreaOfEdition }}</td>
+                                    <td>{{ row.PagePosition }}</td>
+                                    <td>{{ row.Rate }}</td>
+                                    <td>{{ row.InitialTotal }}</td>
+                                    <td>{{ row.Discount }}</td>
+                                    <td>{{ row.GST }}</td>
+                                    <td>{{ row.NetTotal }}</td>
+                                    <td class="flex position-sticky bg-white gap-2"
                                         style="width:100px;height:62px;right:-10px;border: 1px solid rgb(185, 185, 185);">
-                                        <button class="btn-view flex" title="Add">
-                                            <iconify-icon icon="fluent:add-12-filled"></iconify-icon>
+                                        <button class="btn-view flex" title="Edit">
+                                            <iconify-icon icon="fluent:edit-arrow-back-20-filled"></iconify-icon>
                                         </button>
-                                    </td>
-                                    <td class="flex position-sticky bg-white"
-                                        style="width:100px;height:62px;right:-10px;border: 1px solid rgb(185, 185, 185);">
-                                        <button class="btn-view flex" title="Add">
+                                        <button class="btn-view flex" title="Add"
+                                            style="background-color: var(--fifth-color);">
                                             <iconify-icon icon="fluent:add-12-filled"></iconify-icon>
                                         </button>
                                     </td>
@@ -206,7 +206,7 @@
                         <h4 class="mt-2">Dynamic Invoice Report</h4>
                     </div>
                     <div class="col-12 col-xl-3 mb-2" style="position: relative;">
-                       <input class="mt-2" type="search" style="width: 100%;"/>
+                        <input class="mt-2" type="search" style="width: 100%;" />
                     </div>
                     <div class="col-12 col-xl-2 mb-2 ms-auto flex">
                         <button class="add-invoice-btn flex gap-2" title="Add Invoice" v-on:click="openModal()">
@@ -215,7 +215,7 @@
                         </button>
                     </div>
                     <div class="col-12 col-xl-2 mb-2 ms-auto flex">
-                        <button class="save-invoice-btn flex gap-2" title="Save All">
+                        <button class="save-invoice-btn flex gap-2" title="Save All" v-on:click="saveInvoiceData()">
                             <iconify-icon icon="material-symbols:save" style="font-size: 25px;"></iconify-icon>
                             Save All
                         </button>
@@ -230,6 +230,7 @@
                                     <th>Date</th>
                                     <th>Head Name</th>
                                     <th>Address</th>
+                                    <th>District</th>
                                     <th>PinCode</th>
                                     <th>GSTIN</th>
                                     <th>Place Of Supply</th>
@@ -253,27 +254,28 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="(row, index) in paginatedData" :key="index">
-                                    <td>{{ row.sNo }}</td>
-                                    <td>{{ row.date }}</td>
-                                    <td>{{ row.headName }}</td>
-                                    <td>{{ row.address }}</td>
-                                    <td>{{ row.pinCode }}</td>
-                                    <td>{{ row.gstIn }}</td>
-                                    <td>{{ row.placeOfSupply }}</td>
-                                    <td>{{ row.roNo }}</td>
-                                    <td>{{ row.roDate }}</td>
-                                    <td>{{ row.productName }}</td>
-                                    <td>{{ row.keyNo }}</td>
-                                    <td>{{ row.captionName }}</td>
-                                    <td>{{ row.size }}</td>
-                                    <td>{{ row.areaName }}</td>
-                                    <td>{{ row.pagePosition }}</td>
-                                    <td>{{ row.ratePerSqcm }}</td>
-                                    <td>{{ row.totalAmount }}</td>
-                                    <td>{{ row.discount }}</td>
-                                    <td>{{ row.gst }}</td>
-                                    <td>{{ row.netAmount }}</td>
+                                <tr v-for="row in invoiceData">
+                                    <td>{{ row.No }}</td>
+                                    <td>{{ row.Date }}</td>
+                                    <td>{{ row.HeadName }}</td>
+                                    <td>{{ row.Address }}</td>
+                                    <td>{{ row.District }}</td>
+                                    <td>{{ row.PinCode }}</td>
+                                    <td>{{ row.GSTIN }}</td>
+                                    <td>{{ row.PlaceOfSupply }}</td>
+                                    <td>{{ row.RONo }}</td>
+                                    <td>{{ row.RODate }}</td>
+                                    <td>{{ row.ProductName }}</td>
+                                    <td>{{ row.KeyNo }}</td>
+                                    <td>{{ row.Caption }}</td>
+                                    <td>{{ row.SizeWidth }} X {{row.SizeHeight}}</td>
+                                    <td>{{ row.AreaOfEdition }}</td>
+                                    <td>{{ row.PagePosition }}</td>
+                                    <td>{{ row.Rate }}</td>
+                                    <td>{{ row.InitialTotal }}</td>
+                                    <td>{{ row.Discount }}</td>
+                                    <td>{{ row.GST }}</td>
+                                    <td>{{ row.NetTotal }}</td>
                                     <td class="flex position-sticky bg-white gap-2"
                                         style="width:150px;height:62px;right:-10px;border: 1px solid rgb(185, 185, 185);">
                                         <button class="btn-view flex" title="Edit">
@@ -288,33 +290,11 @@
                                             <iconify-icon icon="ic:baseline-remove-red-eye"></iconify-icon>
                                         </button>
                                     </td>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
-                </div>
-                <div class="pagination flex mt-4">
-                    <button title="First Page" class="first-page flex" v-on:click="goToPage(1)"
-                        :disabled="currentPage === 1">
-                        <iconify-icon icon="material-symbols:first-page"></iconify-icon>
-                    </button>
-                    <button title="Previous Page" class="previous-page flex" v-on:click="prevPage"
-                        :disabled="currentPage === 1">
-                        <iconify-icon icon="fe:arrow-left"></iconify-icon>
-                    </button>
-                    <button :title="page" class="page-number flex" v-for="page in visiblePages"
-                        v-on:click="goToPage(page)" :disabled="page === currentPage"
-                        :class="{ 'active-page': page === currentPage }">
-                        {{page}}
-                    </button>
-                    <button title="Next Page" class="next-page flex" v-on:click="nextPage"
-                        :disabled="currentPage === totalPages">
-                        <iconify-icon icon="fe:arrow-right"></iconify-icon>
-                    </button>
-                    <button title="Last Page" class="last-page flex" v-on:click="goToPage(totalPages)"
-                        :disabled="currentPage === totalPages">
-                        <iconify-icon icon="material-symbols:last-page"></iconify-icon>
-                    </button>
                 </div>
             </div>
         </div>
@@ -333,6 +313,7 @@
                                 <input type="date" v-model="invoice.Date">
                                 <input type="text" placeholder="Enter A/C Head Name" v-model="invoice.HeadName">
                                 <input type="text" placeholder="Enter Address" v-model="invoice.Address">
+                                <input type="text" placeholder="Enter District" v-model="invoice.District">
                                 <input type="text" placeholder="Enter Pincode" v-model="invoice.PinCode">
                                 <input type="text" placeholder="Enter GSTIN" v-model="invoice.GSTIN">
                                 <input type="text" placeholder="Enter Place Of Supply" v-model="invoice.PlaceOfSupply">
@@ -348,7 +329,7 @@
                                 <input type="text" placeholder="Enter Area Of Edition" v-model="invoice.AreaOfEdition">
                                 <input type="text" placeholder="Enter Page Position" v-model="invoice.PagePosition">
                                 <input type="text" placeholder="Enter Rate" v-model="invoice.Rate">
-                                <input type="number" placeholder="Enter GST" v-model="invoice.GST">
+                                <input type="number" placeholder="Enter GST Percentage" v-model="invoice.GST">
                                 <input type="number" placeholder="Enter Discount" v-model="invoice.Discount">
                             </div>
                         </div>
