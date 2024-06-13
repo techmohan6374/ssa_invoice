@@ -17,16 +17,18 @@ var vm = new Vue({
     el: '#app',
     data: {
         invoiceData: [],
+        searchText: '',
+        loaderStatus: false,
         invoice: {
             No: null,
-            Date: '',
+            Date: moment().format('YYYY-MM-DD'),
             HeadName: '',
             Address: '',
             District: '',
             PinCode: '',
             PlaceOfSupply: '',
             RONo: '',
-            RODate: '',
+            RODate: moment().format('YYYY-MM-DD'),
             ProductName: '',
             KeyNo: '',
             Caption: '',
@@ -55,6 +57,23 @@ var vm = new Vue({
         currentTab: 'Tab 1'
     },
     computed: {
+        filteredDashboardData() {
+            var search = this.searchText.toLowerCase();
+            var finalData = Enumerable.from(this.paginatedData).toArray();
+            if (this.searchText != '') {
+                return finalData.filter(x =>
+                    (x.No && x.No.toString().toLowerCase().includes(search)) ||
+                    (x.Address && x.Address.toLowerCase().includes(search)) ||
+                    (x.HeadName && x.HeadName.toLowerCase().includes(search)) ||
+                    (x.District && x.District.toLowerCase().includes(search)) ||
+                    (x.PlaceOfSupply && x.PlaceOfSupply.toLowerCase().includes(search)) ||
+                    (x.ProductName && x.ProductName.toLowerCase().includes(search)) ||
+                    (x.Caption && x.Caption.toLowerCase().includes(search)) ||
+                    (x.NetTotal && x.NetTotal.toString().toLowerCase().includes(search))
+                );
+            }
+            return finalData;
+        },
         totalPages() {
             return Math.ceil(this.tableData.length / this.rowsPerPage);
         },
@@ -79,18 +98,22 @@ var vm = new Vue({
         }
     },
     methods: {
+
         readInvoiceData() {
+            this.loaderStatus = true;
             var notyf = new Notyf();
 
             database.ref('invoiceData').once('value').then((snapshot) => {
                 if (snapshot.exists()) {
                     let invoices = snapshot.val();
                     this.tableData = Object.keys(invoices).map(key => invoices[key]);
+                    this.loaderStatus = false;
                 }
             }).catch((error) => {
                 notyf.error('Failed to retrieve invoices');
                 console.error(error);
             });
+
         },
         calculateInvoiceData() {
             this.invoice.interMediateTotal = this.invoice.SizeWidth * this.invoice.SizeHeight * this.invoice.Rate;
@@ -102,10 +125,12 @@ var vm = new Vue({
             this.invoice.NetTotal = parseInt(this.invoice.initialTotal) + parseInt(this.invoice.GST);
         },
         addInvoiceData() {
+            var notyf = new Notyf();
             this.calculateInvoiceData();
             this.invoiceData.push({ ...this.invoice });
             this.clearAddFormData();
-            this.closeModal();
+            this.closeaddInvoiceModal();
+            notyf.success('Added successfully');
         },
         saveInvoiceData() {
             var notyf = new Notyf();
@@ -121,6 +146,7 @@ var vm = new Vue({
             database.ref().update(updates)
                 .then(() => {
                     notyf.success('All invoices have been saved successfully');
+                    this.readInvoiceData();
                 })
                 .catch((error) => {
                     notyf.error('Failed to save invoices');
@@ -153,11 +179,12 @@ var vm = new Vue({
             this.invoice.GST = null;
             this.invoice.NetTotal = null;
         },
-        openModal() {
-            $('#exampleModalCenter').modal('show');
+        openaddInvoiceModal() {
+            $('#addInvoice-Modal').modal('show');
         },
-        closeModal() {
-            $('#exampleModalCenter').modal('hide');
+        closeaddInvoiceModal() {
+            $('#addInvoice-Modal').modal('hide');
+            this.clearAddFormData();
         },
         switchTab(tab) {
             this.currentTab = tab;
@@ -218,6 +245,11 @@ var vm = new Vue({
         this.initializeDatePicker();
         this.initializeSelect2();
         this.readInvoiceData();
+
+        // Reset name when modal is hidden
+        $('#addInvoice-Modal').on('hidden.bs.modal', () => {
+            this.clearAddFormData();
+        });
     }
 });
 

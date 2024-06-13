@@ -150,7 +150,7 @@
   }
 
   .main-body table thead tr th {
-      padding: 10px 35px;
+      padding: 10px 70px;
       text-align: center;
   }
 
@@ -300,11 +300,45 @@
       background-color: #8e44ad;
   }
 
+  /* Modal Styles */
+  #addInvoice-Modal input {
+      width: 100%;
+      border: none;
+      outline: none;
+      padding: 5px 15px;
+      border: 1px solid grey;
+      border-radius: 5px;
+      border-bottom: 3px solid gray;
+  }
+
+  #addInvoice-Modal input:focus {
+      border-bottom: 3px solid var(--fourth-color);
+  }
+
+  /* Loader Styles */
+  /* HTML: <div class="loader"></div> */
+  .loader {
+      width: 80px;
+      aspect-ratio: 1;
+      border-radius: 80%;
+      background:
+          radial-gradient(farthest-side, #ffffff 94%, #0000) top/8px 8px no-repeat,
+          conic-gradient(#0000 30%, #ffffff);
+      -webkit-mask: radial-gradient(farthest-side, #0000 calc(100% - 8px), #000 0);
+      animation: l13 1s infinite linear;
+  }
+
+  @keyframes l13 {
+      100% {
+          transform: rotate(1turn)
+      }
+  }
+
   /* Pagination Styles */
   .pagination {
       gap: 10px;
       justify-content: end;
-      padding: 0px 30px;
+      padding: 0px 0px;
   }
 
   .pagination>button {
