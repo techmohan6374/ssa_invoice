@@ -73,12 +73,9 @@
                     <div class="col-12 col-xl-3 mb-3" style="position: relative;">
                         <label for="dateRangePicker" class="d-block fw-bold mb-2"
                             style="color:var(--primary-color)">Select Date Range</label>
-                        <input type="text" name="daterange" id="dateRangePicker" style="width: 100%;"
-                            v-model="selectedDate" />
-                        <iconify-icon icon="ic:round-date-range"
-                            style="position: absolute;right:22px;top:40px;font-size: 25px;color:var(--primary-color);"></iconify-icon>
+                        <input type="date" v-model="selectedDate" style="width:100%;">
                     </div>
-                    <div class="col-12 col-md-3 mb-3">
+                    <div class="col-12 col-xl-3 mb-3">
                         <label for="single" class="d-block fw-bold mb-2" style="color:var(--primary-color)">Select
                             Template</label>
                         <select id="single" class="js-states" style="width: 100%;">
@@ -88,22 +85,22 @@
                             <option>d</option>
                         </select>
                     </div>
-                    <div class="col-12 col-md-3 mb-3 search-field" style="margin-top: 30px;position: relative;">
+                    <div class="col-12 col-xl-3 mb-3 search-field" style="margin-top: 30px;position: relative;">
                         <input id="searchText" type="text" style="width: 100%;" v-model="searchText" required>
                         <label for="searchText">Search</label>
                         <iconify-icon icon="ri:search-line"
                             style="position: absolute;top:15px;right:25px;"></iconify-icon>
                     </div>
-                    <div class="col-12 col-md-2 mb-3" style="margin-top: 30px;">
-                        <button class="flex" style="width: 100%;" title="Download PDF">
+                    <div class="col-12 col-xl-3 mb-3" style="margin-top: 30px;">
+                        <button class="flex" style="width: 100%;" title="Download PDF" v-on:click="dashboardReportDownload()">
                             <iconify-icon icon="ic:baseline-download" style="font-size: 25px;"></iconify-icon>
-                            Download PDF
+                            Download Report
                         </button>
                     </div>
                 </div>
                 <div class="card position-relative border-0 rounded-0">
                     <div class="table-card scroll-bar">
-                        <table>
+                        <table id="invoice-table">
                             <thead>
                                 <tr>
                                     <th>S.No</th>
@@ -134,7 +131,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="(row, index) in filteredDashboardData" :key="index">
+                                <tr v-for="(row, index) in paginatedData" :key="index">
                                     <td>{{ row.No }}</td>
                                     <td>{{ row.Date }}</td>
                                     <td>{{ row.HeadName }}</td>
@@ -171,30 +168,27 @@
                         </table>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row my-4">
                     <div class="col-12">
-                        <div class="pagination flex mt-4">
-                            <button title="First Page" class="first-page flex" v-on:click="goToPage(1)"
-                                :disabled="currentPage === 1">
+                        <div class="pagination">
+                            <button title="First Page" v-on:click="goToPage(1)" :disabled="currentPage === 1">
                                 <iconify-icon icon="material-symbols:first-page"></iconify-icon>
                             </button>
-                            <button title="Previous Page" class="previous-page flex" v-on:click="prevPage"
-                                :disabled="currentPage === 1">
+                            <button title="Previous Page" v-on:click="prevPage" :disabled="currentPage === 1">
                                 <iconify-icon icon="fe:arrow-left"></iconify-icon>
                             </button>
-                            <button :title="page" class="page-number flex" v-for="page in visiblePages"
-                                v-on:click="goToPage(page)" :disabled="page === currentPage"
-                                :class="{ 'active-page': page === currentPage }">
-                                {{page}}
+                            <button class="page-number" :title="page" v-for="page in visiblePages" :key="page"
+                                v-on:click="goToPage(page)" :class="{ power: currentPage === page }">
+                                {{ page }}
                             </button>
-                            <button title="Next Page" class="next-page flex" v-on:click="nextPage"
-                                :disabled="currentPage === totalPages">
+                            <button title="Next Page" v-on:click="nextPage" :disabled="currentPage === totalPages">
                                 <iconify-icon icon="fe:arrow-right"></iconify-icon>
                             </button>
-                            <button title="Last Page" class="last-page flex" v-on:click="goToPage(totalPages)"
+                            <button title="Last Page" v-on:click="goToPage(totalPages)"
                                 :disabled="currentPage === totalPages">
                                 <iconify-icon icon="material-symbols:last-page"></iconify-icon>
                             </button>
+
                         </div>
                     </div>
                 </div>
@@ -286,15 +280,17 @@
                                     <td>{{ row.NetTotal }}</td>
                                     <td class="flex position-sticky bg-white gap-2"
                                         style="width:150px;height:62px;right:-10px;border: 1px solid rgb(185, 185, 185);">
-                                        <button class="btn-view flex" title="Edit">
+                                        <button class="btn-view flex" title="Edit" v-on:click="editInvoice(row.No)">
                                             <iconify-icon icon="fluent:edit-arrow-back-20-filled"></iconify-icon>
                                         </button>
                                         <button class="btn-view flex" title="Delete"
-                                            style="background-color: var(--fourth-color);">
+                                            style="background-color: var(--fourth-color);"
+                                            v-on:click="deleteInvoice(row.No)">
                                             <iconify-icon icon="material-symbols:delete"></iconify-icon>
                                         </button>
                                         <button class="btn-view flex" title="View"
-                                            style="background-color: var(--fifth-color)">
+                                            style="background-color: var(--fifth-color)"
+                                            v-on:click="showInvoice(row.No)">
                                             <iconify-icon icon="ic:baseline-remove-red-eye"></iconify-icon>
                                         </button>
                                     </td>
@@ -306,14 +302,16 @@
                 </div>
             </div>
         </div>
-        <!-- Div Modal -->
+
+        <!-- Add Invoice Modal -->
         <div class="modal fade" id="addInvoice-Modal" tabindex="-1" role="dialog"
             aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLongTitle">Add Invoice Fields</h5>
-                        <button class="btn btn-close" v-on:click="closeaddInvoiceModal()">
+                        <button class="btns-close flex" v-on:click="closeaddInvoiceModal()">
+                            <iconify-icon icon="ic:round-close"></iconify-icon>
                         </button>
                     </div>
                     <div class="modal-body">
@@ -408,7 +406,197 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
 
+        <!-- Show Invoice Modal -->
+        <div class="modal fade" id="showInvoice-Modal" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Invoice Details</h5>
+                        <button class="btns-close flex" v-on:click="closeshowInvoiceModal()">
+                            <iconify-icon icon="ic:round-close"></iconify-icon>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-12">
+                                Bill No : {{showInvoiceData.No}}
+                            </div>
+                            <div class="col-12">
+                                Bill Date : {{showInvoiceData.Date}}
+                            </div>
+                            <div class="col-12">
+                                Head Name : {{showInvoiceData.HeadName}}
+                            </div>
+                            <div class="col-12">
+                                Address : {{showInvoiceData.Address}}
+                            </div>
+                            <div class="col-12">
+                                Pincode : {{showInvoiceData.Pincode}}
+                            </div>
+                            <div class="col-12">
+                                GSTIN : {{showInvoiceData.GSTIN}}
+                            </div>
+                            <div class="col-12">
+                                Place Of Supply : {{showInvoiceData.PlaceOfSupply}}
+                            </div>
+                            <div class="col-12">
+                                R.O.No : {{showInvoiceData.RONo}}
+                            </div>
+                            <div class="col-12">
+                                R.O.Date : {{showInvoiceData.RODate}}
+                            </div>
+                            <div class="col-12">
+                                Product : {{showInvoiceData.ProductName}}
+                            </div>
+                            <div class="col-12">
+                                Key No : {{showInvoiceData.ProductName}}
+                            </div>
+                            <div class="col-12">
+                                Caption : {{showInvoiceData.Caption}}
+                            </div>
+                            <div class="col-12">
+                                Size : {{showInvoiceData.SizeWidth}} X {{showInvoice.SizeHeight}}
+                            </div>
+                            <div class="col-12">
+                                Area Of Edition : {{showInvoiceData.AreaOfEdition}}
+                            </div>
+                            <div class="col-12">
+                                Position Page No : {{showInvoiceData.PagePosition}}
+                            </div>
+                            <div class="col-12">
+                                Rate Per Sqcm : {{showInvoiceData.Rate}}
+                            </div>
+                            <div class="col-12">
+                                Initial Amount : {{showInvoiceData.InitialTotal}}
+                            </div>
+                            <div class="col-12">
+                                Discount : {{showInvoiceData.Discount}}
+                            </div>
+                            <div class="col-12">
+                                Discount Amount: {{showInvoiceData.DiscountTotal}}
+                            </div>
+                            <div class="col-12">
+                                GST Percent: {{showInvoiceData.GST}}
+                            </div>
+                            <div class="col-12">
+                                GST Amount: {{showInvoiceData.interMediateTotal}}
+                            </div>
+                            <div class="col-12">
+                                Net Amount: {{showInvoiceData.NetTotal}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Edit Invoice Modal -->
+        <div class="modal fade" id="editInvoice-Modal" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Edit Invoice Details</h5>
+                        <button class="btns-close flex" v-on:click="closeeditInvoiceModal()">
+                            <iconify-icon icon="ic:round-close"></iconify-icon>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-12 col-xl-6 mb-2">
+                                <input type="text" placeholder="Enter Invoice Number" v-model="invoice.No">
+                            </div>
+                            <div class="col-12 col-xl-6 mb-2">
+                                <input type="date" v-model="invoice.Date">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-xl-6 mb-2">
+                                <input type="text" placeholder="Enter A/C Head Name" v-model="invoice.HeadName">
+                            </div>
+                            <div class="col-12 col-xl-6 mb-2">
+                                <input type="text" placeholder="Enter Address" v-model="invoice.Address">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-xl-6 mb-2">
+                                <input type="text" placeholder="Enter District" v-model="invoice.District">
+                            </div>
+                            <div class="col-12 col-xl-6 mb-2">
+                                <input type="text" placeholder="Enter Pincode" v-model="invoice.PinCode">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-xl-6 mb-2">
+                                <input type="text" placeholder="Enter GSTIN" v-model="invoice.GSTIN">
+                            </div>
+                            <div class="col-12 col-xl-6 mb-2">
+                                <input type="text" placeholder="Enter Place Of Supply" v-model="invoice.PlaceOfSupply">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-xl-6 mb-2">
+                                <input type="text" placeholder="Enter R.O Number" v-model="invoice.RONo">
+                            </div>
+                            <div class="col-12 col-xl-6 mb-2">
+                                <input type="date" v-model="invoice.RODate">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-xl-6 mb-2">
+                                <input type="text" placeholder="Enter Product Name" v-model="invoice.ProductName">
+                            </div>
+                            <div class="col-12 col-xl-6 mb-2">
+                                <input type="text" placeholder="Enter Key Number" v-model="invoice.KeyNo">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-xl-6 mb-2">
+                                <input type="text" placeholder="Enter Caption" v-model="invoice.Caption">
+                            </div>
+                            <div class="col-12 col-xl-6 mb-2">
+                                <input type="number" placeholder="Enter Size-1" v-model="invoice.SizeWidth">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-xl-6 mb-2">
+                                <input type="number" placeholder="Enter Size-2" v-model="invoice.SizeHeight">
+                            </div>
+                            <div class="col-12 col-xl-6 mb-2">
+                                <input type="text" placeholder="Enter Area Of Edition" v-model="invoice.AreaOfEdition">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-xl-6 mb-2">
+                                <input type="text" placeholder="Enter Page Position" v-model="invoice.PagePosition">
+                            </div>
+                            <div class="col-12 col-xl-6 mb-2">
+                                <input type="text" placeholder="Enter Rate" v-model="invoice.Rate">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-xl-6 mb-2">
+                                <input type="number" placeholder="Enter GST Percentage" v-model="invoice.GST">
+                            </div>
+                            <div class="col-12 col-xl-6 mb-3">
+                                <input type="number" placeholder="Enter Discount" v-model="invoice.Discount">
+                            </div>
+                        </div>
+                        <div class="row flex justify-content-end">
+                            <div class="col-12 mb-2">
+                                <button class="edit-invoice-btn flex gap-2" v-on:click="UpdateInvoiceData()">
+                                    <iconify-icon icon="fluent:edit-arrow-back-20-filled"
+                                        style="font-size:25px;"></iconify-icon>
+                                    Update
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

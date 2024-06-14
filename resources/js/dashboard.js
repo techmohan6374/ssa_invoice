@@ -19,6 +19,8 @@ var vm = new Vue({
         invoiceData: [],
         searchText: '',
         loaderStatus: false,
+        showInvoiceData: [],
+        updatedId: null,
         invoice: {
             No: null,
             Date: moment().format('YYYY-MM-DD'),
@@ -39,29 +41,24 @@ var vm = new Vue({
             PagePosition: '',
             Rate: null,
             InitialTotal: null,
-            Discount: null,
+            Discount: 0,
             DiscountTotal: null,
             interMediateTotal: null,
-            GST: null,
+            GST: 0,
             NetTotal: null
         },
-
+        invoiceTotalData: [],
         currentPage: 1,
         rowsPerPage: 10,
-
         selectedDate: '',
-        selectedStartDate: moment().format('MMMM D, YYYY'), // Default start date to today
-        selectedEndDate: moment().format('MMMM D, YYYY'), // Default end date to today
-
-        tableData: [],
         currentTab: 'Tab 1'
     },
     computed: {
         filteredDashboardData() {
             var search = this.searchText.toLowerCase();
-            var finalData = Enumerable.from(this.paginatedData).toArray();
+            var finalData = Enumerable.from(this.invoiceTotalData).toArray();
             if (this.searchText != '') {
-                return finalData.filter(x =>
+                finalData = finalData.filter(x =>
                     (x.No && x.No.toString().toLowerCase().includes(search)) ||
                     (x.Address && x.Address.toLowerCase().includes(search)) ||
                     (x.HeadName && x.HeadName.toLowerCase().includes(search)) ||
@@ -72,14 +69,19 @@ var vm = new Vue({
                     (x.NetTotal && x.NetTotal.toString().toLowerCase().includes(search))
                 );
             }
+            if (this.selectedDate !== '') {
+                let selectedMoment = moment(this.selectedDate); // Assuming selectedDate is in ISO format
+                finalData = finalData.filter(x => moment(x.Date).isSame(selectedMoment, 'day'));
+            }
+            this.currentPage = 1; // Reset to the first page after filtering
             return finalData;
         },
         totalPages() {
-            return Math.ceil(this.tableData.length / this.rowsPerPage);
+            return Math.ceil(this.filteredDashboardData.length / this.rowsPerPage);
         },
         paginatedData() {
             const start = (this.currentPage - 1) * this.rowsPerPage;
-            return this.tableData.slice(start, start + this.rowsPerPage);
+            return this.filteredDashboardData.slice(start, start + this.rowsPerPage);
         },
         visiblePages() {
             let pages = [];
@@ -98,7 +100,6 @@ var vm = new Vue({
         }
     },
     methods: {
-
         readInvoiceData() {
             this.loaderStatus = true;
             var notyf = new Notyf();
@@ -106,14 +107,13 @@ var vm = new Vue({
             database.ref('invoiceData').once('value').then((snapshot) => {
                 if (snapshot.exists()) {
                     let invoices = snapshot.val();
-                    this.tableData = Object.keys(invoices).map(key => invoices[key]);
+                    this.invoiceTotalData = Object.keys(invoices).map(key => invoices[key]);
                     this.loaderStatus = false;
                 }
             }).catch((error) => {
                 notyf.error('Failed to retrieve invoices');
                 console.error(error);
             });
-
         },
         calculateInvoiceData() {
             this.invoice.interMediateTotal = this.invoice.SizeWidth * this.invoice.SizeHeight * this.invoice.Rate;
@@ -135,7 +135,7 @@ var vm = new Vue({
         saveInvoiceData() {
             var notyf = new Notyf();
             var updates = {};
-            var primaryKey = this.tableData.length;  // Initialize primary key for auto-increment
+            var primaryKey = this.invoiceTotalData.length;  // Initialize primary key for auto-increment
 
             this.invoiceData.forEach((invoice, index) => {
                 var newInvoiceKey = primaryKey++;
@@ -153,17 +153,130 @@ var vm = new Vue({
                     console.error(error);
                 });
         },
+        showInvoice(no) {
+            let invoice = this.invoiceData.find(invoice => invoice.No === no);
 
+            if (invoice) {
+                this.showInvoiceData = { ...invoice };
+                console.log(this.showInvoiceData);
+            } else {
+                this.clearShowFormData();
+            }
+            this.openshowInvoiceModal();
+        },
+        deleteInvoice(no) {
+            var notyf = new Notyf();
+            if (confirm('Are You Sure to Delete ?')) {
+                this.invoiceData = this.invoiceData.filter(invoice => invoice.No !== no);
+                notyf.error('Deleted successfully');
+            }
+        },
+        UpdateInvoiceData() {
+            var notyf = new Notyf();
+            let indexToUpdate = this.invoiceData.findIndex(invoice => invoice.No === this.updatedId);
+            if (indexToUpdate !== -1) {
+                this.invoiceData[indexToUpdate].No = this.invoice.No;
+                this.invoiceData[indexToUpdate].Date = this.invoice.Date;
+                this.invoiceData[indexToUpdate].HeadName = this.invoice.HeadName;
+                this.invoiceData[indexToUpdate].Address = this.invoice.Address;
+                this.invoiceData[indexToUpdate].District = this.invoice.District;
+                this.invoiceData[indexToUpdate].PinCode = this.invoice.PinCode;
+                this.invoiceData[indexToUpdate].PlaceOfSupply = this.invoice.PlaceOfSupply;
+                this.invoiceData[indexToUpdate].RONo = this.invoice.RONo;
+                this.invoiceData[indexToUpdate].RODate = this.invoice.RODate;
+                this.invoiceData[indexToUpdate].ProductName = this.invoice.ProductName;
+                this.invoiceData[indexToUpdate].KeyNo = this.invoice.KeyNo;
+                this.invoiceData[indexToUpdate].Caption = this.invoice.Caption;
+                this.invoiceData[indexToUpdate].GSTIN = this.invoice.GSTIN;
+                this.invoiceData[indexToUpdate].SizeWidth = this.invoice.SizeWidth;
+                this.invoiceData[indexToUpdate].SizeHeight = this.invoice.SizeHeight;
+                this.invoiceData[indexToUpdate].AreaOfEdition = this.invoice.AreaOfEdition;
+                this.invoiceData[indexToUpdate].PagePosition = this.invoice.PagePosition;
+                this.invoiceData[indexToUpdate].Rate = this.invoice.Rate;
+                this.invoiceData[indexToUpdate].InitialTotal = this.invoice.InitialTotal;
+                this.invoiceData[indexToUpdate].Discount = this.invoice.Discount;
+                this.invoiceData[indexToUpdate].DiscountTotal = this.invoice.DiscountTotal;
+                this.invoiceData[indexToUpdate].interMediateTotal = this.invoice.interMediateTotal;
+                this.invoiceData[indexToUpdate].GST = this.invoice.GST;
+                this.invoiceData[indexToUpdate].NetTotal = this.invoice.NetTotal;
+                notyf.success('Updated successfully');
+                this.closeeditInvoiceModal();
+            } else {
+                console.error('Invoice not found for updating');
+            }
+        },
+        editInvoice(no) {
+            // Find the invoice by its No
+            let invoiceToEdit = this.invoiceData.find(invoice => invoice.No === no);
+
+            if (invoiceToEdit) {
+                // Populate the invoice object with found data
+                this.invoice.No = invoiceToEdit.No;
+                this.invoice.Date = invoiceToEdit.Date;
+                this.invoice.HeadName = invoiceToEdit.HeadName;
+                this.invoice.Address = invoiceToEdit.Address;
+                this.invoice.District = invoiceToEdit.District;
+                this.invoice.PinCode = invoiceToEdit.PinCode;
+                this.invoice.PlaceOfSupply = invoiceToEdit.PlaceOfSupply;
+                this.invoice.RONo = invoiceToEdit.RONo;
+                this.invoice.RODate = invoiceToEdit.RODate;
+                this.invoice.KeyNo = invoiceToEdit.KeyNo;
+                this.invoice.ProductName = invoiceToEdit.ProductName;
+                this.invoice.Caption = invoiceToEdit.Caption;
+                this.invoice.SizeWidth = invoiceToEdit.SizeWidth;
+                this.invoice.SizeHeight = invoiceToEdit.SizeHeight;
+                this.invoice.AreaOfEdition = invoiceToEdit.AreaOfEdition;
+                this.invoice.PagePosition = invoiceToEdit.PagePosition;
+                this.invoice.Rate = invoiceToEdit.Rate;
+                this.invoice.InitialTotal = invoiceToEdit.InitialTotal;
+                this.invoice.Discount = invoiceToEdit.Discount;
+                this.invoice.DiscountTotal = invoiceToEdit.DiscountTotal;
+                this.invoice.interMediateTotal = invoiceToEdit.interMediateTotal;
+                this.invoice.GST = invoiceToEdit.GST;
+                this.invoice.NetTotal = invoiceToEdit.NetTotal;
+
+                this.openeditInvoiceModal();
+                this.updatedId = no;
+            } else {
+                console.error('Invoice not found for editing');
+            }
+        },
+
+        clearShowFormData() {
+            this.showInvoiceData.No = null;
+            this.showInvoiceData.Date = moment().format('YYYY-MM-DD');
+            this.showInvoiceData.HeadName = '';
+            this.showInvoiceData.Address = '';
+            this.showInvoiceData.District = '';
+            this.showInvoiceData.PinCode = '';
+            this.showInvoiceData.PlaceOfSupply = '';
+            this.showInvoiceData.RONo = '';
+            this.showInvoiceData.RODate = moment().format('YYYY-MM-DD');
+            this.showInvoiceData.KeyNo = '';
+            this.showInvoiceData.ProductName = '';
+            this.showInvoiceData.Caption = '';
+            this.showInvoiceData.SizeWidth = null;
+            this.showInvoiceData.SizeHeight = null;
+            this.showInvoiceData.AreaOfEdition = '';
+            this.showInvoiceData.PagePosition = '';
+            this.showInvoiceData.Rate = null;
+            this.showInvoiceData.InitialTotal = null;
+            this.showInvoiceData.Discount = 0;
+            this.showInvoiceData.DiscountTotal = null;
+            this.showInvoiceData.interMediateTotal = null;
+            this.showInvoiceData.GST = 0;
+            this.showInvoiceData.NetTotal = null;
+        },
         clearAddFormData() {
             this.invoice.No = null;
-            this.invoice.Date = '';
+            this.invoice.Date = moment().format('YYYY-MM-DD');
             this.invoice.HeadName = '';
             this.invoice.Address = '';
             this.invoice.District = '';
             this.invoice.PinCode = '';
             this.invoice.PlaceOfSupply = '';
             this.invoice.RONo = '';
-            this.invoice.RODate = '';
+            this.invoice.RODate = moment().format('YYYY-MM-DD');
             this.invoice.KeyNo = '';
             this.invoice.ProductName = '';
             this.invoice.Caption = '';
@@ -173,10 +286,10 @@ var vm = new Vue({
             this.invoice.PagePosition = '';
             this.invoice.Rate = null;
             this.invoice.InitialTotal = null;
-            this.invoice.Discount = null;
+            this.invoice.Discount = 0;
             this.invoice.DiscountTotal = null;
             this.invoice.interMediateTotal = null;
-            this.invoice.GST = null;
+            this.invoice.GST = 0;
             this.invoice.NetTotal = null;
         },
         openaddInvoiceModal() {
@@ -186,11 +299,73 @@ var vm = new Vue({
             $('#addInvoice-Modal').modal('hide');
             this.clearAddFormData();
         },
+        openshowInvoiceModal() {
+            $('#showInvoice-Modal').modal('show');
+        },
+        closeshowInvoiceModal() {
+            $('#showInvoice-Modal').modal('hide');
+        },
+        openeditInvoiceModal() {
+            $('#editInvoice-Modal').modal('show');
+        },
+        closeeditInvoiceModal() {
+            $('#editInvoice-Modal').modal('hide');
+        },
         switchTab(tab) {
             this.currentTab = tab;
             this.$nextTick(() => {
-                this.initializeDatePicker();
                 this.initializeSelect2();
+            });
+        },
+        dashboardReportDownload() {
+            // Create new jspdf instance with A3 size and landscape orientation
+            const doc = new jsPDF({
+                orientation: 'l',
+                format: 'a3'
+            });
+
+            // Set title
+            doc.text("Invoice Report", 10, 10);
+
+            // Generate table from computed property data
+            doc.autoTable({
+                head: [
+                    ['S.No', 'Date', 'Head Name', 'Address', 'District', 'PinCode', 'GSTIN', 'Place Of Supply', 'R.O.No', 'R.O.Date', 'Product', 'Key No', 'Caption', 'Size', 'Area', 'Page Position', 'Rate Per Sqcm', 'Total Amount', 'Discount', 'CGST', 'Net Amount']
+                ],
+                body: this.filteredDashboardData.map(row => [
+                    row.No,
+                    row.Date,
+                    row.HeadName,
+                    row.Address,
+                    row.District,
+                    row.PinCode,
+                    row.GSTIN,
+                    row.PlaceOfSupply,
+                    row.RONo,
+                    row.RODate,
+                    row.ProductName,
+                    row.KeyNo,
+                    row.Caption,
+                    `${row.SizeWidth} X ${row.SizeHeight}`,
+                    row.AreaOfEdition,
+                    row.PagePosition,
+                    row.Rate,
+                    row.InitialTotal,
+                    row.Discount,
+                    row.GST,
+                    row.NetTotal
+                ])
+            });
+
+            // Save the PDF
+            doc.save('Invoice_Report.pdf');
+        },
+        initializeSelect2() {
+            $('#single').select2({
+                placeholder: 'Select a template',
+                allowClear: false
+            }).on('change', function (e) {
+                console.log($(this).val());
             });
         },
         goToPage(page) {
@@ -207,47 +382,19 @@ var vm = new Vue({
             if (this.currentPage < this.totalPages) {
                 this.currentPage++;
             }
-        },
-        cb(start, end) {
-            this.selectedStartDate = start.format('MMMM D, YYYY');
-            this.selectedEndDate = end.format('MMMM D, YYYY');
-            this.selectedDate = this.selectedStartDate + ' - ' + this.selectedEndDate;
-            $('#dateRangePicker').val(this.selectedDate);
-            console.log("Selected date range:", this.selectedDate);
-        },
-        initializeDatePicker() {
-            var start = moment(this.selectedStartDate, 'MMMM D, YYYY');
-            var end = moment(this.selectedEndDate, 'MMMM D, YYYY');
-            $('#dateRangePicker').daterangepicker({
-                startDate: start,
-                endDate: end,
-                ranges: {
-                    'Today': [moment(), moment()],
-                    'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                    'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-                    'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-                    'This Month': [moment().startOf('month'), moment().endOf('month')],
-                    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-                }
-            }, this.cb);
-            this.cb(start, end);
-        },
-        initializeSelect2() {
-            $('#single').select2({
-                placeholder: 'Select a template',
-                allowClear: false
-            }).on('change', function (e) {
-                console.log($(this).val());
-            });
         }
     },
     mounted() {
-        this.initializeDatePicker();
         this.initializeSelect2();
         this.readInvoiceData();
-
         // Reset name when modal is hidden
         $('#addInvoice-Modal').on('hidden.bs.modal', () => {
+            this.clearAddFormData();
+        });
+        $('#showInvoice-Modal').on('hidden.bs.modal', () => {
+            this.clearShowFormData();
+        });
+        $('#editInvoice-Modal').on('hidden.bs.modal', () => {
             this.clearAddFormData();
         });
     }
