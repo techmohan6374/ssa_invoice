@@ -24,13 +24,16 @@
 </head>
 
 <body style="overflow: hidden auto;">
+
     <div id="app" class="container-fluid p-0 m-0 position-relative" v-cloak>
+
         <div v-if="loaderStatus" class="loader-div flex"
             style="position: absolute;left:0px;top:0px;width:100vw;height:100vh;background-color: rgb(0, 0, 0,0.9);z-index: 2;">
             <div class="loader">
 
             </div>
         </div>
+
         <div class="side-menu" style="width: 80px;">
             <div class="nav-header mb-4">
                 <a href="#">
@@ -54,9 +57,16 @@
                             <iconify-icon icon="carbon:document" style="font-size: 20px;"></iconify-icon>
                         </a>
                     </li>
+                    <li title="Update Invoice">
+                        <a href="#" class="tab flex gap-2 justify-content-start"
+                            :class="{ active: currentTab === 'Tab 3' }" v-on:click="switchTab('Tab 3')">
+                            <iconify-icon icon="mingcute:user-edit-fill" style="font-size: 20px;"></iconify-icon>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
+
         <div class="main" style="margin-left: 80px;" v-if="currentTab === 'Tab 1'">
             <div class="main-header">
                 <div class="row" style="width: 100%;">
@@ -79,10 +89,10 @@
                         <label for="single" class="d-block fw-bold mb-2" style="color:var(--primary-color)">Select
                             Template</label>
                         <select id="single" class="js-states" style="width: 100%;">
-                            <option>a</option>
-                            <option>b</option>
-                            <option>c</option>
-                            <option>d</option>
+                            <option>Template 1</option>
+                            <option>Template 2</option>
+                            <option>Template 3</option>
+                            <option>Template 4</option>
                         </select>
                     </div>
                     <div class="col-12 col-xl-3 mb-3 search-field" style="margin-top: 30px;position: relative;">
@@ -92,7 +102,8 @@
                             style="position: absolute;top:15px;right:25px;"></iconify-icon>
                     </div>
                     <div class="col-12 col-xl-3 mb-3" style="margin-top: 30px;">
-                        <button class="flex" style="width: 100%;" title="Download PDF" v-on:click="dashboardReportDownload()">
+                        <button class="flex" style="width: 100%;" title="Download PDF"
+                            v-on:click="dashboardReportDownload()">
                             <iconify-icon icon="ic:baseline-download" style="font-size: 25px;"></iconify-icon>
                             Download Report
                         </button>
@@ -194,6 +205,7 @@
                 </div>
             </div>
         </div>
+
         <div class="main" style="margin-left: 80px;" v-if="currentTab === 'Tab 2'">
             <div class="main-header">
                 <div class="row" style="width: 100%;">
@@ -280,24 +292,211 @@
                                     <td>{{ row.NetTotal }}</td>
                                     <td class="flex position-sticky bg-white gap-2"
                                         style="width:150px;height:62px;right:-10px;border: 1px solid rgb(185, 185, 185);">
-                                        <button class="btn-view flex" title="Edit" v-on:click="editInvoice(row.No)">
-                                            <iconify-icon icon="fluent:edit-arrow-back-20-filled"></iconify-icon>
+                                        <button class="btn-view flex" title="View"
+                                            style="background-color: var(--fifth-color)"
+                                            v-on:click="editInvoice(row.No)">
+                                            <iconify-icon icon="ic:baseline-remove-red-eye"></iconify-icon>
                                         </button>
                                         <button class="btn-view flex" title="Delete"
                                             style="background-color: var(--fourth-color);"
                                             v-on:click="deleteInvoice(row.No)">
                                             <iconify-icon icon="material-symbols:delete"></iconify-icon>
                                         </button>
-                                        <button class="btn-view flex" title="View"
-                                            style="background-color: var(--fifth-color)"
-                                            v-on:click="showInvoice(row.No)">
-                                            <iconify-icon icon="ic:baseline-remove-red-eye"></iconify-icon>
-                                        </button>
                                     </td>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="main" style="margin-left: 80px;" v-if="currentTab === 'Tab 3' ">
+            <div class="main-header">
+                <div class="row" style="width: 100%;">
+                    <div class="col-12 col-md-3">
+                        <div class="dashboard-show flex gap-2">
+                            <iconify-icon icon="mingcute:user-edit-fill"></iconify-icon></iconify-icon>Update Invoice
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="main-body p-3">
+                <div class="row bg-white flex mb-2 p-3" style="border-radius: 5px;margin:0px;">
+                    <div id="ReportPage" class="box p-0">
+                        <div class="gr-box gr-box-1 flex" style="grid-area: item-1">
+                            <div class="heading">
+                                <h6>SAI SOUNDAR AGENCY</h6>
+                            </div>
+                            <div class="address-info">
+                                <p>307, TVK MAIN ROAD, AMMAPET,</p>
+                                <p>SALEM-3.</p>
+                                <p style="color:var(--theme-color)">Ph : 96009-69147, 94433-46999</p>
+                                <p>Email : soundarslm9@gmail.com</p>
+                                <p>saisoundarslm9@gmail.com</p>
+                                <p>State : Tamilndau Code : 33</p>
+                            </div>
+                        </div>
+                        <div class="gr-box gr-box-2 flex" style="grid-area: item-2">
+                            PAN No : <span style="color: var(--theme-color);">&nbsp;BBJPS9560A</span>
+                        </div>
+                        <div class="gr-box gr-box-3 flex" style="grid-area: item-3">
+                            (ORIGINAL)
+                        </div>
+                        <div class="gr-box gr-box-4 flex" style="grid-area: item-4">
+                            GSTIN : <span style="color: var(--theme-color);">&nbsp;33BBJPS9560A2ZK</span>
+                        </div>
+                        <div class="gr-box gr-box-5 flex" style="grid-area: item-5">
+                            Advertisement Invoice
+                        </div>
+                        <div class="gr-box gr-box-6 flex" style="grid-area: item-6">
+                            <div class="left flex">
+                                Invoice No:&nbsp;
+                                <input type="text" v-model="invoice.No">
+                            </div>
+                            <div class="right flex">
+                                Date:&nbsp;
+                                <input type="text" v-model="invoice.Date">
+                            </div>
+                        </div>
+                        <div class="gr-box gr-box-7 flex" style="grid-area: item-7">
+                            <div class="left">
+                                <div class="div-1">A/c Head : </div>
+                                <div class="div-2">Address : </div>
+                                <div class="div-3">Pincode : </div>
+                                <div class="div-4">GSTIN : </div>
+                                <div class="div-5">Place of Sudivly : </div>
+                            </div>
+                            <div class="right">
+                                <div><textarea v-model="invoice.HeadName"></textarea></div>
+                                <div><textarea v-model="invoice.Address+invoice.District"></textarea></div>
+                                <div><input type="text" v-model="invoice.PinCode"></div>
+                                <div><input type="text" v-model="invoice.GSTIN"></div>
+                                <div><input type="text" v-model="invoice.PlaceOfSupply"></div>
+                            </div>
+                        </div>
+                        <div class="gr-box gr-box-8 flex" style="grid-area: item-8">
+                            <div class="left">
+                                <div class="div-1">KALAIKADHIR </div>
+                                <div class="div-2">Agency Code : </div>
+                                <div class="div-3">R.O.No : </div>
+                                <div class="div-4">R.O.Date : </div>
+                                <div class="div-5">Product : </div>
+                                <div class="div-6">Key No : </div>
+                                <div class="div-7">Caption : </div>
+                            </div>
+                            <div class="right">
+                                <div class="age-code">AAS185</div>
+                                <div><input type="text" v-model="invoice.RONo"></div>
+                                <div><input type="text" v-model="invoice.RODate"></div>
+                                <div><input type="text" v-model="invoice.ProductName"></div>
+                                <div><input type="text" v-model="invoice.KeyNo"></div>
+                                <div><input type="text" v-model="invoice.Caption"></div>
+                            </div>
+                        </div>
+                        <div class="gr-box gr-box-9 flex" style="grid-area: item-9">
+                            Date of Insertion
+                        </div>
+                        <div class="gr-box gr-box-10 flex" style="grid-area: item-10;">
+                            <div class="top flex">Size</div>
+                            <div class="bottom flex">Sq Cm</div>
+                        </div>
+                        <div class="gr-box gr-box-11 flex" style="grid-area: item-11;">
+                            Area Edition
+                        </div>
+                        <div class="gr-box gr-box-12 flex" style="grid-area: item-12;">
+                            Position Page No.
+                        </div>
+                        <div class="gr-box gr-box-13 flex" style="grid-area: item-13;">
+                            Rate Per Sqcm Premium
+                        </div>
+                        <div class="gr-box gr-box-14 flex" style="grid-area: item-14;">
+                            Amount
+                        </div>
+                        <div class="gr-box gr-box-15 flex" style="grid-area: item-15;">
+                            <input type="text" v-model="invoice.Date">
+                        </div>
+                        <div class="gr-box gr-box-16 flex" style="grid-area: item-16;">
+                            <input type="text" v-model="invoice.SizeWidth"> X
+                            <input type="text" v-model="invoice.SizeHeight">
+                        </div>
+                        <div class="gr-box gr-box-17 flex" style="grid-area: item-17;">
+                            <input type="text" v-model="invoice.AreaOfEdition">
+                        </div>
+                        <div class="gr-box gr-box-18 flex" style="grid-area: item-18;">
+                            <input type="text" v-model="invoice.PagePosition">
+                        </div>
+                        <div class="gr-box gr-box-19 flex" style="grid-area: item-19;">
+                            <input type="text" v-model="invoice.Rate">
+                        </div>
+                        <div class="gr-box gr-box-20 flex" style="grid-area: item-20;">
+                            <input type="text" v-model="invoice.interMediateTotal">
+                        </div>
+                        <div class="gr-box gr-box-21 flex" style="grid-area: item-21;">
+                            <div class="left flex">
+                                <div style="color:#00b050">Product Discount &nbsp;&nbsp;&nbsp; {{invoice.Discount}} %
+                                </div>
+                                <div>Amount</div>
+                                <div>CGST 2.5%</div>
+                                <div>SGST 2.5%</div>
+                            </div>
+                            <div class="right flex">
+                                <div>{{invoice.DiscountTotal}}</div>
+                                <div>{{invoice.interMediateTotal}}</div>
+                                <div>{{invoice.GST}}</div>
+                                <div>{{invoice.GST}}</div>
+                            </div>
+                        </div>
+                        <div class="gr-box gr-box-22 flex" style="grid-area: item-22;">
+                            <div class="left flex">
+                                Net Amount&nbsp;
+                            </div>
+                            <div class="right flex">
+                                {{invoice.NetTotal}}
+                            </div>
+                        </div>
+                        <div class="gr-box gr-box-23 flex" style="grid-area: item-23;">
+                            Rupees TwentyFour Thousand Nine Hundred Ninety Only
+                        </div>
+                        <div class="gr-box gr-box-24 flex" style="grid-area: item-24;">
+                            <div class="top flex">
+                                <span>For</span>
+                                <p>SAI SOUNDAR AGENCY</p>
+                            </div>
+                            <div class="bottom flex">
+                                <img src="resources/images/signature.png" alt="signature">
+                            </div>
+                        </div>
+                        <div class="gr-box gr-box-25 flex" style="grid-area: item-25;">
+                            E.&.O.E
+                        </div>
+                        <div class="gr-box gr-box-26" style="grid-area: item-26;">
+                            Thank you for advertising with Us. We Look forward to Your Condinued
+                        </div>
+                        <div class="gr-box gr-box-27" style="grid-area: item-27;">
+                            <div>The DD/Cheque should be drawn in favour of</div>
+                            <div><b>“SAI SOUNDAR AGENCY” </b>payable at</div>
+                            <div>Bank : <b>SBI Fairlands Branch,</b> by Credit to our</div>
+                            <div>Current Account No. : <b>36055403919</b></div>
+                            <div>RTGS : <b>SAI SOUNDAR AGENCY,</b></div>
+                            <div>IFS Code : <b>SBIN0021724</b></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row bg-white mb-2 p-3" style="border-radius: 5px;margin:0px;">
+                    <div class="col-12 col-md-6 col-xl-6 mb-2">
+                        <button v-on:click="temp()" class="btns-download flex gap-2">
+                            <iconify-icon icon="ic:baseline-download" style="font-size: 25px;"></iconify-icon>
+                            Download Invoice
+                        </button>
+                    </div>
+                    <div class="col-12 col-xl-6 mb-2">
+                        <button v-on:click="UpdateInvoiceData()" class="btns-update flex gap-2">
+                            <iconify-icon icon="fluent:edit-arrow-back-20-filled"
+                                style="font-size:25px;"></iconify-icon>
+                            Update Invoice
+                        </button>
                     </div>
                 </div>
             </div>
@@ -410,197 +609,6 @@
             </div>
         </div>
 
-        <!-- Show Invoice Modal -->
-        <div class="modal fade" id="showInvoice-Modal" tabindex="-1" role="dialog"
-            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">Invoice Details</h5>
-                        <button class="btns-close flex" v-on:click="closeshowInvoiceModal()">
-                            <iconify-icon icon="ic:round-close"></iconify-icon>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-12">
-                                Bill No : {{showInvoiceData.No}}
-                            </div>
-                            <div class="col-12">
-                                Bill Date : {{showInvoiceData.Date}}
-                            </div>
-                            <div class="col-12">
-                                Head Name : {{showInvoiceData.HeadName}}
-                            </div>
-                            <div class="col-12">
-                                Address : {{showInvoiceData.Address}}
-                            </div>
-                            <div class="col-12">
-                                Pincode : {{showInvoiceData.Pincode}}
-                            </div>
-                            <div class="col-12">
-                                GSTIN : {{showInvoiceData.GSTIN}}
-                            </div>
-                            <div class="col-12">
-                                Place Of Supply : {{showInvoiceData.PlaceOfSupply}}
-                            </div>
-                            <div class="col-12">
-                                R.O.No : {{showInvoiceData.RONo}}
-                            </div>
-                            <div class="col-12">
-                                R.O.Date : {{showInvoiceData.RODate}}
-                            </div>
-                            <div class="col-12">
-                                Product : {{showInvoiceData.ProductName}}
-                            </div>
-                            <div class="col-12">
-                                Key No : {{showInvoiceData.ProductName}}
-                            </div>
-                            <div class="col-12">
-                                Caption : {{showInvoiceData.Caption}}
-                            </div>
-                            <div class="col-12">
-                                Size : {{showInvoiceData.SizeWidth}} X {{showInvoice.SizeHeight}}
-                            </div>
-                            <div class="col-12">
-                                Area Of Edition : {{showInvoiceData.AreaOfEdition}}
-                            </div>
-                            <div class="col-12">
-                                Position Page No : {{showInvoiceData.PagePosition}}
-                            </div>
-                            <div class="col-12">
-                                Rate Per Sqcm : {{showInvoiceData.Rate}}
-                            </div>
-                            <div class="col-12">
-                                Initial Amount : {{showInvoiceData.InitialTotal}}
-                            </div>
-                            <div class="col-12">
-                                Discount : {{showInvoiceData.Discount}}
-                            </div>
-                            <div class="col-12">
-                                Discount Amount: {{showInvoiceData.DiscountTotal}}
-                            </div>
-                            <div class="col-12">
-                                GST Percent: {{showInvoiceData.GST}}
-                            </div>
-                            <div class="col-12">
-                                GST Amount: {{showInvoiceData.interMediateTotal}}
-                            </div>
-                            <div class="col-12">
-                                Net Amount: {{showInvoiceData.NetTotal}}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Edit Invoice Modal -->
-        <div class="modal fade" id="editInvoice-Modal" tabindex="-1" role="dialog"
-            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">Edit Invoice Details</h5>
-                        <button class="btns-close flex" v-on:click="closeeditInvoiceModal()">
-                            <iconify-icon icon="ic:round-close"></iconify-icon>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-12 col-xl-6 mb-2">
-                                <input type="text" placeholder="Enter Invoice Number" v-model="invoice.No">
-                            </div>
-                            <div class="col-12 col-xl-6 mb-2">
-                                <input type="date" v-model="invoice.Date">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12 col-xl-6 mb-2">
-                                <input type="text" placeholder="Enter A/C Head Name" v-model="invoice.HeadName">
-                            </div>
-                            <div class="col-12 col-xl-6 mb-2">
-                                <input type="text" placeholder="Enter Address" v-model="invoice.Address">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12 col-xl-6 mb-2">
-                                <input type="text" placeholder="Enter District" v-model="invoice.District">
-                            </div>
-                            <div class="col-12 col-xl-6 mb-2">
-                                <input type="text" placeholder="Enter Pincode" v-model="invoice.PinCode">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12 col-xl-6 mb-2">
-                                <input type="text" placeholder="Enter GSTIN" v-model="invoice.GSTIN">
-                            </div>
-                            <div class="col-12 col-xl-6 mb-2">
-                                <input type="text" placeholder="Enter Place Of Supply" v-model="invoice.PlaceOfSupply">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12 col-xl-6 mb-2">
-                                <input type="text" placeholder="Enter R.O Number" v-model="invoice.RONo">
-                            </div>
-                            <div class="col-12 col-xl-6 mb-2">
-                                <input type="date" v-model="invoice.RODate">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12 col-xl-6 mb-2">
-                                <input type="text" placeholder="Enter Product Name" v-model="invoice.ProductName">
-                            </div>
-                            <div class="col-12 col-xl-6 mb-2">
-                                <input type="text" placeholder="Enter Key Number" v-model="invoice.KeyNo">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12 col-xl-6 mb-2">
-                                <input type="text" placeholder="Enter Caption" v-model="invoice.Caption">
-                            </div>
-                            <div class="col-12 col-xl-6 mb-2">
-                                <input type="number" placeholder="Enter Size-1" v-model="invoice.SizeWidth">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12 col-xl-6 mb-2">
-                                <input type="number" placeholder="Enter Size-2" v-model="invoice.SizeHeight">
-                            </div>
-                            <div class="col-12 col-xl-6 mb-2">
-                                <input type="text" placeholder="Enter Area Of Edition" v-model="invoice.AreaOfEdition">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12 col-xl-6 mb-2">
-                                <input type="text" placeholder="Enter Page Position" v-model="invoice.PagePosition">
-                            </div>
-                            <div class="col-12 col-xl-6 mb-2">
-                                <input type="text" placeholder="Enter Rate" v-model="invoice.Rate">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12 col-xl-6 mb-2">
-                                <input type="number" placeholder="Enter GST Percentage" v-model="invoice.GST">
-                            </div>
-                            <div class="col-12 col-xl-6 mb-3">
-                                <input type="number" placeholder="Enter Discount" v-model="invoice.Discount">
-                            </div>
-                        </div>
-                        <div class="row flex justify-content-end">
-                            <div class="col-12 mb-2">
-                                <button class="edit-invoice-btn flex gap-2" v-on:click="UpdateInvoiceData()">
-                                    <iconify-icon icon="fluent:edit-arrow-back-20-filled"
-                                        style="font-size:25px;"></iconify-icon>
-                                    Update
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <!-- Firebase App JS CDN -->
         <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 
@@ -609,11 +617,13 @@
 
 
         <!-- JSPDF JS CDN's -->
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.debug.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
         <script
             src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.6/jspdf.plugin.autotable.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.js"></script>
+
+
+        <!-- html2canvas CDN -->
+        <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 
         <!-- Linq JS CDN -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/linq.js/3.2.2/linq.min.js"></script>
@@ -623,6 +633,9 @@
 
         <!-- Notyf JS CDN -->
         <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+
+        <!-- Sweet Alert JS CDN -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
         <!-- Iconify Icon JS CDN -->
         <script src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.8/dist/iconify-icon.min.js"></script>

@@ -133,7 +133,6 @@ var vm = new Vue({
             notyf.success('Added successfully');
         },
         saveInvoiceData() {
-            var notyf = new Notyf();
             var updates = {};
             var primaryKey = this.invoiceTotalData.length;  // Initialize primary key for auto-increment
 
@@ -145,7 +144,11 @@ var vm = new Vue({
 
             database.ref().update(updates)
                 .then(() => {
-                    notyf.success('All invoices have been saved successfully');
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'All Invoices Saved Successfully'
+                    });
                     this.readInvoiceData();
                 })
                 .catch((error) => {
@@ -162,13 +165,13 @@ var vm = new Vue({
             } else {
                 this.clearShowFormData();
             }
-            this.openshowInvoiceModal();
         },
         deleteInvoice(no) {
             var notyf = new Notyf();
             if (confirm('Are You Sure to Delete ?')) {
                 this.invoiceData = this.invoiceData.filter(invoice => invoice.No !== no);
                 notyf.error('Deleted successfully');
+                this.clearAddFormData();
             }
         },
         UpdateInvoiceData() {
@@ -200,7 +203,7 @@ var vm = new Vue({
                 this.invoiceData[indexToUpdate].GST = this.invoice.GST;
                 this.invoiceData[indexToUpdate].NetTotal = this.invoice.NetTotal;
                 notyf.success('Updated successfully');
-                this.closeeditInvoiceModal();
+                this.clearAddFormData();
             } else {
                 console.error('Invoice not found for updating');
             }
@@ -234,9 +237,8 @@ var vm = new Vue({
                 this.invoice.interMediateTotal = invoiceToEdit.interMediateTotal;
                 this.invoice.GST = invoiceToEdit.GST;
                 this.invoice.NetTotal = invoiceToEdit.NetTotal;
-
-                this.openeditInvoiceModal();
                 this.updatedId = no;
+                this.goToTab3();
             } else {
                 console.error('Invoice not found for editing');
             }
@@ -299,18 +301,6 @@ var vm = new Vue({
             $('#addInvoice-Modal').modal('hide');
             this.clearAddFormData();
         },
-        openshowInvoiceModal() {
-            $('#showInvoice-Modal').modal('show');
-        },
-        closeshowInvoiceModal() {
-            $('#showInvoice-Modal').modal('hide');
-        },
-        openeditInvoiceModal() {
-            $('#editInvoice-Modal').modal('show');
-        },
-        closeeditInvoiceModal() {
-            $('#editInvoice-Modal').modal('hide');
-        },
         switchTab(tab) {
             this.currentTab = tab;
             this.$nextTick(() => {
@@ -360,6 +350,9 @@ var vm = new Vue({
             // Save the PDF
             doc.save('Invoice_Report.pdf');
         },
+        goToTab3() {
+            this.currentTab = 'Tab 3';
+        },
         initializeSelect2() {
             $('#single').select2({
                 placeholder: 'Select a template',
@@ -382,19 +375,54 @@ var vm = new Vue({
             if (this.currentPage < this.totalPages) {
                 this.currentPage++;
             }
-        }
+        },
+        temp() {
+            $("#ReportPage input").css({
+                "border": "none"
+            });
+            $("#ReportPage textarea").css({
+                "border": "none"
+            });
+
+            const { jsPDF } = window.jspdf;
+            const reportPage = document.getElementById('ReportPage');
+
+            // Padding size in mm
+            const padding = 10;
+
+            // Use a lower scale to reduce resolution and file size
+            const scale = 2;
+
+            html2canvas(reportPage, { scale }).then((canvas) => {
+                // Reduce the quality of the image to reduce file size
+                const imgData = canvas.toDataURL('image/png', 1); // 0.6 is the quality from 0 to 1
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                const imgProps = pdf.getImageProperties(imgData);
+                const pdfWidth = pdf.internal.pageSize.getWidth() - 2 * padding; // Width with padding
+                const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+                // Centering the image on the PDF
+                const x = padding;
+                const y = padding;
+
+                pdf.addImage(imgData, 'PNG', x, y, pdfWidth, pdfHeight);
+                pdf.save('SSA_Invoice.pdf');
+            });
+            setInterval(() => {
+                $("#ReportPage input").css({
+                    "border": "1px solid lightgrey"
+                });
+                $("#ReportPage textarea").css({
+                    "border": "1px solid lightgrey"
+                });
+            }, 4000);
+        },
     },
     mounted() {
         this.initializeSelect2();
         this.readInvoiceData();
         // Reset name when modal is hidden
         $('#addInvoice-Modal').on('hidden.bs.modal', () => {
-            this.clearAddFormData();
-        });
-        $('#showInvoice-Modal').on('hidden.bs.modal', () => {
-            this.clearShowFormData();
-        });
-        $('#editInvoice-Modal').on('hidden.bs.modal', () => {
             this.clearAddFormData();
         });
     }
