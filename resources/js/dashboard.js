@@ -308,47 +308,7 @@ var vm = new Vue({
             });
         },
         dashboardReportDownload() {
-            // Create new jspdf instance with A3 size and landscape orientation
-            const doc = new jsPDF({
-                orientation: 'l',
-                format: 'a3'
-            });
-
-            // Set title
-            doc.text("Invoice Report", 10, 10);
-
-            // Generate table from computed property data
-            doc.autoTable({
-                head: [
-                    ['S.No', 'Date', 'Head Name', 'Address', 'District', 'PinCode', 'GSTIN', 'Place Of Supply', 'R.O.No', 'R.O.Date', 'Product', 'Key No', 'Caption', 'Size', 'Area', 'Page Position', 'Rate Per Sqcm', 'Total Amount', 'Discount', 'CGST', 'Net Amount']
-                ],
-                body: this.filteredDashboardData.map(row => [
-                    row.No,
-                    row.Date,
-                    row.HeadName,
-                    row.Address,
-                    row.District,
-                    row.PinCode,
-                    row.GSTIN,
-                    row.PlaceOfSupply,
-                    row.RONo,
-                    row.RODate,
-                    row.ProductName,
-                    row.KeyNo,
-                    row.Caption,
-                    `${row.SizeWidth} X ${row.SizeHeight}`,
-                    row.AreaOfEdition,
-                    row.PagePosition,
-                    row.Rate,
-                    row.InitialTotal,
-                    row.Discount,
-                    row.GST,
-                    row.NetTotal
-                ])
-            });
-
-            // Save the PDF
-            doc.save('Invoice_Report.pdf');
+            alert('Contact @ Tech Mohan');
         },
         goToTab3() {
             this.currentTab = 'Tab 3';
