@@ -172,7 +172,6 @@ var vm = new Vue({
             if (confirm('Are You Sure to Delete ?')) {
                 this.invoiceData = this.invoiceData.filter(invoice => invoice.No !== no);
                 notyf.error('Deleted successfully');
-                this.clearAddFormData();
             }
         },
         UpdateInvoiceData() {
@@ -349,6 +348,7 @@ var vm = new Vue({
             this.currentTab = tab;
             this.$nextTick(() => {
                 this.initializeSelect2();
+                this.clearAddFormData();
             });
         },
         dashboardReportDownload() {
