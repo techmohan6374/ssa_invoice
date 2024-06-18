@@ -133,11 +133,11 @@
                                     <th>Page Position</th>
                                     <th>Rate Per Sqcm</th>
                                     <th>Total Amount</th>
-                                    <th>Discount</th>
-                                    <th>CGST</th>
+                                    <th>Discount %</th>
+                                    <th>GST %</th>
                                     <th>Net Amount</th>
                                     <th class="flex position-sticky"
-                                        style="width:140px;height:73px;right:-10px;background-color: var(--primary-color);">
+                                        style="width:140px;height:114px;right:-10px;background-color: var(--primary-color);">
                                         Status
                                     </th>
                                 </tr>
@@ -162,11 +162,11 @@
                                     <td>{{ row.PagePosition }}</td>
                                     <td>{{ row.Rate }}</td>
                                     <td>{{ row.InitialTotal }}</td>
-                                    <td>{{ row.Discount }}</td>
-                                    <td>{{ row.GST }}</td>
+                                    <td>{{ row.Discount }}%</td>
+                                    <td>{{ row.GST }}%</td>
                                     <td>{{ row.NetTotal }}</td>
                                     <td class="flex position-sticky bg-white gap-2"
-                                        style="width:140px;height:72px;right:-10px;border: 1px solid rgb(185, 185, 185);">
+                                        style="width:140px;height:114px;right:-10px;border: 1px solid rgb(185, 185, 185);">
                                         <!-- <button class="btn-view flex" title="Edit">
                                             <iconify-icon icon="fluent:edit-arrow-back-20-filled"></iconify-icon>
                                         </button> -->
@@ -246,7 +246,6 @@
                                     <th>Date</th>
                                     <th>Head Name</th>
                                     <th>Address</th>
-                                    <th>District</th>
                                     <th>PinCode</th>
                                     <th>GSTIN</th>
                                     <th>Place Of Supply</th>
@@ -264,7 +263,7 @@
                                     <th>CGST</th>
                                     <th>Net Amount</th>
                                     <th class="flex position-sticky"
-                                        style="width:100px;height:73px;right:-10px;background-color: var(--primary-color);">
+                                        style="width:100px;height:114px;right:-10px;background-color: var(--primary-color);">
                                         Status
                                     </th>
                                 </tr>
@@ -275,7 +274,6 @@
                                     <td>{{ row.Date }}</td>
                                     <td>{{ row.HeadName }}</td>
                                     <td>{{ row.Address }}</td>
-                                    <td>{{ row.District }}</td>
                                     <td>{{ row.PinCode }}</td>
                                     <td>{{ row.GSTIN }}</td>
                                     <td>{{ row.PlaceOfSupply }}</td>
@@ -293,7 +291,7 @@
                                     <td>{{ row.GST }}</td>
                                     <td>{{ row.NetTotal }}</td>
                                     <td class="flex position-sticky bg-white gap-2"
-                                        style="width:150px;height:62px;right:-10px;border: 1px solid rgb(185, 185, 185);">
+                                        style="width:150px;height:114px;right:-10px;border: 1px solid rgb(185, 185, 185);">
                                         <button class="btn-view flex" title="View"
                                             style="background-color: var(--fifth-color)"
                                             v-on:click="editInvoice(row.No)">
@@ -375,8 +373,8 @@
                                 <div class="div-1" style="margin-bottom: 14px;">
                                     <textarea v-model="invoice.HeadName"></textarea>
                                 </div>
-                                <div class="div-2">
-                                    <textarea v-model="invoice.Address+invoice.District"></textarea>
+                                <div class="div-2" style="margin-bottom: 9px;">
+                                    <textarea v-model="invoice.Address"></textarea>
                                 </div>
                                 <div class="div-3">
                                     <input type="text" v-model="invoice.PinCode">
@@ -454,21 +452,21 @@
                             <input type="text" v-model="invoice.Rate">
                         </div>
                         <div class="gr-box gr-box-20 flex" style="grid-area: item-20;">
-                            <input type="text" v-model="invoice.interMediateTotal">
+                            <input type="text" v-model="invoice.InitialTotal">
                         </div>
                         <div class="gr-box gr-box-21 flex" style="grid-area: item-21;">
                             <div class="left flex">
                                 <div style="color:#00b050">Product Discount &nbsp;&nbsp;&nbsp; {{invoice.Discount}} %
                                 </div>
                                 <div>Amount</div>
-                                <div>CGST {{invoice.GSTAmt}} %</div>
-                                <div>SGST {{invoice.GSTAmt}} %</div>
+                                <div>CGST {{invoice.GSTPercent}} %</div>
+                                <div>SGST {{invoice.GSTPercent}} %</div>
                             </div>
                             <div class="right flex">
                                 <div>{{invoice.DiscountTotal}}.00</div>
-                                <div>{{invoice.initialTotal}}.00</div>
-                                <div>{{invoice.GST}}.00</div>
-                                <div>{{invoice.GST}}.00</div>
+                                <div>{{invoice.interMediateTotal}}.00</div>
+                                <div>{{invoice.GSTAmt}}.00</div>
+                                <div>{{invoice.GSTAmt}}.00</div>
                             </div>
                         </div>
                         <div class="gr-box gr-box-22 flex" style="grid-area: item-22;">
@@ -555,23 +553,15 @@
                         </div>
                         <div class="row">
                             <div class="col-12 col-xl-6 mb-2">
-                                <input type="text" placeholder="Enter District" v-model="invoice.District">
-                            </div>
-                            <div class="col-12 col-xl-6 mb-2">
                                 <input type="text" placeholder="Enter Pincode" v-model="invoice.PinCode">
                             </div>
-                        </div>
-                        <div class="row">
                             <div class="col-12 col-xl-6 mb-2">
                                 <input type="text" placeholder="Enter GSTIN" v-model="invoice.GSTIN">
                             </div>
-                            <div class="col-12 col-xl-6 mb-2">
-                                <input type="text" placeholder="Enter Place Of Supply" v-model="invoice.PlaceOfSupply">
-                            </div>
                         </div>
                         <div class="row">
                             <div class="col-12 col-xl-6 mb-2">
-                                <input type="text" placeholder="Enter R.O Number" v-model="invoice.RONo">
+                                <input type="text" placeholder="Enter Place Of Supply" v-model="invoice.PlaceOfSupply">
                             </div>
                             <div class="col-12 col-xl-6 mb-2">
                                 <input type="date" v-model="invoice.RODate">
@@ -579,40 +569,45 @@
                         </div>
                         <div class="row">
                             <div class="col-12 col-xl-6 mb-2">
+                                <input type="text" placeholder="Enter R.O Number" v-model="invoice.RONo">
+                            </div>
+                            <div class="col-12 col-xl-6 mb-2">
                                 <input type="text" placeholder="Enter Product Name" v-model="invoice.ProductName">
                             </div>
+                        </div>
+                        <div class="row">
                             <div class="col-12 col-xl-6 mb-2">
                                 <input type="text" placeholder="Enter Key Number" v-model="invoice.KeyNo">
                             </div>
-                        </div>
-                        <div class="row">
                             <div class="col-12 col-xl-6 mb-2">
                                 <input type="text" placeholder="Enter Caption" v-model="invoice.Caption">
                             </div>
+                        </div>
+                        <div class="row">
                             <div class="col-12 col-xl-6 mb-2">
                                 <input type="number" placeholder="Enter Size-1" v-model="invoice.SizeWidth">
                             </div>
-                        </div>
-                        <div class="row">
                             <div class="col-12 col-xl-6 mb-2">
                                 <input type="number" placeholder="Enter Size-2" v-model="invoice.SizeHeight">
                             </div>
+                        </div>
+                        <div class="row">
                             <div class="col-12 col-xl-6 mb-2">
                                 <input type="text" placeholder="Enter Area Of Edition" v-model="invoice.AreaOfEdition">
                             </div>
-                        </div>
-                        <div class="row">
                             <div class="col-12 col-xl-6 mb-2">
                                 <input type="text" placeholder="Enter Page Position" v-model="invoice.PagePosition">
                             </div>
-                            <div class="col-12 col-xl-6 mb-2">
-                                <input type="text" placeholder="Enter Rate" v-model="invoice.Rate">
-                            </div>
                         </div>
                         <div class="row">
                             <div class="col-12 col-xl-6 mb-2">
+                                <input type="text" placeholder="Enter Rate" v-model="invoice.Rate">
+                            </div>
+                            <div class="col-12 col-xl-6 mb-2">
                                 <input type="number" placeholder="Enter GST Percentage" v-model="invoice.GST">
                             </div>
+                        </div>
+                        <div class="row">
                             <div class="col-12 col-xl-6 mb-3">
                                 <input type="number" placeholder="Enter Discount" v-model="invoice.Discount">
                             </div>

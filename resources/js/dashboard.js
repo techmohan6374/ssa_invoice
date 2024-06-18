@@ -27,15 +27,14 @@ var vm = new Vue({
             Date: '',
             HeadName: '',
             Address: '',
-            District: '',
             PinCode: '',
+            GSTIN: '',
             PlaceOfSupply: '',
             RONo: '',
             RODate: '',
             ProductName: '',
             KeyNo: '',
             Caption: '',
-            GSTIN: '',
             SizeWidth: null,
             SizeHeight: null,
             AreaOfEdition: '',
@@ -46,6 +45,7 @@ var vm = new Vue({
             DiscountTotal: null,
             interMediateTotal: null,
             GST: null,
+            GSTPercent: null,
             GSTAmt: null,
             NetTotal: null
         },
@@ -122,7 +122,7 @@ var vm = new Vue({
             }
         },
         readInvoiceData() {
-            this.loaderStatus = true;
+            // this.loaderStatus = true;
             var notyf = new Notyf();
 
             database.ref('invoiceData').once('value').then((snapshot) => {
@@ -137,14 +137,23 @@ var vm = new Vue({
             });
         },
         calculateInvoiceData() {
-            this.invoice.interMediateTotal = this.invoice.SizeWidth * this.invoice.SizeHeight * this.invoice.Rate;
-            this.invoice.DiscountTotal = this.invoice.interMediateTotal * (this.invoice.Discount / 100);
-            this.invoice.initialTotal = this.invoice.interMediateTotal - this.invoice.DiscountTotal;
+            this.invoice.initialTotal = parseInt(this.invoice.SizeWidth) * parseInt(this.invoice.SizeHeight) * parseInt(this.invoice.Rate);
+            console.log(this.invoice.initialTotal);
 
-            this.invoice.GSTAmt = this.invoice.GST / 2;
-            this.invoice.GST = Math.round(this.invoice.initialTotal * (this.invoice.GSTAmt / 100));
+            this.invoice.DiscountTotal = parseInt(this.invoice.initialTotal) * (parseInt(this.invoice.Discount) / 100);
+            console.log(this.invoice.DiscountTotal);
 
-            this.invoice.NetTotal = parseInt(this.invoice.initialTotal) + parseInt(this.invoice.GST) + parseInt(this.invoice.GST);
+            this.invoice.interMediateTotal = parseInt(this.invoice.initialTotal) - parseInt(this.invoice.DiscountTotal);
+            console.log(this.invoice.interMediateTotal);
+
+            this.invoice.GSTPercent = parseInt(this.invoice.GST) / 2;
+            console.log(this.invoice.GSTPercent);
+
+            this.invoice.GSTAmt = Math.round(parseInt(this.invoice.interMediateTotal) * (parseInt(this.invoice.GST) / 100))
+            console.log(this.invoice.GSTAmt);
+
+            this.invoice.NetTotal = parseInt(this.invoice.interMediateTotal) + parseInt(this.invoice.GSTAmt);
+            console.log(this.invoice.NetTotal);
         },
         addInvoiceData() {
             var notyf = new Notyf();
@@ -178,16 +187,6 @@ var vm = new Vue({
                     console.error(error);
                 });
         },
-        showInvoice(no) {
-            let invoice = this.invoiceData.find(invoice => invoice.No === no);
-
-            if (invoice) {
-                this.showInvoiceData = { ...invoice };
-                console.log(this.showInvoiceData);
-            } else {
-                this.clearShowFormData();
-            }
-        },
         deleteInvoice(no) {
             var notyf = new Notyf();
             if (confirm('Are You Sure to Delete ?')) {
@@ -198,33 +197,36 @@ var vm = new Vue({
         UpdateInvoiceData() {
             var notyf = new Notyf();
             let indexToUpdate = this.invoiceData.findIndex(invoice => invoice.No === this.updatedId);
+            this.calculateInvoiceData();
             if (indexToUpdate !== -1) {
                 this.invoiceData[indexToUpdate].No = this.invoice.No;
-                this.invoiceData[indexToUpdate].Date = this.invoice.Date;
+                this.invoiceData[indexToUpdate].Date = moment(this.invoice.Date).format('DD-MM-YYYY');
                 this.invoiceData[indexToUpdate].HeadName = this.invoice.HeadName;
                 this.invoiceData[indexToUpdate].Address = this.invoice.Address;
-                this.invoiceData[indexToUpdate].District = this.invoice.District;
                 this.invoiceData[indexToUpdate].PinCode = this.invoice.PinCode;
+                this.invoiceData[indexToUpdate].GSTIN = this.invoice.GSTIN;
                 this.invoiceData[indexToUpdate].PlaceOfSupply = this.invoice.PlaceOfSupply;
                 this.invoiceData[indexToUpdate].RONo = this.invoice.RONo;
-                this.invoiceData[indexToUpdate].RODate = this.invoice.RODate;
+                this.invoiceData[indexToUpdate].RODate = moment(this.invoice.RODate).format('DD-MM-YYYY');
                 this.invoiceData[indexToUpdate].ProductName = this.invoice.ProductName;
                 this.invoiceData[indexToUpdate].KeyNo = this.invoice.KeyNo;
                 this.invoiceData[indexToUpdate].Caption = this.invoice.Caption;
-                this.invoiceData[indexToUpdate].GSTIN = this.invoice.GSTIN;
                 this.invoiceData[indexToUpdate].SizeWidth = this.invoice.SizeWidth;
                 this.invoiceData[indexToUpdate].SizeHeight = this.invoice.SizeHeight;
                 this.invoiceData[indexToUpdate].AreaOfEdition = this.invoice.AreaOfEdition;
                 this.invoiceData[indexToUpdate].PagePosition = this.invoice.PagePosition;
                 this.invoiceData[indexToUpdate].Rate = this.invoice.Rate;
-                this.invoiceData[indexToUpdate].InitialTotal = this.invoice.InitialTotal;
+                this.invoiceData[indexToUpdate].InitialTotal = this.invoice.initialTotal;
                 this.invoiceData[indexToUpdate].Discount = this.invoice.Discount;
                 this.invoiceData[indexToUpdate].DiscountTotal = this.invoice.DiscountTotal;
                 this.invoiceData[indexToUpdate].interMediateTotal = this.invoice.interMediateTotal;
                 this.invoiceData[indexToUpdate].GST = this.invoice.GST;
-                this.invoiceData[indexToUpdate].NetTotal = this.invoice.NetTotal;
+                this.invoiceData[indexToUpdate].GSTPercent = this.invoice.GSTPercent;
+                this.invoiceData[indexToUpdate].GSTAmt = this.invoice.GSTAmt;
+                this.invoiceData[indexToUpdate].NetTotal = this.invoice.NetTotal
+                this.amountInWords = this.convertToWords(this.invoice.NetTotal);
+
                 notyf.success('Updated successfully');
-                this.clearAddFormData();
             } else {
                 console.error('Invoice not found for updating');
             }
@@ -232,92 +234,71 @@ var vm = new Vue({
         editInvoice(no) {
             // Find the invoice by its No
             let invoiceToEdit = this.invoiceData.find(invoice => invoice.No === no);
-
             if (invoiceToEdit) {
                 // Populate the invoice object with found data
-                this.invoice.No = invoiceToEdit.No;
-                this.invoice.Date = moment(invoiceToEdit.Date).format('DD-MM-YYYY');
-                this.invoice.HeadName = invoiceToEdit.HeadName;
-                this.invoice.Address = invoiceToEdit.Address;
-                this.invoice.District = invoiceToEdit.District;
-                this.invoice.PinCode = invoiceToEdit.PinCode;
-                this.invoice.PlaceOfSupply = invoiceToEdit.PlaceOfSupply;
-                this.invoice.RONo = invoiceToEdit.RONo;
-                this.invoice.RODate = moment(invoiceToEdit.RODate).format('DD-MM-YYYY');
-                this.invoice.KeyNo = invoiceToEdit.KeyNo;
-                this.invoice.ProductName = invoiceToEdit.ProductName;
-                this.invoice.Caption = invoiceToEdit.Caption;
-                this.invoice.SizeWidth = invoiceToEdit.SizeWidth;
-                this.invoice.SizeHeight = invoiceToEdit.SizeHeight;
-                this.invoice.AreaOfEdition = invoiceToEdit.AreaOfEdition.toUpperCase();
-                this.invoice.PagePosition = invoiceToEdit.PagePosition.toUpperCase();
-                this.invoice.Rate = invoiceToEdit.Rate + '.00';
-                this.invoice.InitialTotal = invoiceToEdit.InitialTotal;
-                this.invoice.Discount = invoiceToEdit.Discount;
-                this.invoice.DiscountTotal = invoiceToEdit.DiscountTotal;
-                this.invoice.interMediateTotal = invoiceToEdit.interMediateTotal + '.00';
-                this.invoice.GSTAmt = invoiceToEdit.GSTAmt;
-                this.invoice.GST = invoiceToEdit.GST;
-                this.invoice.NetTotal = invoiceToEdit.NetTotal;
+                this.invoice.No = invoiceToEdit.No,
+                    this.invoice.Date = moment(invoiceToEdit.Date).format('DD-MM-YYYY'),
+                    this.invoice.HeadName = invoiceToEdit.HeadName,
+                    this.invoice.Address = invoiceToEdit.Address,
+                    this.invoice.PinCode = invoiceToEdit.PinCode,
+                    this.invoice.GSTIN = invoiceToEdit.GSTIN,
+                    this.invoice.PlaceOfSupply = invoiceToEdit.PlaceOfSupply,
+                    this.invoice.RONo = invoiceToEdit.RONo,
+                    this.invoice.RODate = moment(invoiceToEdit.RODate).format('DD-MM-YYYY'),
+                    this.invoice.ProductName = invoiceToEdit.ProductName,
+                    this.invoice.KeyNo = invoiceToEdit.KeyNo,
+                    this.invoice.Caption = invoiceToEdit.Caption,
+                    this.invoice.SizeWidth = invoiceToEdit.SizeWidth,
+                    this.invoice.SizeHeight = invoiceToEdit.SizeHeight,
+                    this.invoice.AreaOfEdition = invoiceToEdit.AreaOfEdition,
+                    this.invoice.PagePosition = invoiceToEdit.PagePosition,
+                    this.invoice.Rate = invoiceToEdit.Rate,
+                    this.invoice.InitialTotal = invoiceToEdit.initialTotal,
+                    this.invoice.Discount = invoiceToEdit.Discount,
+                    this.invoice.DiscountTotal = invoiceToEdit.DiscountTotal,
+                    this.invoice.interMediateTotal = invoiceToEdit.interMediateTotal,
+                    this.invoice.GST = invoiceToEdit.GST,
+                    this.invoice.GSTPercent = invoiceToEdit.GSTPercent,
+                    this.invoice.GSTAmt = invoiceToEdit.GSTAmt,
+                    this.invoice.NetTotal = invoiceToEdit.NetTotal
+
                 this.updatedId = no;
                 this.amountInWords = this.convertToWords(invoiceToEdit.NetTotal);
-                console.log(this.amountInWords);
                 this.goToTab3();
+
             } else {
                 console.error('Invoice not found for editing');
             }
         },
 
-        clearShowFormData() {
-            this.showInvoiceData.No = null;
-            this.showInvoiceData.Date = moment().format('YYYY-MM-DD');
-            this.showInvoiceData.HeadName = '';
-            this.showInvoiceData.Address = '';
-            this.showInvoiceData.District = '';
-            this.showInvoiceData.PinCode = '';
-            this.showInvoiceData.PlaceOfSupply = '';
-            this.showInvoiceData.RONo = '';
-            this.showInvoiceData.RODate = moment().format('YYYY-MM-DD');
-            this.showInvoiceData.KeyNo = '';
-            this.showInvoiceData.ProductName = '';
-            this.showInvoiceData.Caption = '';
-            this.showInvoiceData.SizeWidth = null;
-            this.showInvoiceData.SizeHeight = null;
-            this.showInvoiceData.AreaOfEdition = '';
-            this.showInvoiceData.PagePosition = '';
-            this.showInvoiceData.Rate = null;
-            this.showInvoiceData.InitialTotal = null;
-            this.showInvoiceData.Discount = null;
-            this.showInvoiceData.DiscountTotal = null;
-            this.showInvoiceData.interMediateTotal = null;
-            this.showInvoiceData.GST = null;
-            this.showInvoiceData.NetTotal = null;
-        },
         clearAddFormData() {
-            this.invoice.No = null;
-            this.invoice.Date = moment().format('YYYY-MM-DD');
-            this.invoice.HeadName = '';
-            this.invoice.Address = '';
-            this.invoice.District = '';
-            this.invoice.PinCode = '';
-            this.invoice.PlaceOfSupply = '';
-            this.invoice.RONo = '';
-            this.invoice.RODate = moment().format('YYYY-MM-DD');
-            this.invoice.KeyNo = '';
-            this.invoice.ProductName = '';
-            this.invoice.Caption = '';
-            this.invoice.SizeWidth = null;
-            this.invoice.SizeHeight = null;
-            this.invoice.AreaOfEdition = '';
-            this.invoice.PagePosition = '';
-            this.invoice.Rate = null;
-            this.invoice.InitialTotal = null;
-            this.invoice.Discount = null;
-            this.invoice.DiscountTotal = null;
-            this.invoice.interMediateTotal = null;
-            this.invoice.GST = null;
-            this.invoice.NetTotal = null;
+            this.invoice.No = null,
+                this.invoice.Date = '',
+                this.invoice.HeadName = '',
+                this.invoice.Address = '',
+                this.invoice.PinCode = '',
+                this.invoice.GSTIN = '',
+                this.invoice.PlaceOfSupply = '',
+                this.invoice.RONo = '',
+                this.invoice.RODate = '',
+                this.invoice.ProductName = '',
+                this.invoice.KeyNo = '',
+                this.invoice.Caption = '',
+                this.invoice.SizeWidth = null,
+                this.invoice.SizeHeight = null,
+                this.invoice.AreaOfEdition = '',
+                this.invoice.PagePosition = '',
+                this.invoice.Rate = null,
+                this.invoice.InitialTotal = null,
+                this.invoice.Discount = null,
+                this.invoice.DiscountTotal = null,
+                this.invoice.interMediateTotal = null,
+                this.invoice.GST = null,
+                this.invoice.GSTPercent = null,
+                this.invoice.GSTAmt = null,
+                this.invoice.NetTotal = null
         },
+
         convertToWords(amount) {
             var a = ["", "One ", "Two ", "Three ", "Four ", "Five ", "Six ", "Seven ", "Eight ", "Nine ", "Ten ", "Eleven ", "Twelve ", "Thirteen ",
                 "Fourteen ", "Fifteen ", "Sixteen ", "Seventeen ", "Eighteen ", "Nineteen "];
@@ -359,13 +340,16 @@ var vm = new Vue({
 
             return inWords(amount);
         },
+
         openaddInvoiceModal() {
             $('#addInvoice-Modal').modal('show');
         },
+
         closeaddInvoiceModal() {
             $('#addInvoice-Modal').modal('hide');
             this.clearAddFormData();
         },
+
         switchTab(tab) {
             this.currentTab = tab;
             this.$nextTick(() => {
@@ -373,6 +357,7 @@ var vm = new Vue({
                 this.clearAddFormData();
             });
         },
+
         dashboardReportDownload: async function () {
             var notyf = new Notyf();
 
@@ -460,32 +445,38 @@ var vm = new Vue({
             notyf.success('Report Download successfully');
             window.URL.revokeObjectURL(blobUrl);
         },
+
         goToTab3() {
             this.currentTab = 'Tab 3';
         },
+
         initializeSelect2() {
             $('#single').select2({
-                
+
             }).on('change', (e) => {
                 this.selectedDrpFilter = $(e.target).val();
                 console.log(this.selectedDrpFilter);
             });
         },
+
         goToPage(page) {
             if (page >= 1 && page <= this.totalPages) {
                 this.currentPage = page;
             }
         },
+
         prevPage() {
             if (this.currentPage > 1) {
                 this.currentPage--;
             }
         },
+
         nextPage() {
             if (this.currentPage < this.totalPages) {
                 this.currentPage++;
             }
         },
+
         temp() {
             $("#ReportPage input").css({
                 "border": "none"
@@ -527,6 +518,7 @@ var vm = new Vue({
                 });
             }, 4000);
         },
+
     },
     mounted() {
         this.initializeSelect2();
