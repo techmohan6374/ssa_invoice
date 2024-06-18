@@ -18,19 +18,20 @@ var vm = new Vue({
     data: {
         invoiceData: [],
         searchText: '',
+        selectedDrpFilter: '',
         loaderStatus: false,
         showInvoiceData: [],
         updatedId: null,
         invoice: {
             No: null,
-            Date: moment().format('YYYY-MM-DD'),
+            Date: '',
             HeadName: '',
             Address: '',
             District: '',
             PinCode: '',
             PlaceOfSupply: '',
             RONo: '',
-            RODate: moment().format('YYYY-MM-DD'),
+            RODate: '',
             ProductName: '',
             KeyNo: '',
             Caption: '',
@@ -41,10 +42,11 @@ var vm = new Vue({
             PagePosition: '',
             Rate: null,
             InitialTotal: null,
-            Discount: 0,
+            Discount: null,
             DiscountTotal: null,
             interMediateTotal: null,
-            GST: 0,
+            GST: null,
+            GSTAmt: null,
             NetTotal: null
         },
         invoiceTotalData: [],
@@ -58,7 +60,12 @@ var vm = new Vue({
         filteredDashboardData() {
             var search = this.searchText.toLowerCase();
             var finalData = Enumerable.from(this.invoiceTotalData).toArray();
-            if (this.searchText != '') {
+
+            if (this.selectedDrpFilter && this.selectedDrpFilter !== '') {
+                finalData = finalData.filter(x => x.HeadName.toLowerCase().includes(this.selectedDrpFilter.toLowerCase()));
+            }
+
+            if (this.searchText && this.searchText !== '') {
                 finalData = finalData.filter(x =>
                     (x.No && x.No.toString().toLowerCase().includes(search)) ||
                     (x.Address && x.Address.toLowerCase().includes(search)) ||
@@ -70,10 +77,12 @@ var vm = new Vue({
                     (x.NetTotal && x.NetTotal.toString().toLowerCase().includes(search))
                 );
             }
-            if (this.selectedDate !== '') {
+
+            if (this.selectedDate && this.selectedDate !== '') {
                 let selectedMoment = moment(this.selectedDate); // Assuming selectedDate is in ISO format
                 finalData = finalData.filter(x => moment(x.Date).isSame(selectedMoment, 'day'));
             }
+
             this.currentPage = 1; // Reset to the first page after filtering
             return finalData;
         },
@@ -101,6 +110,17 @@ var vm = new Vue({
         }
     },
     methods: {
+        addToInvoie(no) {
+            var notyf = new Notyf();
+
+            const item = this.invoiceTotalData.find(row => row.No === no);
+            if (item) {
+                const itemCopy = { ...item };
+                delete itemCopy.id;
+                this.invoiceData.push(itemCopy);
+                notyf.success('Added successfully');
+            }
+        },
         readInvoiceData() {
             this.loaderStatus = true;
             var notyf = new Notyf();
@@ -121,9 +141,10 @@ var vm = new Vue({
             this.invoice.DiscountTotal = this.invoice.interMediateTotal * (this.invoice.Discount / 100);
             this.invoice.initialTotal = this.invoice.interMediateTotal - this.invoice.DiscountTotal;
 
-            this.invoice.GST = this.invoice.initialTotal * (this.invoice.GST / 100);
+            this.invoice.GSTAmt = this.invoice.GST / 2;
+            this.invoice.GST = Math.round(this.invoice.initialTotal * (this.invoice.GSTAmt / 100));
 
-            this.invoice.NetTotal = parseInt(this.invoice.initialTotal) + parseInt(this.invoice.GST);
+            this.invoice.NetTotal = parseInt(this.invoice.initialTotal) + parseInt(this.invoice.GST) + parseInt(this.invoice.GST);
         },
         addInvoiceData() {
             var notyf = new Notyf();
@@ -215,30 +236,31 @@ var vm = new Vue({
             if (invoiceToEdit) {
                 // Populate the invoice object with found data
                 this.invoice.No = invoiceToEdit.No;
-                this.invoice.Date = invoiceToEdit.Date;
+                this.invoice.Date = moment(invoiceToEdit.Date).format('DD-MM-YYYY');
                 this.invoice.HeadName = invoiceToEdit.HeadName;
                 this.invoice.Address = invoiceToEdit.Address;
                 this.invoice.District = invoiceToEdit.District;
                 this.invoice.PinCode = invoiceToEdit.PinCode;
                 this.invoice.PlaceOfSupply = invoiceToEdit.PlaceOfSupply;
                 this.invoice.RONo = invoiceToEdit.RONo;
-                this.invoice.RODate = invoiceToEdit.RODate;
+                this.invoice.RODate = moment(invoiceToEdit.RODate).format('DD-MM-YYYY');
                 this.invoice.KeyNo = invoiceToEdit.KeyNo;
                 this.invoice.ProductName = invoiceToEdit.ProductName;
                 this.invoice.Caption = invoiceToEdit.Caption;
                 this.invoice.SizeWidth = invoiceToEdit.SizeWidth;
                 this.invoice.SizeHeight = invoiceToEdit.SizeHeight;
-                this.invoice.AreaOfEdition = invoiceToEdit.AreaOfEdition;
-                this.invoice.PagePosition = invoiceToEdit.PagePosition;
-                this.invoice.Rate = invoiceToEdit.Rate;
+                this.invoice.AreaOfEdition = invoiceToEdit.AreaOfEdition.toUpperCase();
+                this.invoice.PagePosition = invoiceToEdit.PagePosition.toUpperCase();
+                this.invoice.Rate = invoiceToEdit.Rate + '.00';
                 this.invoice.InitialTotal = invoiceToEdit.InitialTotal;
                 this.invoice.Discount = invoiceToEdit.Discount;
                 this.invoice.DiscountTotal = invoiceToEdit.DiscountTotal;
-                this.invoice.interMediateTotal = invoiceToEdit.interMediateTotal;
+                this.invoice.interMediateTotal = invoiceToEdit.interMediateTotal + '.00';
+                this.invoice.GSTAmt = invoiceToEdit.GSTAmt;
                 this.invoice.GST = invoiceToEdit.GST;
                 this.invoice.NetTotal = invoiceToEdit.NetTotal;
                 this.updatedId = no;
-                this.amountInWords = this.convertToWords(this.invoice.NetTotal);
+                this.amountInWords = this.convertToWords(invoiceToEdit.NetTotal);
                 console.log(this.amountInWords);
                 this.goToTab3();
             } else {
@@ -265,10 +287,10 @@ var vm = new Vue({
             this.showInvoiceData.PagePosition = '';
             this.showInvoiceData.Rate = null;
             this.showInvoiceData.InitialTotal = null;
-            this.showInvoiceData.Discount = 0;
+            this.showInvoiceData.Discount = null;
             this.showInvoiceData.DiscountTotal = null;
             this.showInvoiceData.interMediateTotal = null;
-            this.showInvoiceData.GST = 0;
+            this.showInvoiceData.GST = null;
             this.showInvoiceData.NetTotal = null;
         },
         clearAddFormData() {
@@ -290,10 +312,10 @@ var vm = new Vue({
             this.invoice.PagePosition = '';
             this.invoice.Rate = null;
             this.invoice.InitialTotal = null;
-            this.invoice.Discount = 0;
+            this.invoice.Discount = null;
             this.invoice.DiscountTotal = null;
             this.invoice.interMediateTotal = null;
-            this.invoice.GST = 0;
+            this.invoice.GST = null;
             this.invoice.NetTotal = null;
         },
         convertToWords(amount) {
@@ -351,18 +373,102 @@ var vm = new Vue({
                 this.clearAddFormData();
             });
         },
-        dashboardReportDownload() {
-            alert('Contact @ Tech Mohan');
+        dashboardReportDownload: async function () {
+            var notyf = new Notyf();
+
+            var workbook = new ExcelJS.Workbook();
+            var worksheet = workbook.addWorksheet('Sheet1');
+
+            var title = 'SSA Invoice Report';
+            worksheet.mergeCells(1, 1, 1, 19);
+            worksheet.getCell(1, 1).value = title;
+            worksheet.getCell(1, 1).alignment = { horizontal: 'center' };
+            worksheet.getCell(1, 1).font = { bold: true, size: 15 };
+
+            const filteredDashboardData = this.filteredDashboardData;
+
+            if (filteredDashboardData.length > 0) {
+                const columnOrder = [
+                    'No', 'HeadName', 'Address', 'GSTIN', 'PlaceOfSupply',
+                    'RONo', 'RODate', 'ProductName', 'KeyNo', 'Caption', 'Date',
+                    'SizeHeight', 'SizeWidth', 'AreaOfEdition', 'PagePosition',
+                    'Rate', 'Discount', 'GST', 'NetTotal'
+                ];
+
+                const reorderedData = filteredDashboardData.map(item => {
+                    const reorderedItem = {};
+                    columnOrder.forEach(key => {
+                        reorderedItem[key] = item[key];
+                    });
+                    return reorderedItem;
+                });
+
+                const headers = columnOrder;
+                const headerRow = worksheet.addRow(headers);
+
+                headers.forEach((header, index) => {
+                    const cell = worksheet.getCell(2, index + 1);
+                    cell.font = { bold: true };
+                    cell.alignment = { horizontal: 'center', vertical: 'middle' };
+                    cell.border = {
+                        top: { style: 'thin' },
+                        left: { style: 'thin' },
+                        bottom: { style: 'thin' },
+                        right: { style: 'thin' }
+                    };
+                });
+
+                // Set column widths (adjust as needed)
+                const columnWidths = [10, 40, 40, 20, 20, 10, 10, 40, 20, 20, 20, 25, 25, 25, 25];
+                columnWidths.forEach((width, index) => {
+                    worksheet.getColumn(index + 1).width = width;
+                });
+
+                // Set row height based on content
+                reorderedData.forEach(data => {
+                    const row = worksheet.addRow(Object.values(data));
+                    row.eachCell((cell) => {
+                        cell.alignment = { horizontal: 'center', vertical: 'middle' };
+                        cell.border = {
+                            top: { style: 'thin' },
+                            left: { style: 'thin' },
+                            bottom: { style: 'thin' },
+                            right: { style: 'thin' }
+                        };
+                    });
+
+                    // Calculate the maximum row height needed dynamically
+                    const maxHeight = Math.max(...row.values.map(cell => {
+                        // Adjust the factor based on your content and font size
+                        return (cell && cell.toString().length > 40) ? 40 : 20;
+                    }));
+                    row.height = maxHeight;
+                });
+            }
+
+            const buffer = await workbook.xlsx.writeBuffer();
+            const blob = new Blob([buffer], {
+                type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+            });
+            const blobUrl = window.URL.createObjectURL(blob);
+
+            const link = document.createElement('a');
+            link.href = blobUrl;
+            link.download = 'SSA_Invoice_Report_List.xlsx';
+            link.click();
+
+            notyf.success('Report Download successfully');
+            window.URL.revokeObjectURL(blobUrl);
         },
         goToTab3() {
             this.currentTab = 'Tab 3';
         },
         initializeSelect2() {
             $('#single').select2({
-                placeholder: 'Select a template',
-                allowClear: false
-            }).on('change', function (e) {
-                console.log($(this).val());
+                allowClear: true
+            }).on('change', (e) => {
+                this.selectedDrpFilter = $(e.target).val();
+                console.log(this.selectedDrpFilter);
             });
         },
         goToPage(page) {

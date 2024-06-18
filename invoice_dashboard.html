@@ -89,11 +89,12 @@
                         <label for="single" class="d-block fw-bold mb-2" style="color:var(--primary-color)">Select
                             Template</label>
                         <select id="single" class="js-states" style="width: 100%;">
-                            <option>Template 1</option>
-                            <option>Template 2</option>
-                            <option>Template 3</option>
-                            <option>Template 4</option>
+                            <option value="">Select a template</option>
+                            <option value="Sri Gokulam Hospital">Sri Gokulam Hospital</option>
+                            <option value="Sri Gokulam Speciality Hospital">Sri Gokulam Speciality Hospital</option>
+                            <option value="Lakshmi Hotels">Lakshmi Hotels</option>
                         </select>
+
                     </div>
                     <div class="col-12 col-xl-3 mb-3 search-field" style="margin-top: 30px;position: relative;">
                         <input id="searchText" type="text" style="width: 100%;" v-model="searchText" required>
@@ -166,11 +167,12 @@
                                     <td>{{ row.NetTotal }}</td>
                                     <td class="flex position-sticky bg-white gap-2"
                                         style="width:140px;height:72px;right:-10px;border: 1px solid rgb(185, 185, 185);">
-                                        <button class="btn-view flex" title="Edit">
+                                        <!-- <button class="btn-view flex" title="Edit">
                                             <iconify-icon icon="fluent:edit-arrow-back-20-filled"></iconify-icon>
-                                        </button>
+                                        </button> -->
                                         <button class="btn-view flex" title="Add"
-                                            style="background-color: var(--fifth-color);">
+                                            style="background-color: var(--fifth-color);"
+                                            v-on:click="addToInvoie(row.No)">
                                             <iconify-icon icon="fluent:add-12-filled"></iconify-icon>
                                         </button>
                                     </td>
@@ -237,7 +239,7 @@
                 </div>
                 <div class="card position-relative border-0 rounded-0">
                     <div class="table-card scroll-bar">
-                        <table>
+                        <table id="dataTable">
                             <thead>
                                 <tr>
                                     <th>S.No</th>
@@ -366,33 +368,53 @@
                                 <div class="div-2">Address : </div>
                                 <div class="div-3">Pincode : </div>
                                 <div class="div-4">GSTIN : </div>
-                                <div class="div-5">Place of Sudivly : </div>
+                                <div class="div-5">Place of Supply : </div>
                             </div>
                             <div class="right">
-                                <div><textarea v-model="invoice.HeadName"></textarea></div>
-                                <div><textarea v-model="invoice.Address+invoice.District"></textarea></div>
-                                <div><input type="text" v-model="invoice.PinCode"></div>
-                                <div><input type="text" v-model="invoice.GSTIN"></div>
-                                <div><input type="text" v-model="invoice.PlaceOfSupply"></div>
+                                <div class="div-1" style="margin-bottom: 14px;">
+                                    <textarea v-model="invoice.HeadName"></textarea>
+                                </div>
+                                <div class="div-2">
+                                    <textarea v-model="invoice.Address+invoice.District"></textarea>
+                                </div>
+                                <div class="div-3">
+                                    <input type="text" v-model="invoice.PinCode">
+                                </div>
+                                <div class="div-4">
+                                    <input type="text" v-model="invoice.GSTIN">
+                                </div>
+                                <div class="div-5">
+                                    <input type="text" v-model="invoice.PlaceOfSupply">
+                                </div>
                             </div>
                         </div>
                         <div class="gr-box gr-box-8 flex" style="grid-area: item-8">
                             <div class="left">
-                                <div class="div-1">KALAIKADHIR </div>
+                                <div class="div-1" style="font-size:20px;">KALAIKADHIR </div>
                                 <div class="div-2">Agency Code : </div>
                                 <div class="div-3">R.O.No : </div>
                                 <div class="div-4">R.O.Date : </div>
-                                <div class="div-5">Product : </div>
+                                <div class="div-5" style="margin-bottom: 36px;">Product : </div>
                                 <div class="div-6">Key No : </div>
                                 <div class="div-7">Caption : </div>
                             </div>
                             <div class="right">
                                 <div class="age-code">AAS185</div>
-                                <div><input type="text" v-model="invoice.RONo"></div>
-                                <div><input type="text" v-model="invoice.RODate"></div>
-                                <div><input type="text" v-model="invoice.ProductName"></div>
-                                <div><input type="text" v-model="invoice.KeyNo"></div>
-                                <div><input type="text" v-model="invoice.Caption"></div>
+                                <div>
+                                    <input type="text" v-model="invoice.RONo">
+                                </div>
+                                <div>
+                                    <input type="text" v-model="invoice.RODate">
+                                </div>
+                                <div style="margin-bottom: 7px;">
+                                    <textarea v-model="invoice.ProductName"></textarea>
+                                </div>
+                                <div>
+                                    <input type="text" v-model="invoice.KeyNo">
+                                </div>
+                                <div>
+                                    <input type="text" v-model="invoice.Caption">
+                                </div>
                             </div>
                         </div>
                         <div class="gr-box gr-box-9 flex" style="grid-area: item-9">
@@ -438,14 +460,14 @@
                                 <div style="color:#00b050">Product Discount &nbsp;&nbsp;&nbsp; {{invoice.Discount}} %
                                 </div>
                                 <div>Amount</div>
-                                <div>CGST 2.5%</div>
-                                <div>SGST 2.5%</div>
+                                <div>CGST {{invoice.GSTAmt}} %</div>
+                                <div>SGST {{invoice.GSTAmt}} %</div>
                             </div>
                             <div class="right flex">
-                                <div>{{invoice.DiscountTotal}}</div>
-                                <div>{{invoice.initialTotal}}</div>
-                                <div>{{invoice.GST}}</div>
-                                <div>{{invoice.GST}}</div>
+                                <div>{{invoice.DiscountTotal}}.00</div>
+                                <div>{{invoice.initialTotal}}.00</div>
+                                <div>{{invoice.GST}}.00</div>
+                                <div>{{invoice.GST}}.00</div>
                             </div>
                         </div>
                         <div class="gr-box gr-box-22 flex" style="grid-area: item-22;">
@@ -453,7 +475,7 @@
                                 Net Amount&nbsp;
                             </div>
                             <div class="right flex">
-                                {{invoice.NetTotal}}
+                                {{invoice.NetTotal}}.00
                             </div>
                         </div>
                         <div class="gr-box gr-box-23 flex" style="grid-area: item-23;">
@@ -621,6 +643,8 @@
         <script
             src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.6/jspdf.plugin.autotable.min.js"></script>
 
+        <!-- Excel JS CDN -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"></script>
 
         <!-- html2canvas CDN -->
         <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>

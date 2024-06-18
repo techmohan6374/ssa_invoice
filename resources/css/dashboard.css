@@ -228,7 +228,7 @@ ul li {
 .filter-div .select2-selection__arrow::before {
     content: '';
     position: absolute;
-    right: 10px;
+    right: 1px;
     top: 10px;
     width: 20px;
     height: 20px;
@@ -466,7 +466,7 @@ ul li {
     .box {
         display: grid;
         grid-template-columns: 34mm 51mm 25mm 25mm 32mm 43mm;
-        grid-template-rows: 40mm 8mm 9mm 9mm 57mm 12mm 9mm 69mm 10mm 18mm 7mm 7mm 42mm;
+        grid-template-rows: 40mm 8mm 9mm 9mm 72mm 16mm 9mm 50mm 10mm 18mm 7mm 7mm 42mm;
         grid-template-areas:
             "item-1 item-1 item-1 item-1 item-1 item-1"
             "item-2 item-2 item-3 item-3 item-4 item-4"
@@ -483,8 +483,6 @@ ul li {
             "item-27 item-27 item-27 item-27 item-24 item-24"
         ;
     }
-
-    .box .btns-download {}
 
     .gr-box {
         border: 1px solid black;
@@ -553,7 +551,6 @@ ul li {
     }
 
     .gr-box-6 input {
-        padding: 0px 10px;
         border: 1px solid lightgrey;
         outline: none;
         color: var(--theme-imp-color);
@@ -564,14 +561,15 @@ ul li {
         align-items: flex-start;
         color: var(--theme-imp-color);
         padding: 10px 0px 0px 0px;
+        font-size: 16px;
     }
 
     .gr-box-7 .left .div-1 {
-        margin-bottom: 25px;
+        margin-bottom: 65px;
     }
 
     .gr-box-7 .left .div-2 {
-        margin-bottom: 25px;
+        margin-bottom: 57px;
     }
 
     .gr-box-7 .left .div-3 {
@@ -583,45 +581,48 @@ ul li {
     }
 
     .gr-box-7 input {
-        padding: 0px 10px;
         border: 1px solid lightgrey;
         outline: none;
         color: var(--theme-imp-color);
-        width: 245px;
+        width: 270px;
     }
 
     .gr-box-7 textarea {
         border: 1px solid lightgrey;
         outline: none;
-        width: 245px;
-        height: 50px;
+        width: 270px;
+        height: 74px;
         resize: none;
-        padding: 0px 10px;
         color: var(--theme-imp-color);
     }
 
     .gr-box-8 {
-        justify-content: space-around;
+        justify-content: space-between;
         align-items: flex-start;
         color: var(--theme-imp-color);
-        padding: 10px 0px 0px 0px;
+        padding: 10px 5px 0px 5px;
+        font-size: 16px;
     }
 
     .gr-box-8 input {
-        padding: 0px 10px;
         border: 1px solid lightgrey;
         outline: none;
         color: var(--theme-imp-color);
-        width: 200px;
+        width: 260px;
+    }
+
+    .gr-box-8 textarea {
+        border: 1px solid lightgrey;
+        outline: none;
+        width: 260px;
+        height: 74px;
+        resize: none;
+        color: var(--theme-imp-color);
     }
 
     .gr-box-8 .left .div-1 {
         font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
         color: var(--theme-color);
-    }
-
-    .gr-box-8 .left .div-2 {
-        margin-bottom: 5px;
     }
 
     .gr-box-8 .left .div-3 {
@@ -633,7 +634,7 @@ ul li {
     }
 
     .gr-box-8 .right .age-code {
-        margin: 28px 0px 5px 0px;
+        margin: 31px 0px 5px 2px;
     }
 
     .gr-box-9 {
@@ -693,7 +694,6 @@ ul li {
     .gr-box-15 input {
         border: 1px solid lightgray;
         outline: none;
-        padding: 0px 5px;
         width: 110px;
         color: var(--theme-imp-color);
         font-weight: bold;
@@ -710,7 +710,6 @@ ul li {
     .gr-box-16 input {
         border: 1px solid lightgray;
         outline: none;
-        padding: 0px 5px;
         width: 50px;
         color: var(--theme-imp-color);
         font-weight: bold;
@@ -720,7 +719,6 @@ ul li {
     .gr-box-17 input {
         border: 1px solid lightgray;
         outline: none;
-        padding: 0px 5px;
         width: 85px;
         color: var(--theme-imp-color);
         font-weight: bold;
@@ -730,7 +728,6 @@ ul li {
     .gr-box-18 input {
         border: 1px solid lightgray;
         outline: none;
-        padding: 0px 5px;
         width: 85px;
         color: var(--theme-imp-color);
         font-weight: bold;
@@ -740,7 +737,6 @@ ul li {
     .gr-box-19 input {
         border: 1px solid lightgray;
         outline: none;
-        padding: 0px 5px;
         width: 110px;
         color: var(--theme-imp-color);
         font-weight: bold;
@@ -750,7 +746,6 @@ ul li {
     .gr-box-20 input {
         border: 1px solid lightgray;
         outline: none;
-        padding: 0px 5px;
         width: 135px;
         color: var(--theme-imp-color);
         font-weight: bold;
