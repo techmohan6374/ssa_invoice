@@ -465,7 +465,7 @@ var vm = new Vue({
         },
         initializeSelect2() {
             $('#single').select2({
-                allowClear: true
+                
             }).on('change', (e) => {
                 this.selectedDrpFilter = $(e.target).val();
                 console.log(this.selectedDrpFilter);
