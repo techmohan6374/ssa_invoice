@@ -128,7 +128,7 @@ var vm = new Vue({
             }
         },
         readInvoiceData() {
-            // this.loaderStatus = true;
+            this.loaderStatus = true;
             var notyf = new Notyf();
 
             database.ref('invoiceData').once('value').then((snapshot) => {
