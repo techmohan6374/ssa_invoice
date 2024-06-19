@@ -143,7 +143,7 @@ var vm = new Vue({
             });
         },
         calculateInvoiceData() {
-            this.invoice.initialTotal = ((this.invoice.SizeWidth) * (this.invoice.SizeHeight) * (this.invoice.Rate));
+            this.invoice.initialTotal = (parseInt(this.invoice.SizeWidth) * parseInt(this.invoice.SizeHeight) * parseInt(this.invoice.Rate));
             this.invoice.initialTotal = parseFloat(this.invoice.initialTotal).toFixed(2);
             console.log(this.invoice.initialTotal);
             this.invoice.Rate = parseFloat(this.invoice.Rate).toFixed(2);
@@ -299,6 +299,7 @@ var vm = new Vue({
 
                 this.updatedId = no;
                 this.amountInWords = this.convertToWords(invoiceToEdit.NetTotal);
+                this.calculateInvoiceData();
                 this.goToTab3();
 
             } else {
@@ -527,7 +528,7 @@ var vm = new Vue({
                 pdf.addImage(imgData, 'PNG', x, y, pdfWidth, pdfHeight);
                 pdf.save('SSA_Invoice.pdf');
                 notyf.success('Report Saved successfully');
-              
+
             });
             setInterval(() => {
                 $("#ReportPage input").css({
