@@ -495,6 +495,7 @@ var vm = new Vue({
         },
 
         temp() {
+            var notyf = new Notyf();
             $("#ReportPage input").css({
                 "border": "none"
             });
@@ -525,11 +526,8 @@ var vm = new Vue({
 
                 pdf.addImage(imgData, 'PNG', x, y, pdfWidth, pdfHeight);
                 pdf.save('SSA_Invoice.pdf');
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Success',
-                    text: 'Invoice Saved Successfully'
-                });
+                notyf.success('Report Saved successfully');
+              
             });
             setInterval(() => {
                 $("#ReportPage input").css({

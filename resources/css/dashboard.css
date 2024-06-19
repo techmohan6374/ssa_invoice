@@ -590,7 +590,7 @@ ul li {
     border: 1px solid lightgrey;
     outline: none;
     width: 270px;
-    height: 74px;
+    height: 79px;
     resize: none;
     color: var(--theme-imp-color);
 }
@@ -614,7 +614,7 @@ ul li {
     border: 1px solid lightgrey;
     outline: none;
     width: 260px;
-    height: 74px;
+    height: 79px;
     resize: none;
     color: var(--theme-imp-color);
 }
