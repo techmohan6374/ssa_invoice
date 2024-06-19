@@ -86,12 +86,18 @@ var vm = new Vue({
             this.currentPage = 1; // Reset to the first page after filtering
             return finalData;
         },
+        getDashboardData() {
+            // Use moment.js for date formatting
+            var Task = this.filteredDashboardData;
+            return Task;
+        },
+
         totalPages() {
-            return Math.ceil(this.filteredDashboardData.length / this.rowsPerPage);
+            return Math.ceil(this.getDashboardData.length / this.rowsPerPage);
         },
         paginatedData() {
             const start = (this.currentPage - 1) * this.rowsPerPage;
-            return this.filteredDashboardData.slice(start, start + this.rowsPerPage);
+            return this.getDashboardData.slice(start, start + this.rowsPerPage);
         },
         visiblePages() {
             let pages = [];
@@ -137,28 +143,56 @@ var vm = new Vue({
             });
         },
         calculateInvoiceData() {
-            this.invoice.initialTotal = parseInt(this.invoice.SizeWidth) * parseInt(this.invoice.SizeHeight) * parseInt(this.invoice.Rate);
+            this.invoice.initialTotal = (parseFloat(this.invoice.SizeWidth) * parseFloat(this.invoice.SizeHeight) * parseFloat(this.invoice.Rate)).toFixed(2);
             console.log(this.invoice.initialTotal);
+            this.invoice.Rate = parseFloat(this.invoice.Rate).toFixed(2);
 
-            this.invoice.DiscountTotal = parseInt(this.invoice.initialTotal) * (parseInt(this.invoice.Discount) / 100);
+            this.invoice.DiscountTotal = (parseFloat(this.invoice.initialTotal) * (parseFloat(this.invoice.Discount) / 100)).toFixed(2);
             console.log(this.invoice.DiscountTotal);
 
-            this.invoice.interMediateTotal = parseInt(this.invoice.initialTotal) - parseInt(this.invoice.DiscountTotal);
+            this.invoice.interMediateTotal = (parseFloat(this.invoice.initialTotal) - parseFloat(this.invoice.DiscountTotal)).toFixed(2);
             console.log(this.invoice.interMediateTotal);
 
-            this.invoice.GSTPercent = parseInt(this.invoice.GST) / 2;
+            this.invoice.GSTPercent = (parseFloat(this.invoice.GST) / 2).toFixed(2);
             console.log(this.invoice.GSTPercent);
 
-            this.invoice.GSTAmt = Math.round(parseInt(this.invoice.interMediateTotal) * (parseInt(this.invoice.GST) / 100))
+            this.invoice.GSTAmt = Math.round(parseFloat(this.invoice.interMediateTotal) * (parseFloat(this.invoice.GST) / 100)).toFixed(2);
             console.log(this.invoice.GSTAmt);
 
-            this.invoice.NetTotal = parseInt(this.invoice.interMediateTotal) + parseInt(this.invoice.GSTAmt);
+            this.invoice.NetTotal = (parseFloat(this.invoice.interMediateTotal) + parseFloat(this.invoice.GSTAmt)).toFixed(2);
             console.log(this.invoice.NetTotal);
         },
+
         addInvoiceData() {
             var notyf = new Notyf();
             this.calculateInvoiceData();
-            this.invoiceData.push({ ...this.invoice });
+            this.invoiceData.push({
+                No: this.invoice.No,
+                Date: moment(this.invoice.Data).format('YYYY-MM-DD'),
+                HeadName: this.invoice.HeadName.toUpperCase(),
+                Address: this.invoice.Address,
+                PinCode: this.invoice.PinCode,
+                GSTIN: this.invoice.GSTIN.toUpperCase(),
+                PlaceOfSupply: this.invoice.PlaceOfSupply,
+                RONo: this.invoice.RONo,
+                RODate: moment(this.invoice.RODate).format('YYYY-MM-DD'),
+                ProductName: this.invoice.ProductName.toUpperCase(),
+                KeyNo: this.invoice.KeyNo.toUpperCase(),
+                Caption: this.invoice.Caption.toUpperCase(),
+                SizeWidth: this.invoice.SizeWidth,
+                SizeHeight: this.invoice.SizeHeight,
+                AreaOfEdition: this.invoice.AreaOfEdition.toUpperCase(),
+                PagePosition: this.invoice.PagePosition.toUpperCase(),
+                Rate: this.invoice.Rate,
+                InitialTotal: this.invoice.initialTotal,
+                Discount: this.invoice.Discount,
+                DiscountTotal: this.invoice.DiscountTotal,
+                interMediateTotal: this.invoice.interMediateTotal,
+                GST: this.invoice.GST,
+                GSTPercent: this.invoice.GSTPercent,
+                GSTAmt: this.invoice.GSTAmt,
+                NetTotal: this.invoice.NetTotal
+            });
             this.closeaddInvoiceModal();
             this.clearAddFormData();
             notyf.success('Added successfully');
@@ -302,43 +336,25 @@ var vm = new Vue({
         convertToWords(amount) {
             var a = ["", "One ", "Two ", "Three ", "Four ", "Five ", "Six ", "Seven ", "Eight ", "Nine ", "Ten ", "Eleven ", "Twelve ", "Thirteen ",
                 "Fourteen ", "Fifteen ", "Sixteen ", "Seventeen ", "Eighteen ", "Nineteen "];
-            var b = ["", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety",];
+            var b = ["", "", "Twenty ", "Thirty ", "Forty ", "Fifty ", "Sixty ", "Seventy ", "Eighty ", "Ninety "];
 
             function inWords(num) {
                 if ((num = num.toString()).length > 9) return "Overflow";
-                var n = ("000000000" + num)
-                    .substr(-9)
-                    .match(/^(\d{2})(\d{2})(\d{2})(\d{1})(\d{2})$/);
+                var n = ("000000000" + num).substr(-9).match(/^(\d{2})(\d{2})(\d{2})(\d{1})(\d{2})$/);
                 if (!n) return "";
                 var str = "";
-                str +=
-                    n[1] != 0
-                        ? (a[Number(n[1])] || b[n[1][0]] + " " + a[n[1][1]]) +
-                        "Crore "
-                        : "";
-                str +=
-                    n[2] != 0
-                        ? (a[Number(n[2])] || b[n[2][0]] + " " + a[n[2][1]]) + "Lakh "
-                        : "";
-                str +=
-                    n[3] != 0
-                        ? (a[Number(n[3])] || b[n[3][0]] + " " + a[n[3][1]]) +
-                        "Thousand "
-                        : "";
-                str +=
-                    n[4] != 0
-                        ? (a[Number(n[4])] || b[n[4][0]] + " " + a[n[4][1]]) +
-                        "Hundred "
-                        : "";
-                str +=
-                    n[5] != 0
-                        ? (str != "" ? "And " : "") +
-                        (a[Number(n[5])] || b[n[5][0]] + " " + a[n[5][1]])
-                        : "";
+                str += n[1] != 0 ? (a[Number(n[1])] || b[n[1][0]] + " " + a[n[1][1]]) + "Crore " : "";
+                str += n[2] != 0 ? (a[Number(n[2])] || b[n[2][0]] + " " + a[n[2][1]]) + "Lakh " : "";
+                str += n[3] != 0 ? (a[Number(n[3])] || b[n[3][0]] + " " + a[n[3][1]]) + "Thousand " : "";
+                str += n[4] != 0 ? (a[Number(n[4])] || b[n[4][0]] + " " + a[n[4][1]]) + "Hundred " : "";
+                str += n[5] != 0 ? (str != "" ? "And " : "") + (a[Number(n[5])] || b[n[5][0]] + " " + a[n[5][1]]) : "";
                 return str.trim();
             }
 
-            return inWords(amount);
+            // Remove decimal part if any
+            var integerAmount = Math.floor(amount);
+
+            return inWords(integerAmount);
         },
 
         openaddInvoiceModal() {

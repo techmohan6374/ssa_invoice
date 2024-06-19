@@ -115,11 +115,10 @@
                         <table id="invoice-table">
                             <thead>
                                 <tr>
-                                    <th>S.No</th>
+                                    <th>Invoice No</th>
                                     <th>Date</th>
                                     <th>Head Name</th>
                                     <th>Address</th>
-                                    <th>District</th>
                                     <th>PinCode</th>
                                     <th>GSTIN</th>
                                     <th>Place Of Supply</th>
@@ -132,7 +131,7 @@
                                     <th>Area</th>
                                     <th>Page Position</th>
                                     <th>Rate Per Sqcm</th>
-                                    <th>Total Amount</th>
+                                    <th>Initial Toal</th>
                                     <th>Discount %</th>
                                     <th>GST %</th>
                                     <th>Net Amount</th>
@@ -148,7 +147,6 @@
                                     <td>{{ row.Date }}</td>
                                     <td>{{ row.HeadName }}</td>
                                     <td>{{ row.Address }}</td>
-                                    <td>{{ row.District }}</td>
                                     <td>{{ row.PinCode }}</td>
                                     <td>{{ row.GSTIN }}</td>
                                     <td>{{ row.PlaceOfSupply }}</td>
@@ -439,7 +437,8 @@
                             <input type="text" v-model="invoice.Date">
                         </div>
                         <div class="gr-box gr-box-16 flex" style="grid-area: item-16;">
-                            <input type="text" v-model="invoice.SizeWidth"> X
+                            <input type="text" v-model="invoice.SizeWidth">
+                            <iconify-icon icon="ic:twotone-close"></iconify-icon>
                             <input type="text" v-model="invoice.SizeHeight">
                         </div>
                         <div class="gr-box gr-box-17 flex" style="grid-area: item-17;">
@@ -452,7 +451,7 @@
                             <input type="text" v-model="invoice.Rate">
                         </div>
                         <div class="gr-box gr-box-20 flex" style="grid-area: item-20;">
-                            <input type="text" v-model="invoice.InitialTotal">
+                            <input type="text" v-model="invoice.initialTotal">
                         </div>
                         <div class="gr-box gr-box-21 flex" style="grid-area: item-21;">
                             <div class="left flex">
@@ -463,10 +462,10 @@
                                 <div>SGST {{invoice.GSTPercent}} %</div>
                             </div>
                             <div class="right flex">
-                                <div>{{invoice.DiscountTotal}}.00</div>
-                                <div>{{invoice.interMediateTotal}}.00</div>
-                                <div>{{invoice.GSTAmt}}.00</div>
-                                <div>{{invoice.GSTAmt}}.00</div>
+                                <div>{{invoice.DiscountTotal}}</div>
+                                <div>{{invoice.interMediateTotal}}</div>
+                                <div>{{invoice.GSTAmt}}</div>
+                                <div>{{invoice.GSTAmt}}</div>
                             </div>
                         </div>
                         <div class="gr-box gr-box-22 flex" style="grid-area: item-22;">
@@ -474,7 +473,7 @@
                                 Net Amount&nbsp;
                             </div>
                             <div class="right flex">
-                                {{invoice.NetTotal}}.00
+                                {{invoice.NetTotal}}
                             </div>
                         </div>
                         <div class="gr-box gr-box-23 flex" style="grid-area: item-23;">
