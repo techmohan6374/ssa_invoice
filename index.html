@@ -4,11 +4,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>SSA Dashboard</title>
 </head>
 
 <body>
-    <a href="invoice_dashboard.html">Go</a>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+        * {
+            margin: 0px;
+            padding: 0px;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        .container {
+            width: 100dvw;
+            height: 100dvh;
+        }
+
+        .flex {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        a {
+            text-decoration: none;
+            background-color: #34495e;
+            color: white;
+            padding: 10px 15px;
+            font-size: 20px;
+            border-radius: 5px;
+        }
+
+        a:hover {
+            background-color: #28394b;
+        }
+    </style>
+
+    <div id="app" class="container flex">
+        <a href="invoice_dashboard.html">Go to Invoice Dashboard</a>
+    </div>
+
+    <!-- Confetti JS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+    <!-- Vue JS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+
+            },
+            computed: {
+
+            },
+            methods: {
+
+            },
+            watch: {
+
+            },
+            mounted() {
+
+            },
+            created() {
+
+            },
+        });
+    </script>
 </body>
 
 </html>

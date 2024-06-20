@@ -374,6 +374,7 @@ var vm = new Vue({
             this.$nextTick(() => {
                 this.initializeSelect2();
                 this.clearAddFormData();
+                
             });
         },
 
