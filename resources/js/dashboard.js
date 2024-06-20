@@ -52,7 +52,7 @@ var vm = new Vue({
         invoiceTotalData: [],
         amountInWords: '',
         currentPage: 1,
-        rowsPerPage: 10,
+        rowsPerPage: 6,
         selectedDate: '',
         currentTab: 'Tab 1'
     },
@@ -216,6 +216,7 @@ var vm = new Vue({
                         text: 'All Invoices Saved Successfully'
                     });
                     this.readInvoiceData();
+                    this.invoiceData = [];
                 })
                 .catch((error) => {
                     notyf.error('Failed to save invoices');
@@ -500,7 +501,7 @@ var vm = new Vue({
             $("#ReportPage input").css({
                 "border": "none"
             });
-            $("#ReportPage textarea").css({
+            $(".text-area").css({
                 "border": "none"
             });
 
@@ -534,7 +535,7 @@ var vm = new Vue({
                 $("#ReportPage input").css({
                     "border": "1px solid lightgrey"
                 });
-                $("#ReportPage textarea").css({
+                $(".text-area").css({
                     "border": "1px solid lightgrey"
                 });
             }, 4000);

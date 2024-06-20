@@ -30,15 +30,14 @@
         <div v-if="loaderStatus" class="loader-div flex"
             style="position: absolute;left:0px;top:0px;width:100vw;height:100vh;background-color: rgb(0, 0, 0,0.9);z-index: 2;">
             <div class="loader">
-
             </div>
         </div>
 
         <div class="side-menu" style="width: 80px;">
             <div class="nav-header mb-4">
                 <a href="#">
-                    <img src="resources/images/Logo.png" alt="Taskhops Logo" class="taskhops-small-logo"
-                        style="width: 100%; display: block;">
+                    <img src="resources/images/ssa_logo.png" alt="Taskhops Logo" class="SSA Logo"
+                        style="width: 100%; display: block;border:2px solid white;border-radius: 50%;">
                 </a>
             </div>
             <div class="nav-body">
@@ -209,7 +208,7 @@
         <div class="main" style="margin-left: 80px;" v-if="currentTab === 'Tab 2'">
             <div class="main-header">
                 <div class="row" style="width: 100%;">
-                    <div class="col-12 col-md-3">
+                    <div class="col-12 col-xl-3">
                         <div class="dashboard-show flex gap-2">
                             <iconify-icon icon="carbon:document" style="font-size: 20px;"></iconify-icon>Create Invoice
                         </div>
@@ -313,7 +312,7 @@
         <div class="main" style="margin-left: 80px;" v-if="currentTab === 'Tab 3' ">
             <div class="main-header">
                 <div class="row" style="width: 100%;">
-                    <div class="col-12 col-md-3">
+                    <div class="col-12 col-xl-3">
                         <div class="dashboard-show flex gap-2">
                             <iconify-icon icon="mingcute:user-edit-fill"></iconify-icon></iconify-icon>Update Invoice
                         </div>
@@ -369,10 +368,10 @@
                             </div>
                             <div class="right">
                                 <div class="div-1" style="margin-bottom: 4px;">
-                                    <textarea v-model="invoice.HeadName"></textarea>
+                                    <div v-html="invoice.HeadName" contenteditable class="text-area"></div>
                                 </div>
                                 <div class="div-2" style="margin-bottom: 9px;">
-                                    <textarea v-model="invoice.Address"></textarea>
+                                    <div v-html="invoice.Address" contenteditable class="text-area"></div>
                                 </div>
                                 <div class="div-3">
                                     <input type="text" v-model="invoice.PinCode">
@@ -407,7 +406,7 @@
                                     <input type="text" v-model="invoice.RODate">
                                 </div>
                                 <div style="margin-bottom: 7px;">
-                                    <textarea v-model="invoice.ProductName"></textarea>
+                                    <div class="text-area" v-html="invoice.ProductName" contenteditable></div>
                                 </div>
                                 <div>
                                     <input type="text" v-model="invoice.KeyNo">
@@ -417,14 +416,14 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="gr-box gr-box-9 flex" style="grid-area: item-9">
+                        <div class="gr-box gr-box-9 flex" style="grid-area: item-9;text-align: center;">
                             Date of Insertion
                         </div>
                         <div class="gr-box gr-box-10 flex" style="grid-area: item-10;">
                             <div class="top flex">Size</div>
                             <div class="bottom flex">Sq Cm</div>
                         </div>
-                        <div class="gr-box gr-box-11 flex" style="grid-area: item-11;">
+                        <div class="gr-box gr-box-11 flex" style="grid-area: item-11;text-align: center;">
                             Area Edition
                         </div>
                         <div class="gr-box gr-box-12 flex" style="grid-area: item-12;">

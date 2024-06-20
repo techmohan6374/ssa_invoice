@@ -486,7 +486,6 @@ ul li {
 
 .gr-box {
     border: 1px solid black;
-    font-family: mySecondFont;
 }
 
 .gr-box-1 {
@@ -587,7 +586,7 @@ ul li {
     width: 270px;
 }
 
-.gr-box-7 textarea {
+.gr-box-7 .text-area {
     border: 1px solid lightgrey;
     outline: none;
     width: 270px;
@@ -611,7 +610,7 @@ ul li {
     width: 260px;
 }
 
-.gr-box-8 textarea {
+.gr-box-8 .text-area {
     border: 1px solid lightgrey;
     outline: none;
     width: 260px;
@@ -836,6 +835,7 @@ ul li {
 .gr-box-26 {
     color: var(--theme-imp-color);
     padding: 0px 0px 0px 10px;
+    font-size: 14px;
 }
 
 .gr-box-27 {
