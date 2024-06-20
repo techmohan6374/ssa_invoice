@@ -179,7 +179,10 @@
                     </div>
                 </div>
                 <div class="row my-4">
-                    <div class="col-12">
+                    <div class="col-12 col-xl-5">
+                        Total Invoice Count : <span class="fw-bold">{{invoiceTotalData.length}}</span>
+                    </div>
+                    <div class="col-12 col-xl-7">
                         <div class="pagination">
                             <button title="First Page" v-on:click="goToPage(1)" :disabled="currentPage === 1">
                                 <iconify-icon icon="material-symbols:first-page"></iconify-icon>
@@ -202,6 +205,7 @@
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
 
@@ -257,7 +261,7 @@
                                     <th>Rate Per Sqcm</th>
                                     <th>Total Amount</th>
                                     <th>Discount</th>
-                                    <th>CGST</th>
+                                    <th>GST</th>
                                     <th>Net Amount</th>
                                     <th class="flex position-sticky"
                                         style="width:100px;height:114px;right:-10px;background-color: var(--primary-color);">

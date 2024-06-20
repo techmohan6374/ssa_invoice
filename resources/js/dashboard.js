@@ -153,14 +153,14 @@ var vm = new Vue({
 
             this.invoice.interMediateTotal = (parseFloat(this.invoice.initialTotal) - parseFloat(this.invoice.DiscountTotal)).toFixed(2);
             console.log(this.invoice.interMediateTotal);
-
+            console.log(this.invoice.GST);
             this.invoice.GSTPercent = (parseFloat(this.invoice.GST) / 2).toFixed(2);
             console.log(this.invoice.GSTPercent);
 
-            this.invoice.GSTAmt = Math.round(parseFloat(this.invoice.interMediateTotal) * (parseFloat(this.invoice.GST) / 100)).toFixed(2);
+            this.invoice.GSTAmt = (parseFloat(this.invoice.interMediateTotal) * (parseFloat(this.invoice.GSTPercent) / 100)).toFixed(2);
             console.log(this.invoice.GSTAmt);
 
-            this.invoice.NetTotal = (parseFloat(this.invoice.interMediateTotal) + parseFloat(this.invoice.GSTAmt)).toFixed(2);
+            this.invoice.NetTotal = (parseFloat(this.invoice.interMediateTotal) + (parseFloat(this.invoice.GSTAmt)) + (parseFloat(this.invoice.GSTAmt))).toFixed(2);
             console.log(this.invoice.NetTotal);
         },
 
