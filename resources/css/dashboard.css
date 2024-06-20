@@ -610,7 +610,7 @@ ul li {
     width: 260px;
 }
 
-.gr-box-8 div {
+.gr-box-8 .text-area {
     border: 1px solid lightgrey;
     outline: none;
     width: 260px;
