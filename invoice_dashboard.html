@@ -373,10 +373,10 @@
                             </div>
                             <div class="right">
                                 <div class="div-1" style="margin-bottom: 4px;">
-                                    <div v-html="invoice.HeadName" contenteditable class="text-area"></div>
+                                    <div v-html="invoice.HeadName" contenteditable class="text-area" id="powerHeadName"></div>
                                 </div>
                                 <div class="div-2" style="margin-bottom: 9px;">
-                                    <div v-html="invoice.Address" contenteditable class="text-area"></div>
+                                    <div v-html="invoice.Address" contenteditable class="text-area" id="powerAddress"></div>
                                 </div>
                                 <div class="div-3">
                                     <input type="text" v-model="invoice.PinCode">
@@ -411,7 +411,7 @@
                                     <input type="text" v-model="invoice.RODate">
                                 </div>
                                 <div style="margin-bottom: 7px;">
-                                    <div class="text-area" v-html="invoice.ProductName" contenteditable></div>
+                                    <div class="text-area" v-html="invoice.ProductName" contenteditable id="powerProductName"></div>
                                 </div>
                                 <div>
                                     <input type="text" v-model="invoice.KeyNo">

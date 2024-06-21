@@ -232,19 +232,24 @@ var vm = new Vue({
         },
         UpdateInvoiceData() {
             var notyf = new Notyf();
+
+            var powerHeadName = document.querySelector('#powerHeadName').innerHTML;
+            var powerAddress = document.querySelector('#powerAddress').innerHTML;
+            var powerProductName = document.querySelector('#powerProductName').innerHTML;
+
             let indexToUpdate = this.invoiceData.findIndex(invoice => invoice.No === this.updatedId);
             this.calculateInvoiceData();
             if (indexToUpdate !== -1) {
                 this.invoiceData[indexToUpdate].No = this.invoice.No;
-                this.invoiceData[indexToUpdate].Date = moment(this.invoice.Date).format('DD-MM-YYYY');
-                this.invoiceData[indexToUpdate].HeadName = this.invoice.HeadName;
-                this.invoiceData[indexToUpdate].Address = this.invoice.Address;
+                this.invoiceData[indexToUpdate].Date = moment(this.invoice.Date).format('YYYY-MM-DD');
+                this.invoiceData[indexToUpdate].HeadName = powerHeadName;
+                this.invoiceData[indexToUpdate].Address = powerAddress;
                 this.invoiceData[indexToUpdate].PinCode = this.invoice.PinCode;
                 this.invoiceData[indexToUpdate].GSTIN = this.invoice.GSTIN;
                 this.invoiceData[indexToUpdate].PlaceOfSupply = this.invoice.PlaceOfSupply;
                 this.invoiceData[indexToUpdate].RONo = this.invoice.RONo;
-                this.invoiceData[indexToUpdate].RODate = moment(this.invoice.RODate).format('DD-MM-YYYY');
-                this.invoiceData[indexToUpdate].ProductName = this.invoice.ProductName;
+                this.invoiceData[indexToUpdate].RODate = moment(this.invoice.RODate).format('YYYY-MM-DD');
+                this.invoiceData[indexToUpdate].ProductName = powerProductName;
                 this.invoiceData[indexToUpdate].KeyNo = this.invoice.KeyNo;
                 this.invoiceData[indexToUpdate].Caption = this.invoice.Caption;
                 this.invoiceData[indexToUpdate].SizeWidth = this.invoice.SizeWidth;
@@ -268,19 +273,20 @@ var vm = new Vue({
             }
         },
         editInvoice(no) {
+
             // Find the invoice by its No
             let invoiceToEdit = this.invoiceData.find(invoice => invoice.No === no);
             if (invoiceToEdit) {
                 // Populate the invoice object with found data
                 this.invoice.No = invoiceToEdit.No,
-                    this.invoice.Date = moment(invoiceToEdit.Date).format('DD-MM-YYYY'),
+                    this.invoice.Date = moment(invoiceToEdit.Date).format('YYYY-MM-DD'),
                     this.invoice.HeadName = invoiceToEdit.HeadName,
                     this.invoice.Address = invoiceToEdit.Address,
                     this.invoice.PinCode = invoiceToEdit.PinCode,
                     this.invoice.GSTIN = invoiceToEdit.GSTIN,
                     this.invoice.PlaceOfSupply = invoiceToEdit.PlaceOfSupply,
                     this.invoice.RONo = invoiceToEdit.RONo,
-                    this.invoice.RODate = moment(invoiceToEdit.RODate).format('DD-MM-YYYY'),
+                    this.invoice.RODate = moment(invoiceToEdit.RODate).format('YYYY-MM-DD'),
                     this.invoice.ProductName = invoiceToEdit.ProductName,
                     this.invoice.KeyNo = invoiceToEdit.KeyNo,
                     this.invoice.Caption = invoiceToEdit.Caption,
@@ -374,7 +380,7 @@ var vm = new Vue({
             this.$nextTick(() => {
                 this.initializeSelect2();
                 this.clearAddFormData();
-                
+
             });
         },
 
