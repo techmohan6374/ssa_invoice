@@ -143,7 +143,7 @@ var vm = new Vue({
             });
         },
         calculateInvoiceData() {
-            this.invoice.initialTotal = (parseInt(this.invoice.SizeWidth) * parseInt(this.invoice.SizeHeight) * parseInt(this.invoice.Rate));
+            this.invoice.initialTotal = (parseFloat(this.invoice.SizeWidth) * parseFloat(this.invoice.SizeHeight) * parseFloat(this.invoice.Rate));
             this.invoice.initialTotal = parseFloat(this.invoice.initialTotal).toFixed(2);
             console.log(this.invoice.initialTotal);
             this.invoice.Rate = parseFloat(this.invoice.Rate).toFixed(2);
