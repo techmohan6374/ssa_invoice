@@ -170,14 +170,14 @@ var vm = new Vue({
             this.calculateInvoiceData();
             this.invoiceData.push({
                 No: this.invoice.No,
-                Date: moment(this.invoice.Data).format('YYYY-MM-DD'),
+                Date: moment(this.invoice.Data).format('DD-MM-YYYY'),
                 HeadName: this.invoice.HeadName.toUpperCase(),
                 Address: this.invoice.Address,
                 PinCode: this.invoice.PinCode,
                 GSTIN: this.invoice.GSTIN.toUpperCase(),
                 PlaceOfSupply: this.invoice.PlaceOfSupply,
                 RONo: this.invoice.RONo,
-                RODate: moment(this.invoice.RODate).format('YYYY-MM-DD'),
+                RODate: moment(this.invoice.RODate).format('DD-MM-YYYY'),
                 ProductName: this.invoice.ProductName.toUpperCase(),
                 KeyNo: this.invoice.KeyNo.toUpperCase(),
                 Caption: this.invoice.Caption.toUpperCase(),
@@ -243,14 +243,14 @@ var vm = new Vue({
             let indexToUpdate = this.invoiceData.findIndex(invoice => invoice.No === this.updatedId);
             if (indexToUpdate !== -1) {
                 this.invoiceData[indexToUpdate].No = this.invoice.No;
-                this.invoiceData[indexToUpdate].Date = moment(this.invoice.Date).format('YYYY-MM-DD');
+                this.invoiceData[indexToUpdate].Date = moment(this.invoice.Date).format('DD-MM-YYYY');
                 this.invoiceData[indexToUpdate].HeadName = powerHeadName;
                 this.invoiceData[indexToUpdate].Address = powerAddress;
                 this.invoiceData[indexToUpdate].PinCode = this.invoice.PinCode;
                 this.invoiceData[indexToUpdate].GSTIN = this.invoice.GSTIN;
                 this.invoiceData[indexToUpdate].PlaceOfSupply = this.invoice.PlaceOfSupply;
                 this.invoiceData[indexToUpdate].RONo = this.invoice.RONo;
-                this.invoiceData[indexToUpdate].RODate = moment(this.invoice.RODate).format('YYYY-MM-DD');
+                this.invoiceData[indexToUpdate].RODate = moment(this.invoice.RODate).format('DD-MM-YYYY');
                 this.invoiceData[indexToUpdate].ProductName = powerProductName;
                 this.invoiceData[indexToUpdate].KeyNo = this.invoice.KeyNo;
                 this.invoiceData[indexToUpdate].Caption = this.invoice.Caption;
@@ -280,14 +280,14 @@ var vm = new Vue({
             if (invoiceToEdit) {
                 // Populate the invoice object with found data
                 this.invoice.No = invoiceToEdit.No,
-                    this.invoice.Date = moment(invoiceToEdit.Date).format('YYYY-MM-DD'),
+                    this.invoice.Date = moment(invoiceToEdit.Date).format('DD-MM-YYYY'),
                     this.invoice.HeadName = invoiceToEdit.HeadName,
                     this.invoice.Address = invoiceToEdit.Address,
                     this.invoice.PinCode = invoiceToEdit.PinCode,
                     this.invoice.GSTIN = invoiceToEdit.GSTIN,
                     this.invoice.PlaceOfSupply = invoiceToEdit.PlaceOfSupply,
                     this.invoice.RONo = invoiceToEdit.RONo,
-                    this.invoice.RODate = moment(invoiceToEdit.RODate).format('YYYY-MM-DD'),
+                    this.invoice.RODate = moment(invoiceToEdit.RODate).format('DD-MM-YYYY'),
                     this.invoice.ProductName = invoiceToEdit.ProductName,
                     this.invoice.KeyNo = invoiceToEdit.KeyNo,
                     this.invoice.Caption = invoiceToEdit.Caption,
