@@ -373,10 +373,12 @@
                             </div>
                             <div class="right">
                                 <div class="div-1" style="margin-bottom: 4px;">
-                                    <div v-html="invoice.HeadName" contenteditable class="text-area" id="powerHeadName"></div>
+                                    <div v-html="invoice.HeadName" contenteditable class="text-area" id="powerHeadName">
+                                    </div>
                                 </div>
                                 <div class="div-2" style="margin-bottom: 9px;">
-                                    <div v-html="invoice.Address" contenteditable class="text-area" id="powerAddress"></div>
+                                    <div v-html="invoice.Address" contenteditable class="text-area" id="powerAddress">
+                                    </div>
                                 </div>
                                 <div class="div-3">
                                     <input type="text" v-model="invoice.PinCode">
@@ -411,7 +413,8 @@
                                     <input type="text" v-model="invoice.RODate">
                                 </div>
                                 <div style="margin-bottom: 7px;">
-                                    <div class="text-area" v-html="invoice.ProductName" contenteditable id="powerProductName"></div>
+                                    <div class="text-area" v-html="invoice.ProductName" contenteditable
+                                        id="powerProductName"></div>
                                 </div>
                                 <div>
                                     <input type="text" v-model="invoice.KeyNo">
@@ -462,7 +465,8 @@
                         </div>
                         <div class="gr-box gr-box-21 flex" style="grid-area: item-21;">
                             <div class="left flex">
-                                <div style="color:#00b050">Product Discount &nbsp;&nbsp;&nbsp; {{invoice.Discount}} %
+                                <div style="color:#00b050">Product Discount &nbsp;&nbsp;&nbsp;
+                                    <span id="powerDiscount" contenteditable>{{invoice.Discount}}</span> %
                                 </div>
                                 <div>Amount</div>
                                 <div>CGST {{invoice.GSTPercent}} %</div>

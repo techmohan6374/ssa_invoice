@@ -236,9 +236,10 @@ var vm = new Vue({
             var powerHeadName = document.querySelector('#powerHeadName').innerHTML;
             var powerAddress = document.querySelector('#powerAddress').innerHTML;
             var powerProductName = document.querySelector('#powerProductName').innerHTML;
-
-            let indexToUpdate = this.invoiceData.findIndex(invoice => invoice.No === this.updatedId);
+            var powerDiscount = document.querySelector('#powerDiscount').innerHTML;
+            this.invoice.Discount = powerDiscount;
             this.calculateInvoiceData();
+            let indexToUpdate = this.invoiceData.findIndex(invoice => invoice.No === this.updatedId);
             if (indexToUpdate !== -1) {
                 this.invoiceData[indexToUpdate].No = this.invoice.No;
                 this.invoiceData[indexToUpdate].Date = moment(this.invoice.Date).format('YYYY-MM-DD');
@@ -258,7 +259,7 @@ var vm = new Vue({
                 this.invoiceData[indexToUpdate].PagePosition = this.invoice.PagePosition;
                 this.invoiceData[indexToUpdate].Rate = this.invoice.Rate;
                 this.invoiceData[indexToUpdate].InitialTotal = this.invoice.initialTotal;
-                this.invoiceData[indexToUpdate].Discount = this.invoice.Discount;
+                this.invoiceData[indexToUpdate].Discount = powerDiscount;
                 this.invoiceData[indexToUpdate].DiscountTotal = this.invoice.DiscountTotal;
                 this.invoiceData[indexToUpdate].interMediateTotal = this.invoice.interMediateTotal;
                 this.invoiceData[indexToUpdate].GST = this.invoice.GST;
@@ -266,7 +267,6 @@ var vm = new Vue({
                 this.invoiceData[indexToUpdate].GSTAmt = this.invoice.GSTAmt;
                 this.invoiceData[indexToUpdate].NetTotal = this.invoice.NetTotal
                 this.amountInWords = this.convertToWords(this.invoice.NetTotal);
-
                 notyf.success('Updated successfully');
             } else {
                 console.error('Invoice not found for updating');
