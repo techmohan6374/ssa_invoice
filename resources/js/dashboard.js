@@ -129,7 +129,7 @@ var vm = new Vue({
             }
         },
         readInvoiceData() {
-            // this.loaderStatus = true;
+            this.loaderStatus = true;
             var notyf = new Notyf();
 
             database.ref('invoiceData').once('value').then((snapshot) => {
@@ -560,6 +560,6 @@ var vm = new Vue({
     }
 });
 
-// For Development & Production Code
-Vue.config.productionTip = false;
-Vue.config.devtools = false;
+
+// Vue.config.productionTip = true;
+// Vue.config.devtools = true;
