@@ -1,12 +1,13 @@
 // Firebase Configuration
 var firebaseConfig = {
-    apiKey: "AIzaSyBVp7fPtdxfkmbpDMaQ9h1LMjRLz_Dua94",
-    authDomain: "voting-database-79b70.firebaseapp.com",
-    projectId: "voting-database-79b70",
-    storageBucket: "voting-database-79b70.appspot.com",
-    messagingSenderId: "617270993047",
-    appId: "1:617270993047:web:a20e9de811a7a3734e89d2",
-    measurementId: "G-97YTPFC176"
+    apiKey: "AIzaSyBHwvVJguhnbmQcJYIL98RgUIfOzwKWSMc",
+    authDomain: "ssa-database-f0db2.firebaseapp.com",
+    databaseURL: "https://ssa-database-f0db2-default-rtdb.firebaseio.com",
+    projectId: "ssa-database-f0db2",
+    storageBucket: "ssa-database-f0db2.appspot.com",
+    messagingSenderId: "70296952416",
+    appId: "1:70296952416:web:d63e6fdbdc187f0b5fed05",
+    measurementId: "G-HTCZM5LFF7"
 };
 
 firebase.initializeApp(firebaseConfig);
@@ -128,7 +129,7 @@ var vm = new Vue({
             }
         },
         readInvoiceData() {
-            this.loaderStatus = true;
+            // this.loaderStatus = true;
             var notyf = new Notyf();
 
             database.ref('invoiceData').once('value').then((snapshot) => {
@@ -561,4 +562,4 @@ var vm = new Vue({
 
 // For Development & Production Code
 Vue.config.productionTip = false;
-Vue.config.devtools = true;
+Vue.config.devtools = false;
