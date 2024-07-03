@@ -766,6 +766,7 @@ ul li {
     gap: 10px;
     color: var(--theme-color);
     font-weight: bold;
+    width:250px;
 }
 
 .gr-box-21 .right {
