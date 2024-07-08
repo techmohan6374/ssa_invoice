@@ -158,7 +158,7 @@ var vm = new Vue({
             this.invoice.GSTPercent = (parseFloat(this.invoice.GST) / 2).toFixed(2);
             console.log(this.invoice.GSTPercent);
 
-            this.invoice.GSTAmt = (parseFloat(this.invoice.interMediateTotal) * (parseFloat(this.invoice.GSTPercent) / 100)).toFixed(2);
+            this.invoice.GSTAmt = Math.round((parseFloat(this.invoice.interMediateTotal) * (parseFloat(this.invoice.GSTPercent) / 100))).toFixed(2);
             console.log(this.invoice.GSTAmt);
 
             this.invoice.NetTotal = (parseFloat(this.invoice.interMediateTotal) + (parseFloat(this.invoice.GSTAmt)) + (parseFloat(this.invoice.GSTAmt))).toFixed(2);
@@ -170,7 +170,7 @@ var vm = new Vue({
             this.calculateInvoiceData();
             this.invoiceData.push({
                 No: this.invoice.No,
-                Date: moment(this.invoice.Data).format('DD-MM-YYYY'),
+                Date: moment(this.invoice.Date).format('DD-MM-YYYY'),
                 HeadName: this.invoice.HeadName.toUpperCase(),
                 Address: this.invoice.Address,
                 PinCode: this.invoice.PinCode,
@@ -243,21 +243,21 @@ var vm = new Vue({
             let indexToUpdate = this.invoiceData.findIndex(invoice => invoice.No === this.updatedId);
             if (indexToUpdate !== -1) {
                 this.invoiceData[indexToUpdate].No = this.invoice.No;
-                this.invoiceData[indexToUpdate].Date = moment(this.invoice.Date).format('DD-MM-YYYY');
-                this.invoiceData[indexToUpdate].HeadName = powerHeadName;
+                this.invoiceData[indexToUpdate].Date = this.invoice.Date;
+                this.invoiceData[indexToUpdate].HeadName = powerHeadName.toUpperCase();
                 this.invoiceData[indexToUpdate].Address = powerAddress;
                 this.invoiceData[indexToUpdate].PinCode = this.invoice.PinCode;
-                this.invoiceData[indexToUpdate].GSTIN = this.invoice.GSTIN;
+                this.invoiceData[indexToUpdate].GSTIN = this.invoice.GSTIN.toUpperCase();
                 this.invoiceData[indexToUpdate].PlaceOfSupply = this.invoice.PlaceOfSupply;
                 this.invoiceData[indexToUpdate].RONo = this.invoice.RONo;
-                this.invoiceData[indexToUpdate].RODate = moment(this.invoice.RODate).format('DD-MM-YYYY');
-                this.invoiceData[indexToUpdate].ProductName = powerProductName;
-                this.invoiceData[indexToUpdate].KeyNo = this.invoice.KeyNo;
-                this.invoiceData[indexToUpdate].Caption = this.invoice.Caption;
+                this.invoiceData[indexToUpdate].RODate = this.invoice.RODate;
+                this.invoiceData[indexToUpdate].ProductName = powerProductName.toUpperCase();
+                this.invoiceData[indexToUpdate].KeyNo = this.invoice.KeyNo.toUpperCase();
+                this.invoiceData[indexToUpdate].Caption = this.invoice.Caption.toUpperCase();
                 this.invoiceData[indexToUpdate].SizeWidth = this.invoice.SizeWidth;
                 this.invoiceData[indexToUpdate].SizeHeight = this.invoice.SizeHeight;
-                this.invoiceData[indexToUpdate].AreaOfEdition = this.invoice.AreaOfEdition;
-                this.invoiceData[indexToUpdate].PagePosition = this.invoice.PagePosition;
+                this.invoiceData[indexToUpdate].AreaOfEdition = this.invoice.AreaOfEdition.toUpperCase();
+                this.invoiceData[indexToUpdate].PagePosition = this.invoice.PagePosition.toUpperCase();
                 this.invoiceData[indexToUpdate].Rate = this.invoice.Rate;
                 this.invoiceData[indexToUpdate].InitialTotal = this.invoice.initialTotal;
                 this.invoiceData[indexToUpdate].Discount = powerDiscount;
@@ -280,21 +280,21 @@ var vm = new Vue({
             if (invoiceToEdit) {
                 // Populate the invoice object with found data
                 this.invoice.No = invoiceToEdit.No,
-                    this.invoice.Date = moment(invoiceToEdit.Date).format('DD-MM-YYYY'),
-                    this.invoice.HeadName = invoiceToEdit.HeadName,
+                    this.invoice.Date = invoiceToEdit.Date,
+                    this.invoice.HeadName = invoiceToEdit.HeadName.toUpperCase(),
                     this.invoice.Address = invoiceToEdit.Address,
                     this.invoice.PinCode = invoiceToEdit.PinCode,
-                    this.invoice.GSTIN = invoiceToEdit.GSTIN,
+                    this.invoice.GSTIN = invoiceToEdit.GSTIN.toUpperCase(),
                     this.invoice.PlaceOfSupply = invoiceToEdit.PlaceOfSupply,
                     this.invoice.RONo = invoiceToEdit.RONo,
-                    this.invoice.RODate = moment(invoiceToEdit.RODate).format('DD-MM-YYYY'),
-                    this.invoice.ProductName = invoiceToEdit.ProductName,
-                    this.invoice.KeyNo = invoiceToEdit.KeyNo,
-                    this.invoice.Caption = invoiceToEdit.Caption,
+                    this.invoice.RODate = invoiceToEdit.RODate,
+                    this.invoice.ProductName = invoiceToEdit.ProductName.toUpperCase(),
+                    this.invoice.KeyNo = invoiceToEdit.KeyNo.toUpperCase(),
+                    this.invoice.Caption = invoiceToEdit.Caption.toUpperCase(),
                     this.invoice.SizeWidth = invoiceToEdit.SizeWidth,
                     this.invoice.SizeHeight = invoiceToEdit.SizeHeight,
-                    this.invoice.AreaOfEdition = invoiceToEdit.AreaOfEdition,
-                    this.invoice.PagePosition = invoiceToEdit.PagePosition,
+                    this.invoice.AreaOfEdition = invoiceToEdit.AreaOfEdition.toUpperCase(),
+                    this.invoice.PagePosition = invoiceToEdit.PagePosition.toUpperCase(),
                     this.invoice.Rate = invoiceToEdit.Rate,
                     this.invoice.InitialTotal = invoiceToEdit.initialTotal,
                     this.invoice.Discount = invoiceToEdit.Discount,
@@ -561,5 +561,5 @@ var vm = new Vue({
 });
 
 
-// Vue.config.productionTip = true;
-// Vue.config.devtools = true;
+Vue.config.productionTip = true;
+Vue.config.devtools = true;
