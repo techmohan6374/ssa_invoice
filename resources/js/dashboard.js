@@ -561,5 +561,5 @@ var vm = new Vue({
 });
 
 
-Vue.config.productionTip = true;
-Vue.config.devtools = true;
+// Vue.config.productionTip = true;
+// Vue.config.devtools = true;
