@@ -1,0 +1,119 @@
+/* Login Page Style */
+
+#loginPage .row {
+    height: 100vh;
+}
+
+#loginPage .card {
+    min-height: 450px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+#loginPage .card .logo {
+    margin-top: -70px;
+    width: 110px;
+    height: 110px;
+    background-color: white;
+    border-radius: 50%;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+#loginPage .card h4 {
+    font-weight: normal;
+    color: #898a8f;
+}
+
+#loginPage .card input {
+    border: none;
+    outline: none;
+    width: 100%;
+    border: 2px solid #b5b5b5;
+    border-radius: 3px;
+    border-bottom: 3px solid rgb(73, 73, 73);
+    padding: 12px 40px 12px 12px;
+    font-size: 19px;
+}
+
+#loginPage .card input:focus {
+    border-bottom: 3px solid #34495e;
+    background-color: #e8f0fe;
+}
+
+#loginPage .card .email-input,
+#loginPage .card .password-input {
+    position: relative;
+}
+
+#loginPage .card .email-input iconify-icon {
+    position: absolute;
+    top: 14px;
+    right: 10px;
+    font-size: 25px;
+}
+
+#loginPage .card .password-button {
+    border: none;
+    outline: none;
+    background-color: transparent;
+    position: absolute;
+    right: 5px;
+    top: 14px;
+    font-size: 25px;
+}
+
+
+#loginPage .card .login {
+    border: none;
+    outline: none;
+    width: 100%;
+    height: 55px;
+    background-color: #34495e;
+    border-radius: 3px;
+    color: white;
+    font-size: 25px;
+    cursor: pointer;
+    gap: 5px;
+}
+
+#loginPage .card .login:hover {
+    background-color: #34495e;
+}
+
+#loginPage .card .login:active {
+    transform: scale(0.98);
+}
+
+#loginPage .card a {
+    color: #34495e;
+}
+
+#loginPage .card a:hover {
+    text-decoration: underline;
+}
+
+.logo img {
+    width: 100px;
+}
+
+/* HTML: <div class="loader"></div> */
+
+#loginPage .loader {
+    width: 25px;
+    --b: 4px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: #ffffff;
+    -webkit-mask: repeating-conic-gradient(#0000 0deg, #000 1deg 70deg, #0000 71deg 90deg), radial-gradient(farthest-side, #0000 calc(100% - var(--b) - 1px), #000 calc(100% - var(--b)));
+    -webkit-mask-composite: destination-in;
+    mask-composite: intersect;
+    animation: l5 1s infinite;
+    display: none;
+}
+
+@keyframes l5 {
+    to {
+        transform: rotate(.5turn)
+    }
+}
+
+/* After Vue Rendering Display content */
